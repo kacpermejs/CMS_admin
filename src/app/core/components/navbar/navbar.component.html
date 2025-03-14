@@ -1,0 +1,78 @@
+<nav class="bg-gray-800 p-4">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="text-white text-2xl font-bold">
+      <a routerLink="/">Ez CMS</a>
+    </div>
+
+    <!-- Desktop Navbar Links -->
+    <div class="hidden md:flex space-x-4 items-center">
+      <ng-container *ngFor="let item of menuItems; let i = index">
+        @if(item.button) {
+          <button
+            [routerLink]="item.route"
+            class="btn"
+            [ngClass]="{
+              'btn-primary': item.button === 'primary',
+              'btn-secondary': item.button === 'secondary',
+              'btn-danger': item.button === 'danger',
+            }"
+            >
+            {{ item.label }}
+          </button>
+        }
+        @else {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="underline text-white"
+            class="text-gray-400 hover:text-white"
+          >
+            {{ item.label }}
+          </a>
+        }
+        
+      </ng-container>
+    </div>
+
+    <!-- Mobile Hamburger Icon -->
+    <div class="md:hidden flex items-center">
+      <button (click)="toggleMenu()" class="text-white focus:outline-none">
+        <div class="w-6 h-1 bg-white my-1 transition-transform duration-300 ease-in-out line-1" [ngClass]="{'open rotate-45 translate-y-2': isMenuOpen}"></div>
+        <div class="w-6 h-1 bg-white my-1 transition-transform duration-300 ease-in-out line-2" [ngClass]="{'open opacity-0': isMenuOpen}"></div>
+        <div class="w-6 h-1 bg-white my-1 transition-transform duration-300 ease-in-out line-3" [ngClass]="{'open -rotate-45 -translate-y-2': isMenuOpen}"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    *ngIf="isMenuOpen"
+    class="md:hidden bg-gray-800 text-gray-400 p-4 flex flex-col flex-wrap space-y-4"
+  >
+    <ng-container *ngFor="let item of menuItems; let i = index">
+      @if(item.button) {
+        <button
+          [routerLink]="item.route"
+          routerLinkActive="underline text-white"
+          class="btn flex-grow-1"
+          [ngClass]="{
+            'btn-primary': item.button === 'primary',
+            'btn-secondary': item.button === 'secondary',
+            'btn-danger': item.button === 'danger',
+          }"
+          >
+          {{ item.label }}
+        </button>
+      }
+      @else {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="underline text-white"
+          class="text-gray-400 hover:text-white block flex-grow w-full py-2"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </ng-container>
+  </div>
+</nav>

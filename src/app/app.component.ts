@@ -4,12 +4,13 @@ import { ConfigService } from './core/config/config.service';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { Firestore, getFirestore } from '@angular/fire/firestore';
+import { NavbarComponent } from './core/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'CMS_admin';

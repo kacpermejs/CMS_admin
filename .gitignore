@@ -45,5 +45,5 @@ Thumbs.db
 # Generated config file for development with docker
 /src/app-config.json
 # Place to store secrets
-src/styles/output.scss
+src/styles/output.css
 **/secrets*

@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@import "tailwindcss";
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -81,19 +81,6 @@ p.small {
 
 .btn-outline:disabled {
   @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
-}
-
-/* Lists */
-ul {
-  @apply list-disc pl-6 text-gray-600 mb-4;
-}
-
-ol {
-  @apply list-decimal pl-6 text-gray-600 mb-4;
-}
-
-li {
-  @apply mb-2;
 }
 
 /* Forms */

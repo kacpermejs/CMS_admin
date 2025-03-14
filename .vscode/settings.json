@@ -1,4 +1,3 @@
 {
-  "html.format.wrapAttributes": "force-expand-multiline",
-  "css.customData": [".vscode/tailwind.json"]
+  "tailwindCSS.experimental.configFile": "src/styles/styles.css"
 }
