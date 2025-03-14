@@ -26,6 +26,7 @@ yarn-error.log
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/tailwind.json
 .history/*
 
 # Miscellaneous
@@ -40,3 +41,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Generated config file for development with docker
+/src/app-config.json
+src/styles/output.scss

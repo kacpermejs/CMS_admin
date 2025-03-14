@@ -1,0 +1,127 @@
+@use "tailwindcss";
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  @apply mt-8;
+}
+
+h1 {
+  @apply text-4xl font-bold text-gray-800 leading-tight mb-4;
+}
+
+h2 {
+  @apply text-3xl font-semibold text-gray-800 leading-snug mb-3;
+}
+
+h3 {
+  @apply text-2xl font-medium text-gray-700 leading-snug mb-2;
+}
+
+h4 {
+  @apply text-xl font-medium text-gray-700 leading-snug mb-2;
+}
+
+h5 {
+  @apply text-lg font-semibold text-gray-600 leading-tight mb-2;
+}
+
+h6 {
+  @apply text-base font-medium text-gray-600 leading-snug mb-1;
+}
+
+/* Paragraphs */
+p {
+  @apply text-base text-gray-600 leading-relaxed mb-4;
+}
+
+p.large {
+  @apply text-lg text-gray-700 leading-relaxed mb-5;
+}
+
+p.small {
+  @apply text-sm text-gray-500 leading-snug mb-3;
+}
+
+/* Buttons */
+/* Buttons */
+.btn {
+  @apply inline-block px-6 py-3 rounded-md font-medium text-center transition duration-300;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring focus:ring-blue-300;
+}
+
+.btn-primary:disabled {
+  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring focus:ring-gray-400;
+}
+
+.btn-secondary:disabled {
+  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700 focus:ring focus:ring-red-300;
+}
+
+.btn-danger:disabled {
+  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
+}
+
+.btn-outline {
+  @apply border border-gray-300 text-gray-700 hover:bg-gray-100 focus:ring focus:ring-gray-300;
+}
+
+.btn-outline:disabled {
+  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
+}
+
+/* Lists */
+ul {
+  @apply list-disc pl-6 text-gray-600 mb-4;
+}
+
+ol {
+  @apply list-decimal pl-6 text-gray-600 mb-4;
+}
+
+li {
+  @apply mb-2;
+}
+
+/* Forms */
+input, textarea, select {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300;
+}
+
+input:focus, textarea:focus, select:focus {
+  @apply ring-2 ring-blue-300;
+}
+
+textarea {
+  @apply resize-none;
+}
+
+/* Card */
+.card {
+  @apply bg-white shadow-md rounded-lg p-6 mb-4;
+}
+
+.card-header {
+  @apply text-xl font-bold text-gray-800 mb-2;
+}
+
+.card-body {
+  @apply text-gray-600;
+}
+
+.card-footer {
+  @apply text-right mt-4;
+}
