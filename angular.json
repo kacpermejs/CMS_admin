@@ -35,6 +35,10 @@
                 "input": "src/"
               },
               {
+                "glob": "secrets.json",
+                "input": "src/"
+              },
+              {
                 "glob": "**/*",
                 "input": "src/config",
                 "output": "config"
@@ -111,6 +115,10 @@
               },
               {
                 "glob": "app-config.json",
+                "input": "src/"
+              },
+              {
+                "glob": "secrets.json",
                 "input": "src/"
               },
               {

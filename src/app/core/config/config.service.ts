@@ -1,53 +1,64 @@
-import { inject, Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin, catchError, of, tap, map } from 'rxjs';
 
-//Move this type to a shared folder
+// Config Interfaces
 export interface AppConfig {
   Environment: string;
-  Cognito: CognitoConfig;
-  backEndIpAddress: string
-  backEndPort: number
 }
 
-export interface CognitoConfig {
-  region: string;
-  userPoolId: string
-  userPoolClientId: string
+export interface SecretsConfig {
+  firebase: {
+    apiKey: string;
+    authDomain: string;
+    projectId: string;
+    storageBucket: string;
+    messagingSenderId: string;
+    appId: string;
+  };
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
-  //Default, if config files missing
-  private configuration: AppConfig = {
-    Environment: 'DEV',
-    Cognito: {
-      region: "",
-      userPoolId: "",
-      userPoolClientId: ""
-    },
-    backEndIpAddress: "localhost",
-    backEndPort: 8080
-  };
+  private http = inject(HttpClient);
+  private config = signal<AppConfig | null>(null);
+  private secrets = signal<SecretsConfig | null>(null);
 
-  private http: HttpClient;
-  constructor() {
-    this.http = inject(HttpClient)
+  constructor() {}
+
+  // Load both app-config.json & secrets.json
+  loadConfig(): Observable<void> {
+    return forkJoin({
+      config: this.http.get<AppConfig>('./app-config.json').pipe(
+        catchError((err) => {
+          console.error('Failed to load app-config.json:', err);
+          return of({ Environment: 'DEV' } as AppConfig);
+        })
+      ),
+      secrets: this.http.get<SecretsConfig>('./secrets.json').pipe(
+        catchError((err) => {
+          console.error('Failed to load secrets.json:', err);
+          return of(null);
+        })
+      ),
+    }).pipe(
+      // Store config values in signals
+      tap(({ config, secrets }) => {
+        if (!secrets) throw new Error('Secrets file is missing!');
+        this.config.set(config);
+        this.secrets.set(secrets);
+      }),
+      map(() => void 0)
+    );
   }
 
-  //This function will get the current config for the environment
-  setConfig(): Promise<void | AppConfig> {
-    return firstValueFrom(this.http.get<AppConfig>('./app-config.json'))
-      .then((config: AppConfig) => (this.configuration = config))
-      .catch(error => {
-        console.error(error);
-      });
+  getConfig() {
+    return this.config();
   }
 
-  //We're going to use this function to read the config.
-  readConfig(): AppConfig {
-    return this.configuration;
+  getSecrets() {
+    return this.secrets();
   }
 }
