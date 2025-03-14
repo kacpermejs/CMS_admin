@@ -17,6 +17,7 @@
               'btn-secondary': item.button === 'secondary',
               'btn-danger': item.button === 'danger',
             }"
+            (click)="handleCallback(item)"
             >
             {{ item.label }}
           </button>
@@ -26,6 +27,7 @@
             [routerLink]="item.route"
             routerLinkActive="underline text-white"
             class="text-gray-400 hover:text-white"
+            (click)="handleCallback(item)"
           >
             {{ item.label }}
           </a>
@@ -60,6 +62,7 @@
             'btn-secondary': item.button === 'secondary',
             'btn-danger': item.button === 'danger',
           }"
+          (click)="handleCallback(item)"
           >
           {{ item.label }}
         </button>
@@ -69,6 +72,7 @@
           [routerLink]="item.route"
           routerLinkActive="underline text-white"
           class="text-gray-400 hover:text-white block flex-grow w-full py-2"
+          (click)="handleCallback(item)"
         >
           {{ item.label }}
         </a>

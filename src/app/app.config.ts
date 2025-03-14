@@ -7,6 +7,8 @@ import { ConfigService } from './core/config/config.service';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStore } from '@ngrx/store';
+import { reducers, metaReducers } from './store';
 
 export function initializeAppConfig(configService: ConfigService) {
   return () => configService.loadConfig(); // This will return an Observable/Promise, which is expected by provideAppInitializer
@@ -16,21 +18,22 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding(), withRouterConfig({
-      paramsInheritanceStrategy: 'always'
+        paramsInheritanceStrategy: 'always'
     })),
     provideHttpClient(),
     ConfigService,
     provideAppInitializer(() => initializeAppConfig(inject(ConfigService))()),
     {
-      provide: 'FIREBASE_CONFIG',
-      useFactory: (configService: ConfigService) => configService.getSecrets()?.firebase,
-      deps: [ConfigService],
+        provide: 'FIREBASE_CONFIG',
+        useFactory: (configService: ConfigService) => configService.getSecrets()?.firebase,
+        deps: [ConfigService],
     },
     provideFirebaseApp((injector) => {
-      const firebaseConfig = injector.get('FIREBASE_CONFIG');
-      return initializeApp(firebaseConfig); // Initialize Firebase with the loaded config
+        const firebaseConfig = injector.get('FIREBASE_CONFIG');
+        return initializeApp(firebaseConfig); // Initialize Firebase with the loaded config
     }),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-  ]
+    provideStore(reducers, { metaReducers })
+]
 };
