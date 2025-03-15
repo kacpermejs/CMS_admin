@@ -19,9 +19,10 @@ export interface NavbarConfig {
 export const ROLE_NAVBAR_CONFIG: Record<UserRole, NavbarConfig[]> = {
   [UserRole.Client]: [
     {label: 'Account', route: '/account'},
-    {label: 'Sign out', button: ButtonType.Danger}
+    {label: 'Dashboard', route: '/dashboard'},
+    {label: 'About', route: '/about'},
   ],
   [UserRole.Guest]: [
-    {label: 'Sign in', route: '/login', button: ButtonType.Primary},
+    {label: 'About', route: '/about'},
   ],
 };

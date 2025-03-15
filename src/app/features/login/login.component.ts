@@ -17,7 +17,6 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
-      fullName: [''], // Only used in registration
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['']
@@ -29,7 +28,7 @@ export class LoginComponent {
 
     this.isLoading = true;
     this.errorMessage = null;
-    const { email, password, fullName, confirmPassword } = this.loginForm.value;
+    const { email, password, confirmPassword } = this.loginForm.value;
 
     try {
       if (this.isFlipped) {

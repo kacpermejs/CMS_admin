@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {NavbarConfig, ROLE_NAVBAR_CONFIG} from './models/role-navbar-config';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {UserRole} from '@core/models/UserRole';
@@ -23,6 +23,8 @@ export class NavbarComponent {
   userRole$: Observable<UserRole>;
 
   auth = inject(AuthService);
+  router = inject(Router);
+  activatedRoute = inject(ActivatedRoute)
 
   constructor(private store: Store) {
     this.userRole$ = this.store.select(selectUserRole); // Access the user role from the store
@@ -45,6 +47,15 @@ export class NavbarComponent {
     if (config.callback) {
       config.callback();
     }
+  }
+
+  signIn() {
+    const currentUrl = this.router.url;
+    this.router.navigate(['/login'], { queryParams: { currentUrl } });
+  }
+
+  signOut() {
+    this.auth.signOut();
   }
 
   toggleMenu() {

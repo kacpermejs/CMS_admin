@@ -15,6 +15,11 @@ export const loginSuccess = createAction(
   props<{ userRole: UserRole }>()
 );
 
+export const credentialsLoadingSuccess = createAction(
+  '[User] Credentials Loading Success',
+  props<{ userRole: UserRole }>()
+);
+
 // Action when login fails
 export const loginFailure = createAction(
   '[User] Login Failure',

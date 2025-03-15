@@ -11,7 +11,7 @@ import {
 } from '@angular/fire/auth';
 import { UserRole } from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
-import { loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from 'app/store/actions/user.actions';
+import { credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from 'app/store/actions/user.actions';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -31,7 +31,8 @@ export class AuthService {
     authState(this.auth).subscribe(user => {
       if (user) {
         // User is signed in
-        this.storeSuccessfulLogin(user);
+        const userRole: UserRole = this.getUserRole(user);
+        this.store.dispatch(credentialsLoadingSuccess({userRole}));
       } else {
         // No user is signed in
         this.store.dispatch(logoutSuccess());
