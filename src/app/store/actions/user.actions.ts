@@ -15,11 +15,6 @@ export const loginSuccess = createAction(
   props<{ userRole: UserRole }>()
 );
 
-export const credentialsLoadingSuccess = createAction(
-  '[User] Credentials Loading Success',
-  props<{ userRole: UserRole }>()
-);
-
 // Action when login fails
 export const loginFailure = createAction(
   '[User] Login Failure',
@@ -34,5 +29,19 @@ export const logoutSuccess = createAction('[User] Logout Success');
 // Action when logout fails
 export const logoutFailure = createAction(
   '[User] Logout Failure',
+  props<{ error: string }>()
+);
+
+export const credentialsLoading = createAction(
+  '[User] Credentials Loading'
+);
+
+export const credentialsLoadingSuccess = createAction(
+  '[User] Credentials Loading Success',
+  props<{ userRole: UserRole }>()
+);
+
+export const credentialsLoadingFailure = createAction(
+  '[User] Credentials Loading Failure',
   props<{ error: string }>()
 );

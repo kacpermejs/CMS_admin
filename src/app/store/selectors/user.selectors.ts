@@ -8,3 +8,8 @@ export const selectUserRole = createSelector(
   selectUserState,
   (state: UserState) => state.role
 );
+
+export const selectCredentialsLoading = createSelector(
+  selectUserState,
+  (state: UserState) => state.loading
+);

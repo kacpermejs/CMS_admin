@@ -1,7 +1,7 @@
 // src/app/store/user/user.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { initialUserState } from '../models/UserState';
-import { login, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess } from '../actions/user.actions';
+import { login, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading } from '../actions/user.actions';
 import { UserRole } from '@core/models/UserRole';
 
 
@@ -38,5 +38,22 @@ export const userReducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+  on(credentialsLoading, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(credentialsLoadingSuccess, (state, {userRole}) => ({
+    ...state,
+    role: userRole,
+    loading: false,
+    error: null,
+  })),
+  on(credentialsLoadingFailure, (state, {error}) => ({
+    ...state,
+    role: UserRole.Guest,
+    loading: false,
+    error
   }))
 );

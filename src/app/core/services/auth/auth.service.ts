@@ -11,7 +11,7 @@ import {
 } from '@angular/fire/auth';
 import { UserRole } from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
-import { credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from 'app/store/actions/user.actions';
+import { credentialsLoading, credentialsLoadingFailure, credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from 'app/store/actions/user.actions';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -28,6 +28,8 @@ export class AuthService {
 
   // Method to check auth state when the app initializes or page is refreshed
   checkAuthState(): void {
+    this.store.dispatch(credentialsLoading());
+
     authState(this.auth).subscribe(user => {
       if (user) {
         // User is signed in
@@ -35,7 +37,7 @@ export class AuthService {
         this.store.dispatch(credentialsLoadingSuccess({userRole}));
       } else {
         // No user is signed in
-        this.store.dispatch(logoutSuccess());
+        this.store.dispatch(credentialsLoadingFailure({error: "Could not load credentials!"}));
       }
     });
   }
