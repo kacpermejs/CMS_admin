@@ -18,7 +18,7 @@ export class AuthEffects {
         tap(() => {
           console.log("Navigating on successful login");
           let returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
-          if (!returnUrl) returnUrl = '/'; // Default to dashboard
+          if (!returnUrl) returnUrl = '/';
           
           console.log('Navigating to:', returnUrl);
           this.router.navigateByUrl(returnUrl);
@@ -33,7 +33,7 @@ export class AuthEffects {
         ofType(logoutSuccess),
         tap(() => {
           console.log("Navigating on logout");
-          this.router.navigate(['/']); // Redirect to login page after logout
+          this.router.navigate(['/']);
         })
       ),
     { dispatch: false }
