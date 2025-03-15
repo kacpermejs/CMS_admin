@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '@core/services/auth/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { loginWithPassword, signInWithGoogle, signUpWithPassword } from '@core/store/actions/user.actions';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,9 @@ export class LoginComponent {
   isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  store = inject(Store);
+
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -23,7 +27,7 @@ export class LoginComponent {
     });
   }
 
-  async handleAuth() {
+  handleAuth() {
     if (this.loginForm.invalid) return;
 
     this.isLoading = true;
@@ -36,11 +40,9 @@ export class LoginComponent {
           this.errorMessage = 'Passwords do not match!';
           return;
         }
-        await this.authService.registerWithEmailAndPassword(email, password);
-        console.log('Registration successful!');
+        this.store.dispatch(signUpWithPassword({email, password}));
       } else {
-        await this.authService.signInWithEmailAndPassword(email, password);
-        console.log('Login successful!');
+        this.store.dispatch(loginWithPassword({email, password}));
       }
     } catch (error: any) {
       this.errorMessage = error.message || 'Authentication failed';
@@ -49,13 +51,8 @@ export class LoginComponent {
     }
   }
 
-  async loginWithGoogle() {
-    try {
-      await this.authService.signInWithGoogle();
-      console.log('Google Sign-in successful!');
-    } catch (error: any) {
-      this.errorMessage = error.message || 'Google Sign-in failed';
-    }
+  loginWithGoogle() {
+    this.store.dispatch(signInWithGoogle());
   }
 
   toggleMode() {

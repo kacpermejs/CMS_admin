@@ -1,13 +1,13 @@
-// src/app/store/user/user.reducer.ts
+// src/@core/store/user/user.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { initialUserState } from '../models/UserState';
-import { login, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading } from '../actions/user.actions';
+import { loginWithPassword, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading } from '../actions/user.actions';
 import { UserRole } from '@core/models/UserRole';
 
 
 export const userReducer = createReducer(
   initialUserState,
-  on(login, (state) => ({
+  on(loginWithPassword, (state) => ({
     ...state,
     loading: true,
     error: null,

@@ -18,5 +18,4 @@ export const reducers: ActionReducerMap<State> = {
   user: userReducer,
 };
 
-
 export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : [];

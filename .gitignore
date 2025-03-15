@@ -46,4 +46,4 @@ Thumbs.db
 /src/app-config.json
 # Place to store secrets
 src/styles/output.css
-**/secrets*
+**/secrets*.json

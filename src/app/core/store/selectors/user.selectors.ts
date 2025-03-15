@@ -1,4 +1,4 @@
-// src/app/store/user/user.selectors.ts
+// src/@core/store/user/user.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserState } from '../models/UserState';
 

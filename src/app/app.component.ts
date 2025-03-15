@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ConfigService } from './core/config/config.service';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { Firestore, getFirestore } from '@angular/fire/firestore';
@@ -15,7 +14,6 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
 export class AppComponent implements OnInit {
   title = 'CMS_admin';
 
-  configService = inject(ConfigService);
   private app: FirebaseApp;
   private auth: Auth;
   private firestore: Firestore;

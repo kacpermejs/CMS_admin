@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { UserRole } from '@core/models/UserRole';
 import { select, Store } from '@ngrx/store';
-import { selectCredentialsLoading, selectUserRole } from 'app/store/selectors/user.selectors';
+import { selectCredentialsLoading, selectUserRole } from '@core/store/selectors/user.selectors';
 import { take, map, switchMap, filter } from 'rxjs';
 
 export const clientAuthGuard: CanActivateFn = (route, state) => {

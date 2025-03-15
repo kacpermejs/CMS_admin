@@ -1,4 +1,4 @@
-import { UserRole } from "../../core/models/UserRole";
+import { UserRole } from "@core/models/UserRole";
 
 export interface UserState {
   role: UserRole;

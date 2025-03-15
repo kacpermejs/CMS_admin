@@ -1,12 +1,21 @@
-// src/app/store/user/user.actions.ts
+// src/@core/store/user/user.actions.ts
 import { createAction, props } from '@ngrx/store';
 import { UserState } from '../models/UserState';
 import { UserRole } from '@core/models/UserRole';
 
 // Action to initiate login
-export const login = createAction(
-  '[User] Login',
+export const signUpWithPassword = createAction(
+  '[User] Sign Up With Password',
   props<{ email: string, password: string }>()
+);
+
+export const loginWithPassword = createAction(
+  '[User] Login With Password',
+  props<{ email: string, password: string }>()
+);
+
+export const signInWithGoogle = createAction(
+  '[User] Sign In With Google'
 );
 
 // Action when login is successful
