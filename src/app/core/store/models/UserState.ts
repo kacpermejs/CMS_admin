@@ -7,8 +7,16 @@ export interface UserAuthInfo {
   metadata: any;
 }
 
+export enum SubscriptionTier {
+  Free = "Free",
+  Lite = "Lite",
+  Pro = "Pro"
+};
+
 export interface UserData {
   role: UserRole;
+  nickname?: string;
+  tier?: SubscriptionTier;
 }
 
 export interface UserState {
@@ -18,7 +26,9 @@ export interface UserState {
   loading: boolean;
 }
 
-export const initialUserData = { role: UserRole.Guest };
+export const initialUserData = { 
+  role: UserRole.Guest,
+};
 
 export const initialUserState: UserState = {
   auth: null,

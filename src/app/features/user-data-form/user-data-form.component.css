@@ -1,0 +1,21 @@
+.checkmark-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.25rem;
+  color: white;
+  background-color: #2563eb;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.checkmark {
+  position: relative;
+    top: 2px;
+    right: 0px;
+    font-size: 24px;
+}

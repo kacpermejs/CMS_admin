@@ -3,7 +3,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { loginWithPassword, signInWithGoogle, signUpWithPassword } from '@core/store/actions/auth.actions';
+import { loginWithPassword, signInWithGoogle, signUpWithPassword } from '@core/store/actions/user.actions';
 
 @Component({
   selector: 'app-login',

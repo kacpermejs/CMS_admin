@@ -1,9 +1,21 @@
-// src/@core/store/user/user.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { initialUserData, initialUserState } from '../models/UserState';
-import { loginWithPassword, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading, userDataLoading, userDataLoadingSuccess, userDataLoadingFailure } from '../actions/auth.actions';
+import {
+  loginWithPassword,
+  loginSuccess,
+  loginFailure,
+  logout,
+  logoutFailure,
+  logoutSuccess,
+  credentialsLoadingSuccess,
+  credentialsLoadingFailure,
+  credentialsLoading,
+  userDataLoading,
+  userDataLoadingSuccess,
+  userDataLoadingFailure,
+  setUserData,
+} from '../actions/user.actions';
 import { UserRole } from '@core/models/UserRole';
-
 
 export const userReducer = createReducer(
   initialUserState,
@@ -24,7 +36,7 @@ export const userReducer = createReducer(
     loading: false,
     error,
   })),
-// ===================================================
+  // ===================================================
   on(logout, (state) => ({
     ...state,
     loading: true,
@@ -42,39 +54,52 @@ export const userReducer = createReducer(
     loading: false,
     error,
   })),
-// ===================================================
+  // ===================================================
   on(credentialsLoading, (state) => ({
     ...state,
     loading: true,
     error: null,
   })),
-  on(credentialsLoadingSuccess, (state, {auth}) => ({
+  on(credentialsLoadingSuccess, (state, { auth }) => ({
     ...state,
     auth: auth,
     loading: false,
     error: null,
   })),
-  on(credentialsLoadingFailure, (state, {error}) => ({
+  on(credentialsLoadingFailure, (state, { error }) => ({
     ...state,
     user: initialUserData,
+    auth: null,
     loading: false,
-    error
+    error,
   })),
-// ===================================================
+  // ===================================================
+  on(setUserData, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
   on(userDataLoading, (state) => ({
     ...state,
     loading: true,
     error: null,
   })),
-  on(userDataLoadingSuccess, (state, {user}) => ({
+  on(userDataLoadingSuccess, (state, { user }) => ({
     ...state,
-    user: user,
+    user: { ...state.user, ...user },
     loading: false,
     error: null,
   })),
-  on(userDataLoadingFailure, (state, {error}) => ({
+  on(userDataLoadingFailure, (state, { error }) => ({
     ...state,
+    user: { ...state.user, role: UserRole.Client },
     loading: false,
-    error
+    error,
   })),
+  on(setUserData, (state, { user }) => ({
+    ...state,
+    user: { ...state.user, ...user },
+    loading: false,
+    error: null,
+  }))
 );

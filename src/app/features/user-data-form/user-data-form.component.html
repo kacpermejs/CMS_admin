@@ -1,0 +1,129 @@
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Fill out the necessary information</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Nickname Input -->
+    <div>
+      <label for="nickname" class="block text-gray-700 font-medium">Nickname:</label>
+      <input 
+        id="nickname" 
+        formControlName="nickname" 
+        type="text" 
+        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        placeholder="Enter your nickname"
+      />
+      <p *ngIf="userForm.get('nickname')?.invalid && userForm.get('nickname')?.touched" 
+        class="text-red-500 text-sm mt-1">
+        Nickname is required (min 3 characters).
+      </p>
+    </div>
+
+    <!-- Tier Selection -->
+    <div>
+      <label class="block text-gray-700 font-medium mb-2">Select Your Tier:</label>
+      <div class="space-y-4">
+        <!-- Free Tier -->
+        <label 
+          for="tier-free" 
+          class="flex items-center cursor-pointer border border-gray-300 rounded-lg p-4 transition hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          [ngClass]="{
+            'ring-2 ring-blue-400 outline-none': userForm.get('tier')?.value === 'Free',
+            'bg-white': userForm.get('tier')?.value !== 'Free'
+          }"
+        >
+          <input 
+            id="tier-free" 
+            type="radio" 
+            formControlName="tier" 
+            value="Free" 
+            class="hidden"
+          />
+          <div class="w-full relative">
+            <h3 class="text-lg font-semibold text-gray-800">Free</h3>
+            <p class="text-xl font-bold text-blue-600">$0/mo</p>
+            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+              <li>✔ Basic support</li>
+              <li>✔ 10GB storage</li>
+              <li>✔ Limited features</li>
+            </ul>
+            <!-- Tick Icon when selected -->
+            <div *ngIf="userForm.get('tier')?.value === 'Free'" class="checkmark-container">
+              <span class="checkmark">✔</span>
+            </div>
+          </div>
+        </label>
+
+        <!-- Lite Tier -->
+        <label 
+          for="tier-lite" 
+          class="flex items-center cursor-pointer border border-gray-300 rounded-lg p-4 transition hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          [ngClass]="{
+            'ring-2 ring-blue-400 outline-none': userForm.get('tier')?.value === 'Lite',
+            'bg-white': userForm.get('tier')?.value !== 'Lite'
+          }"
+        >
+          <input 
+            id="tier-lite" 
+            type="radio" 
+            formControlName="tier" 
+            value="Lite" 
+            class="hidden"
+          />
+          <div class="w-full relative">
+            <h3 class="text-lg font-semibold text-gray-800">Lite</h3>
+            <p class="text-xl font-bold text-blue-600">$9/mo</p>
+            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+              <li>✔ Priority support</li>
+              <li>✔ 100GB storage</li>
+              <li>✔ More features</li>
+            </ul>
+            <!-- Tick Icon when selected -->
+            <div *ngIf="userForm.get('tier')?.value === 'Lite'" class="checkmark-container">
+              <span class="checkmark">✔</span>
+            </div>
+          </div>
+        </label>
+
+        <!-- Pro Tier -->
+        <label 
+          for="tier-pro" 
+          class="flex items-center cursor-pointer border border-gray-300 rounded-lg p-4 transition hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          [ngClass]="{
+            'ring-2 ring-blue-400 outline-none': userForm.get('tier')?.value === 'Pro',
+            'bg-white': userForm.get('tier')?.value !== 'Pro'
+          }"
+        >
+          <input 
+            id="tier-pro" 
+            type="radio" 
+            formControlName="tier" 
+            value="Pro" 
+            class="hidden"
+          />
+          <div class="w-full relative">
+            <h3 class="text-lg font-semibold text-gray-800">Pro</h3>
+            <p class="text-xl font-bold text-blue-600">$19/mo</p>
+            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+              <li>✔ 24/7 support</li>
+              <li>✔ 1TB storage</li>
+              <li>✔ All features unlocked</li>
+            </ul>
+            <!-- Tick Icon when selected -->
+            <div *ngIf="userForm.get('tier')?.value === 'Pro'" class="checkmark-container">
+              <span class="checkmark">✔</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button 
+      type="submit" 
+      [disabled]="userForm.invalid"
+      class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+    >
+      Submit
+    </button>
+  </form>
+</div>

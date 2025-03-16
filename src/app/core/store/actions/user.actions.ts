@@ -1,71 +1,75 @@
 // src/@core/store/user/user.actions.ts
 import { createAction, props } from '@ngrx/store';
-import { UserAuthInfo } from '../models/UserState';
-import { UserData } from '../models/UserState';
+import { UserAuthInfo, UserData } from '../models/UserState';
 
 // Action to initiate login
 export const signUpWithPassword = createAction(
-  '[Auth] Sign Up With Password',
+  '[UserState] Sign Up With Password',
   props<{ email: string, password: string }>()
 );
 
 export const loginWithPassword = createAction(
-  '[Auth] Login With Password',
+  '[UserState] Login With Password',
   props<{ email: string, password: string }>()
 );
 
 export const signInWithGoogle = createAction(
-  '[Auth] Sign In With Google'
+  '[UserState] Sign In With Google'
 );
 
 // Action when login is successful
 export const loginSuccess = createAction(
-  '[Auth] Login Success',
+  '[UserState] Login Success',
   props<{auth: UserAuthInfo}>()
 );
 
 // Action when login fails
 export const loginFailure = createAction(
-  '[Auth] Login Failure',
+  '[UserState] Login Failure',
   props<{ error: string }>()
 );
 
-export const logout = createAction('[Auth] Logout');
+export const logout = createAction('[UserState] Logout');
 
 // Action when logout is successful
-export const logoutSuccess = createAction('[Auth] Logout Success');
+export const logoutSuccess = createAction('[UserState] Logout Success');
 
 // Action when logout fails
 export const logoutFailure = createAction(
-  '[Auth] Logout Failure',
+  '[UserState] Logout Failure',
   props<{ error: string }>()
 );
 
 export const credentialsLoading = createAction(
-  '[Auth] Credentials Loading'
+  '[UserState] Credentials Loading'
 );
 
 export const credentialsLoadingSuccess = createAction(
-  '[Auth] Credentials Loading Success',
+  '[UserState] Credentials Loading Success',
   props<{auth: UserAuthInfo}>()
 );
 
 export const credentialsLoadingFailure = createAction(
-  '[Auth] Credentials Loading Failure',
+  '[UserState] Credentials Loading Failure',
   props<{ error: string }>()
+);
+
+export const setUserData = createAction(
+  '[UserState] Set User Data',
+  props<{ user: UserData }>()
 );
 
 export const userDataLoading = createAction(
-  '[User] User Data Loading',
-  props<{uid: string}>()
+  '[UserState] User Data Loading',
+  props<{ uid: string; }>()
 );
 
 export const userDataLoadingSuccess = createAction(
-  '[User] User Data Loading Success',
-  props<{user: UserData}>()
+  '[UserState] User Data Loading Success',
+  props<{ user: UserData; }>()
 );
 
 export const userDataLoadingFailure = createAction(
-  '[User] User Data Loading Failure',
-  props<{ error: string }>()
+  '[UserState] User Data Loading Failure',
+  props<{ error: string; }>()
 );

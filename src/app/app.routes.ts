@@ -18,6 +18,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/login/login.component').then((m) => m.LoginComponent),
   },
+  {
+    path: 'fill-user-data',
+    loadComponent: () =>
+      import('./features/user-data-form/user-data-form.component').then((m) => m.UserDataFormComponent),
+  },
   //client
   {
     path: 'dashboard',

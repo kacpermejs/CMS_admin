@@ -6,7 +6,7 @@ import {map, Observable} from 'rxjs';
 import {UserRole} from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
 import { selectUserAuth, selectUserRole } from '@core/store/selectors/user.selectors';
-import { logout } from '@core/store/actions/auth.actions';
+import { logout } from '@core/store/actions/user.actions';
 
 @Component({
   selector: 'app-navbar',
