@@ -8,6 +8,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { UserRole } from '@core/models/UserRole';
 import { User } from '@angular/fire/auth';
 import { of } from 'rxjs';
+import { UserAuthInfo } from '../models/UserState';
 
 @Injectable()
 export class AuthEffects {
@@ -21,7 +22,7 @@ export class AuthEffects {
       ofType(signUpWithPassword),
       switchMap((c) =>
         this.auth.signUpWithEmailAndPassword(c.email, c.password).pipe(
-          map((c) => loginSuccess({ userRole: this.getUserRole(c.user) })),
+          map((c) => loginSuccess({auth: extractToAuthInfo(c.user)})),
           catchError((e) => {
             console.error('Error signing up with email and password:', e);
             return of(loginFailure({ error: e.message }));
@@ -36,7 +37,7 @@ export class AuthEffects {
       ofType(loginWithPassword),
       switchMap((c) =>
         this.auth.signInWithEmailAndPassword(c.email, c.password).pipe(
-          map((c) => loginSuccess({ userRole: this.getUserRole(c.user) })),
+          map((c) => loginSuccess({auth: extractToAuthInfo(c.user)})),
           catchError((e) => {
             console.error('Error signing in with email and password:', e);
             return of(loginFailure({ error: e.message }));
@@ -51,7 +52,7 @@ export class AuthEffects {
       ofType(signInWithGoogle),
       switchMap((c) =>
         this.auth.signInWithGoogle().pipe(
-          map((c) => loginSuccess({ userRole: this.getUserRole(c.user) })),
+          map((c) => loginSuccess({auth: extractToAuthInfo(c.user)})),
           catchError((e) => {
             console.error('Error signing in with google:', e);
             return of(loginFailure({ error: e.message }));
@@ -81,10 +82,6 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  private getUserRole(user: User): UserRole {
-    return UserRole.Client; // TODO Assuming all users are clients for simplicity
-  }
-
   credentialsLoading$ = createEffect(
   () =>
     this.actions$.pipe(
@@ -92,9 +89,7 @@ export class AuthEffects {
       switchMap( () => this.auth.checkAuthState().pipe(
         map( user => {
           if (user) {
-            // User is signed in
-            const userRole: UserRole = this.getUserRole(user);
-            return credentialsLoadingSuccess({userRole});
+            return credentialsLoadingSuccess({auth: extractToAuthInfo(user)});
           } else {
             // No user is signed in
             return credentialsLoadingFailure({error: "Could not load credentials!"});
@@ -172,3 +167,13 @@ export class AuthEffects {
     { dispatch: false }
   );
 }
+
+function extractToAuthInfo(user: User): UserAuthInfo {
+  return {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    metadata: user.metadata
+  }
+}
+

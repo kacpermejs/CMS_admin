@@ -1,7 +1,6 @@
 // src/@core/store/user/user.actions.ts
 import { createAction, props } from '@ngrx/store';
-import { UserState } from '../models/UserState';
-import { UserRole } from '@core/models/UserRole';
+import { UserAuthInfo } from '../models/UserState';
 
 // Action to initiate login
 export const signUpWithPassword = createAction(
@@ -21,7 +20,7 @@ export const signInWithGoogle = createAction(
 // Action when login is successful
 export const loginSuccess = createAction(
   '[User] Login Success',
-  props<{ userRole: UserRole }>()
+  props<{auth: UserAuthInfo}>()
 );
 
 // Action when login fails
@@ -47,7 +46,7 @@ export const credentialsLoading = createAction(
 
 export const credentialsLoadingSuccess = createAction(
   '[User] Credentials Loading Success',
-  props<{ userRole: UserRole }>()
+  props<{auth: UserAuthInfo}>()
 );
 
 export const credentialsLoadingFailure = createAction(

@@ -12,9 +12,9 @@ export const userReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(loginSuccess, (state, { userRole }) => ({
+  on(loginSuccess, (state, { auth }) => ({
     ...state,
-    role: userRole,
+    auth: auth,
     loading: false,
     error: null,
   })),
@@ -31,6 +31,7 @@ export const userReducer = createReducer(
   on(logoutSuccess, (state) => ({
     ...state,
     role: UserRole.Guest, // Reset to 'Guest' role after logout
+    auth: null,
     loading: false,
     error: null,
   })),
@@ -44,9 +45,9 @@ export const userReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(credentialsLoadingSuccess, (state, {userRole}) => ({
+  on(credentialsLoadingSuccess, (state, {auth}) => ({
     ...state,
-    role: userRole,
+    auth: auth,
     loading: false,
     error: null,
   })),
