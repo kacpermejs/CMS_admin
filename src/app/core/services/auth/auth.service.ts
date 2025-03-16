@@ -12,7 +12,7 @@ import {
 } from '@angular/fire/auth';
 import { UserRole } from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
-import { credentialsLoading, credentialsLoadingFailure, credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '@core/store/actions/user.actions';
+import { credentialsLoading, credentialsLoadingFailure, credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '@core/store/actions/auth.actions';
 import { from, map, Observable } from 'rxjs';
 
 @Injectable({

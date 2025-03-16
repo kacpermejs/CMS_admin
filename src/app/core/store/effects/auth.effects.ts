@@ -3,12 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
-import { loginWithPassword, loginFailure, loginSuccess, logoutSuccess, signInWithGoogle, credentialsLoading, credentialsLoadingSuccess, credentialsLoadingFailure, logoutFailure, signUpWithPassword, logout } from '../actions/user.actions';
+import { loginWithPassword, loginFailure, loginSuccess, logoutSuccess, signInWithGoogle, credentialsLoading, credentialsLoadingSuccess, credentialsLoadingFailure, logoutFailure, signUpWithPassword, logout, userDataLoading, userDataLoadingSuccess, userDataLoadingFailure } from '../actions/auth.actions';
 import { AuthService } from '@core/services/auth/auth.service';
 import { UserRole } from '@core/models/UserRole';
 import { User } from '@angular/fire/auth';
 import { of } from 'rxjs';
 import { UserAuthInfo } from '../models/UserState';
+import { UserService } from '@core/services/user/user.service';
 
 @Injectable()
 export class AuthEffects {
@@ -16,6 +17,7 @@ export class AuthEffects {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private auth = inject(AuthService);
+  private userService = inject(UserService);
 
   signUpWithPassword$ = createEffect(() =>
     this.actions$.pipe(
@@ -65,11 +67,11 @@ export class AuthEffects {
   loginSuccess$ = createEffect( () =>
     this.actions$.pipe(
       ofType(loginSuccess),
-      tap( (u) => {
+      map( (u) => {
         console.log('User signed in successfully!', u);
+        return userDataLoading({uid: u.auth.uid});
       })
-    ),
-    { dispatch: false }
+    )
   );
 
   loginFailure$ = createEffect( () =>
@@ -97,6 +99,48 @@ export class AuthEffects {
         })
       ))
     )
+  );
+
+  credentialsLoadingSuccess$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(credentialsLoadingSuccess),
+      map( (u) => {
+        console.log('Credentials loaded successfully!', u);
+        return userDataLoading({uid: u.auth.uid});
+      })
+    )
+  )
+
+  userDataLoading$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(userDataLoading),
+      switchMap( auth => this.userService.getUserData(auth.uid).pipe(
+        map( user => {
+          return userDataLoadingSuccess({user})
+        }),
+        catchError(e => of(userDataLoadingFailure({ error: e })))
+      ))
+    )
+  );
+
+  userDataLoadingSuccess$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(userDataLoadingSuccess),
+      tap( (d) => {
+        console.log('User data retrieved successfully!', d);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  userDataLoadingFailure$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(userDataLoadingFailure),
+      tap( (e) => {
+        console.log("Missing user data");
+      })
+    ),
+    { dispatch: false }
   );
 
   navigationOnLoginSuccess$ = createEffect(
@@ -169,6 +213,7 @@ export class AuthEffects {
 }
 
 function extractToAuthInfo(user: User): UserAuthInfo {
+  console.log("UserAuth:", user);
   return {
     uid: user.uid,
     email: user.email,

@@ -1,7 +1,7 @@
 // src/@core/store/user/user.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { initialUserState } from '../models/UserState';
-import { loginWithPassword, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading } from '../actions/user.actions';
+import { initialUserData, initialUserState } from '../models/UserState';
+import { loginWithPassword, loginSuccess, loginFailure, logout, logoutFailure, logoutSuccess, credentialsLoadingSuccess, credentialsLoadingFailure, credentialsLoading, userDataLoading, userDataLoadingSuccess, userDataLoadingFailure } from '../actions/auth.actions';
 import { UserRole } from '@core/models/UserRole';
 
 
@@ -20,9 +20,11 @@ export const userReducer = createReducer(
   })),
   on(loginFailure, (state, { error }) => ({
     ...state,
+    user: initialUserData,
     loading: false,
     error,
   })),
+// ===================================================
   on(logout, (state) => ({
     ...state,
     loading: true,
@@ -30,7 +32,7 @@ export const userReducer = createReducer(
   })),
   on(logoutSuccess, (state) => ({
     ...state,
-    role: UserRole.Guest, // Reset to 'Guest' role after logout
+    user: initialUserData,
     auth: null,
     loading: false,
     error: null,
@@ -40,6 +42,7 @@ export const userReducer = createReducer(
     loading: false,
     error,
   })),
+// ===================================================
   on(credentialsLoading, (state) => ({
     ...state,
     loading: true,
@@ -53,8 +56,25 @@ export const userReducer = createReducer(
   })),
   on(credentialsLoadingFailure, (state, {error}) => ({
     ...state,
-    role: UserRole.Guest,
+    user: initialUserData,
     loading: false,
     error
-  }))
+  })),
+// ===================================================
+  on(userDataLoading, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(userDataLoadingSuccess, (state, {user}) => ({
+    ...state,
+    user: user,
+    loading: false,
+    error: null,
+  })),
+  on(userDataLoadingFailure, (state, {error}) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 );

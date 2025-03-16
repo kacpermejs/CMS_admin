@@ -11,6 +11,7 @@ import { reducers, metaReducers } from "@core/store/reducer.registry";
 import { provideEffects } from "@ngrx/effects";
 import { provideStore, Store } from "@ngrx/store";
 import { routes } from "./app.routes";
+import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 
 export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }): ApplicationConfig {
   const appConfig: ApplicationConfig = {
@@ -25,6 +26,7 @@ export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }
       { provide: SECRETS_CONFIG, useValue: { firebase: config.secrets.firebase } },
       provideFirebaseApp(() => initializeApp(config.secrets.firebase)),
       provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()),
       provideEffects(effects),
       provideAppInitializer(() => {
         const store = inject(Store);

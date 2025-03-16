@@ -8,7 +8,7 @@ import {
 } from '@ngrx/store';
 
 import { UserState } from './models/UserState';
-import { userReducer } from './reducers/user.reducers';
+import { userReducer } from './reducers/auth.reducers';
 
 export interface State {
   user: UserState;
