@@ -1,3 +1,6 @@
 {
-  "tailwindCSS.experimental.configFile": "src/styles/styles.css"
+  "tailwindCSS.experimental.configFile": "src/styles/styles.css",
+  "cSpell.words": [
+    "Firestore"
+  ]
 }

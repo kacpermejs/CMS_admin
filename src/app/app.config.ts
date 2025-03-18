@@ -1,17 +1,20 @@
 import { provideHttpClient } from "@angular/common/http";
 import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER, provideAppInitializer, inject } from "@angular/core";
-import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
-import { provideAuth, getAuth } from "@angular/fire/auth";
 import { provideRouter, withComponentInputBinding, withRouterConfig } from "@angular/router";
-import { AppConfig, APP_CONFIG } from "@core/config/AppConfig";
-import { Secrets, SECRETS_CONFIG } from "@core/config/SecretsConfig";
-import { initApp } from "@core/store/actions/init.actions";
-import { effects } from "@core/store/effect.registry";
-import { reducers, metaReducers } from "@core/store/reducer.registry";
+
 import { provideEffects } from "@ngrx/effects";
 import { provideStore, Store } from "@ngrx/store";
-import { routes } from "./app.routes";
+import { setLogLevel, LogLevel } from "@angular/fire";
+import { provideAuth, getAuth } from "@angular/fire/auth";
+import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
+
+import { reducers, metaReducers } from "@core/store/reducer.registry";
+import { effects } from "@core/store/effect.registry";
+import { initApp } from "@core/store/actions/init.actions";
+import { routes } from "./app.routes";
+import { AppConfig, APP_CONFIG } from "@core/config/AppConfig";
+import { Secrets, SECRETS_CONFIG } from "@core/config/SecretsConfig";
 
 export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }): ApplicationConfig {
   const appConfig: ApplicationConfig = {
@@ -34,5 +37,8 @@ export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }
       }),
     ]
   }
+  //Suppressing firebase injection context warnings
+  setLogLevel(LogLevel.SILENT);
+
   return appConfig;
 }
