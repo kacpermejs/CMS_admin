@@ -1,12 +1,5 @@
 import { UserRole } from "@core/models/UserRole";
 
-export interface UserAuthInfo {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  metadata: any;
-}
-
 export enum SubscriptionTier {
   Free = "Free",
   Lite = "Lite",
@@ -19,8 +12,7 @@ export interface UserData {
   tier?: SubscriptionTier;
 }
 
-export interface UserState {
-  auth: UserAuthInfo | null,
+export interface UserDataState {
   user: UserData;
   error: string | null;
   loading: boolean;
@@ -30,10 +22,9 @@ export const initialUserData = {
   role: UserRole.Guest,
 };
 
-export const initialUserState: UserState = {
-  auth: null,
+export const initialUserState: UserDataState = {
   user: initialUserData,
+  loading: true, //loading initiated with application start
   error: null,
-  loading: false,
 };
 

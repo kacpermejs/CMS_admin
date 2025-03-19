@@ -25,4 +25,7 @@ export const ROLE_NAVBAR_CONFIG: Record<UserRole, NavbarConfig[]> = {
   [UserRole.Guest]: [
     {label: 'About', route: '/about'},
   ],
+  [UserRole.Admin]: [
+    {label: 'Dashboard', route: '/admin/dashboard'},
+  ],
 };

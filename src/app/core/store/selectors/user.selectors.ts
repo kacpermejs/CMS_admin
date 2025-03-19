@@ -1,20 +1,32 @@
 // src/@core/store/user/user.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UserState } from '../models/UserState';
+import { UserDataState } from '../models/UserState';
+import { UserAuthState } from '../models/AuthState';
 
-export const selectUserState = createFeatureSelector<UserState>('user');
+export const selectUserDataState = createFeatureSelector<UserDataState>('user');
+export const selectUserAuthState = createFeatureSelector<UserAuthState>('auth');
 
-export const selectUserRole = createSelector(
-  selectUserState,
-  (state: UserState) => state.user.role
+export const selectUserUid = createSelector(
+  selectUserAuthState,
+  (state: UserAuthState) => state.auth?.uid
 );
 
-export const selectUserAuth = createSelector(
-  selectUserState,
-  (state: UserState) => state.auth
+export const selectUserRole = createSelector(
+  selectUserDataState,
+  (state: UserDataState) => state.user.role
 );
 
 export const selectCredentialsLoading = createSelector(
-  selectUserState,
-  (state: UserState) => state.loading
+  selectUserDataState,
+  (state: UserDataState) => state.loading
+);
+
+export const selectUserDataLoading = createSelector(
+  selectUserDataState,
+  (state: UserDataState) => state.loading
+);
+
+export const selectUserData = createSelector(
+  selectUserDataState,
+  (state: UserDataState) => state.user
 );

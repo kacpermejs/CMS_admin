@@ -9,16 +9,12 @@ import {
   logoutSuccess,
   credentialsLoadingSuccess,
   credentialsLoadingFailure,
-  credentialsLoading,
-  userDataLoading,
-  userDataLoadingSuccess,
-  userDataLoadingFailure,
-  setUserData,
-} from '../actions/user.actions';
-import { UserRole } from '@core/models/UserRole';
+  credentialsLoading
+} from '../actions/auth.actions';
+import { initialAuthState } from '../models/AuthState';
 
-export const userReducer = createReducer(
-  initialUserState,
+export const authReducer = createReducer(
+  initialAuthState,
   on(loginWithPassword, (state) => ({
     ...state,
     loading: true,
@@ -32,7 +28,6 @@ export const userReducer = createReducer(
   })),
   on(loginFailure, (state, { error }) => ({
     ...state,
-    user: initialUserData,
     loading: false,
     error,
   })),
@@ -44,7 +39,6 @@ export const userReducer = createReducer(
   })),
   on(logoutSuccess, (state) => ({
     ...state,
-    user: initialUserData,
     auth: null,
     loading: false,
     error: null,
@@ -68,38 +62,8 @@ export const userReducer = createReducer(
   })),
   on(credentialsLoadingFailure, (state, { error }) => ({
     ...state,
-    user: initialUserData,
     auth: null,
     loading: false,
     error,
   })),
-  // ===================================================
-  on(setUserData, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(userDataLoading, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(userDataLoadingSuccess, (state, { user }) => ({
-    ...state,
-    user: { ...state.user, ...user },
-    loading: false,
-    error: null,
-  })),
-  on(userDataLoadingFailure, (state, { error }) => ({
-    ...state,
-    user: { ...state.user, role: UserRole.Client },
-    loading: false,
-    error,
-  })),
-  on(setUserData, (state, { user }) => ({
-    ...state,
-    user: { ...state.user, ...user },
-    loading: false,
-    error: null,
-  }))
 );

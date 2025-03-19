@@ -7,15 +7,19 @@ import {
   MetaReducer
 } from '@ngrx/store';
 
-import { UserState } from './models/UserState';
-import { userReducer } from './reducers/auth.reducers';
+import { UserDataState } from './models/UserState';
+import { authReducer } from './reducers/auth.reducers';
+import { userDataReducer } from './reducers/user.reducers';
+import { UserAuthState } from './models/AuthState';
 
 export interface State {
-  user: UserState;
+  auth: UserAuthState
+  user: UserDataState;
 }
 
 export const reducers: ActionReducerMap<State> = {
-  user: userReducer,
+  auth: authReducer,
+  user: userDataReducer,
 };
 
 export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : [];

@@ -5,8 +5,8 @@ import {NavbarConfig, ROLE_NAVBAR_CONFIG} from './models/role-navbar-config';
 import {map, Observable} from 'rxjs';
 import {UserRole} from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
-import { selectUserAuth, selectUserRole } from '@core/store/selectors/user.selectors';
-import { logout } from '@core/store/actions/user.actions';
+import { selectUserAuthState, selectUserRole } from '@core/store/selectors/user.selectors';
+import { logout } from '@core/store/actions/auth.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -29,7 +29,7 @@ export class NavbarComponent {
 
   constructor() {
     this.userRole$ = this.store.select(selectUserRole); // Access the user role from the store
-    this.userLoggedIn$ = this.store.select(selectUserAuth).pipe(
+    this.userLoggedIn$ = this.store.select(selectUserAuthState).pipe(
       map(auth => auth ? true : false)
     ); // Access the user role from the store
   }

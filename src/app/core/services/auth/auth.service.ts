@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   GoogleAuthProvider,
-  User,
   UserCredential,
   authState,
   createUserWithEmailAndPassword,
@@ -10,10 +9,7 @@ import {
   signInWithPopup,
   signOut
 } from '@angular/fire/auth';
-import { UserRole } from '@core/models/UserRole';
-import { Store } from '@ngrx/store';
-import { credentialsLoading, credentialsLoadingFailure, credentialsLoadingSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '@core/store/actions/user.actions';
-import { from, map, Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

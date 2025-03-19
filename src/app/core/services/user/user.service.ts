@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, doc, updateDoc, deleteDoc, docData, setDoc, getDoc } from '@angular/fire/firestore';
+import { UserRole } from '@core/models/UserRole';
 import { UserData } from '@core/store/models/UserState';
 import { from, map, Observable, of, throwError } from 'rxjs';
 
@@ -11,8 +12,13 @@ export class UserService {
 
   constructor() {}
 
-  setUserData(userUid: string, userData: UserData): Observable<void> {
+  setUserData(userUid: string, userData: Partial<UserData>): Observable<void> {
     if (!userUid) throw new Error('User UID is required');
+
+    console.log('Using user data: ', userData);
+
+    if(!userData.role)
+      userData.role = UserRole.Client;
 
     const userDocRef = doc(this.firestore, `users/${userUid}`);
     return from(setDoc(userDocRef, userData, { merge: true }));

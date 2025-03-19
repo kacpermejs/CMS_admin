@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ContentModel, ContentModelCreatorService } from './services/content-model-creator/content-model-creator.service';
 import { Store } from '@ngrx/store';
-import { selectUserAuth } from '@core/store/selectors/user.selectors';
+import { selectUserAuthState, selectUserUid } from '@core/store/selectors/user.selectors';
 import { map, Observable, switchMap } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -60,14 +60,14 @@ export class ContentModelsComponent {
   }
 
   getUser() {
-    return this.store.select(selectUserAuth);
+    return this.store.select(selectUserUid);
   }
 
   private withUid(): Observable<string> {
     return this.getUser().pipe(
-      map((user) => {
-        if (!user) throw new Error('Not Authenticated!');
-        return user.uid;
+      map((uid) => {
+        if (!uid) throw new Error('Not Authenticated!');
+        return uid;
       })
     );
   }
