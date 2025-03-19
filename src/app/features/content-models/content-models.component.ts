@@ -20,6 +20,8 @@ export class ContentModelsComponent {
   private contentService = inject(ContentModelCreatorService);
   models$: Observable<ContentModel[]>
 
+  modalRoutes = ['/edit/', '/add']
+
   constructor() {
     this.models$ = this.loadModels();
   }
@@ -57,6 +59,20 @@ export class ContentModelsComponent {
 
   onAdd() {
     this.router.navigate(['add'], {relativeTo: this.route})
+  }
+
+  isModalActive(): boolean {
+    return this.modalRoutes.some(url => {
+      return this.router.url.includes(url);
+    });
+  }
+
+  openEditModal(model: ContentModel) {
+    this.router.navigate(['edit', model.id], { relativeTo: this.route }); // Open modal
+  }
+
+  closeModal() {
+    this.router.navigate(this.route.snapshot.url); // Navigate back to list
   }
 
   getUser() {

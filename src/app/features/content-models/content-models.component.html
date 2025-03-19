@@ -17,6 +17,7 @@
           <th class="px-4 py-2 text-sm font-semibold text-gray-700">Name</th>
           <th class="px-4 py-2 text-sm font-semibold text-gray-700">Updated</th>
           <th class="px-4 py-2 text-sm font-semibold text-gray-700">Fields Length</th>
+          <th class="px-4 py-2 text-sm font-semibold text-gray-700"></th>
         </tr>
       </thead>
       <tbody>
@@ -25,11 +26,17 @@
             <td class="px-4 py-2 text-sm text-gray-800">{{ item.name }}</td>
             <td class="px-4 py-2 text-sm text-gray-800">{{ convertToRelativeTime(item.updatedAt) }}</td>
             <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
+            <td><button class="btn btn-primary" (click)="openEditModal(item)">Edit ></button></td>
           </tr>
         }
       </tbody>
     </table>
-    <router-outlet/>
+    <div *ngIf="isModalActive()" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+        <button class="absolute top-2 right-2 text-gray-600 hover:text-gray-800" (click)="closeModal()">✖</button>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   
   </div>
 </div>
