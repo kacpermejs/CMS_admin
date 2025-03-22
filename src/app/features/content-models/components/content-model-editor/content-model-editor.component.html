@@ -1,1 +1,37 @@
-<p>content-model-editor works!</p>
+
+
+<div *ngIf="model$ | async as data" class="p-4">
+  <header class="flex justify-between">
+    <h2>{{data.name}}</h2>
+    <!-- Save Button -->
+    <div>
+      <span *ngIf="!(synced$ | async)" class="font-medium">⚠️</span>
+      <button 
+        class="btn btn-primary"
+        (click)="save()" 
+        [disabled]="(synced$ | async)"
+        >
+        Save
+      </button>
+    </div>
+  </header>
+
+  <!-- Sync status indicator -->
+  
+
+  <!-- Add Field Button -->
+  <button class="btn btn-primary" (click)="addField()">
+    Add Field
+  </button>
+
+  <!-- Fields Section -->
+  <div class="mt-4">
+    @for (field of data.fields; let i = $index; track i) {
+      <div class="mb-2 text-sm text-gray-700">
+        <span>{{field.name}}</span>
+        <!-- TODO editor -->
+      </div>
+    }
+  </div>
+</div>
+

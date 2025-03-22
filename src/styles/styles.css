@@ -83,6 +83,10 @@ p.small {
 }
 
 /* Forms */
+label {
+  @apply mb-2 inline-block;
+}
+
 input, textarea, select {
   @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300;
 }
@@ -93,6 +97,11 @@ input:focus, textarea:focus, select:focus {
 
 textarea {
   @apply resize-none;
+}
+
+/* Other */
+hr {
+  @apply mb-2 border-gray-200 border-1;
 }
 
 /* Card */

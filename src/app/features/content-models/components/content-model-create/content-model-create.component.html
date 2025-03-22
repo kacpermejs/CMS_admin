@@ -1,0 +1,19 @@
+<div>
+  <h2>Create model</h2>
+  <hr>
+  <form [formGroup]="form" (ngSubmit)="createModel()" class="flex flex-col gap-8 mx-8">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name">
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" rows="3"></textarea>
+    </div>
+    <div class="self-end">
+      <button type="submit" name="create" id="create" class="btn btn-primary">
+        Create
+      </button>
+    </div>
+  </form>
+</div>

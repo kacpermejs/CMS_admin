@@ -1,0 +1,30 @@
+<header class="flex justify-between items-top">
+  <h2>Content models</h2>
+  <div>
+    <button 
+      class="btn btn-primary"
+      (click)="onAdd()">
+      Add
+    </button>
+  </div>
+</header>
+<table *ngIf="models$ | async as models" class="min-w-full">
+  <thead>
+    <tr class="text-left border-b border-gray-300 h-12">
+      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Name</th>
+      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Updated</th>
+      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Fields Length</th>
+      <th class="px-4 py-2 text-sm font-semibold text-gray-700"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of models; track item.name) {
+      <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
+        <td class="px-4 py-2 text-sm text-gray-800">{{ item.name }}</td>
+        <td class="px-4 py-2 text-sm text-gray-800">{{ convertToRelativeTime(item.updatedAt) }}</td>
+        <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
+        <td><button class="btn btn-primary" (click)="openEditModal(item)">Edit ></button></td>
+      </tr>
+    }
+  </tbody>
+</table>
