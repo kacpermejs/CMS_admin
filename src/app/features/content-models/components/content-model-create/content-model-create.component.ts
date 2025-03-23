@@ -4,10 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { createContentModel } from '@core/store/actions/content-model-creation.actions';
+import { ModalComponent } from "../../../../core/components/modal/modal.component";
 
 @Component({
   selector: 'app-content-model-create',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent],
   templateUrl: './content-model-create.component.html',
   styleUrl: './content-model-create.component.css',
 })
@@ -25,6 +26,10 @@ export class ContentModelCreateComponent {
     });
   }
 
+  modalParent() {
+    return this.route.parent;
+  }
+
   createModel() {
     console.log('create');
     const { name, description } = this.form.value;
@@ -39,7 +44,7 @@ export class ContentModelCreateComponent {
           }
         }
       ],
-      { relativeTo: this.route.parent }
+      { relativeTo: this.modalParent() }
     );
   }
 }

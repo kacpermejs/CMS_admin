@@ -1,0 +1,5 @@
+.scroll-area {
+  overflow: auto;
+  scrollbar-gutter: stable;
+  padding-right: 4px;
+}

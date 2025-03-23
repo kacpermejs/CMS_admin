@@ -3,16 +3,7 @@
 
     <!-- Regular outlet -->
     <router-outlet></router-outlet>
-    
-    <div *ngIf="isModalActive()" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-start pt-28">
-      <div class="bg-white p-4 pr-0 pt-2 rounded-lg shadow-lg relative max-w-[80vw] max-h-[80vh] flex flex-col overflow-hidden">
-        <button class="absolute top-0 right-0 m-[0.5rem] rounded-sm text-gray-600 hover:text-gray-800 hover:bg-gray-200 w-6 aspect-square" (click)="closeModal()">✖</button>
-        <div class="flex-grow overflow-auto scroll-area">
-          <router-outlet name="modal"></router-outlet>
-        </div>
-      </div>
-    </div>
-    
+    <router-outlet name="modal"></router-outlet>
 
   </div>
 </div>

@@ -7,9 +7,9 @@ import { ContentModelFieldEditorComponent } from './components/content-model-fie
 
 export const CONTENT_MODEL_ROUTES: Routes = [
   { path: '', component: ContentModelListComponent },
-  { path: 'create', component: ContentModelCreateComponent, outlet: "modal", pathMatch: 'full'},
-  { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: "modal", pathMatch: 'full'},
-  { path: 'edit-field', component: ContentModelFieldEditorComponent, outlet: "modal", pathMatch: 'full'},
+  { path: 'create', component: ContentModelCreateComponent, outlet: "modal"},
+  { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: "modal"},
+  { path: 'edit-field', component: ContentModelFieldEditorComponent, outlet: "modal"},
   { path: 'edit/new', component: ContentModelEditorComponent },
   { path: 'edit/:id', component: ContentModelEditorComponent },
 ];

@@ -5,10 +5,11 @@ import { ContentField, ContentTypes } from '../../models/ContentModel';
 import { Store } from '@ngrx/store';
 import { addContentField } from '@core/store/actions/content-model-creation.actions';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalComponent } from "../../../../core/components/modal/modal.component";
 
 @Component({
   selector: 'app-content-model-field-creator',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent],
   templateUrl: './content-model-field-creator.component.html',
   styleUrl: './content-model-field-creator.component.css'
 })
@@ -42,6 +43,10 @@ export class ContentModelFieldCreatorComponent {
         idField.markAsUntouched();
       }
     });
+  }
+
+  modalParent() {
+    return this.route.parent;
   }
 
   typeSelected() {
