@@ -1,0 +1,59 @@
+
+<h3>Add new field</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-[70vw] p-2">
+  <!-- Stage 2 -->
+  <div *ngIf="!typeSelected()" class="flex flex-col gap-2">
+    <select id="contentType" formControlName="type">
+      <option *ngFor="let type of types | keyvalue" [value]="type.value">
+        {{ type.key }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Stage 2 -->
+  <div *ngIf="typeSelected()" class="flex flex-col gap-2">
+    <div class="flex flex-row gap-2">
+      <div>
+        <label for="name">Name <span class="text-gray-400">(required)</span></label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name"
+          placeholder="Enter name"
+        />
+        <div class="text-gray-400">
+          Appears in the entry edito
+        </div>
+      </div>
+      <div>
+        <label for="id">Field ID:</label>
+        <input 
+          type="text" 
+          id="id" 
+          formControlName="id"
+          placeholder="Enter ID"
+        />
+        <div class="text-gray-400">
+          Appears in API responses
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <div class="flex flex-row justify-start items-center space-x-2">
+        <input 
+          type="checkbox" 
+          id="required" 
+          formControlName="required" 
+          class="!w-4 !h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+        />
+        <label for="required" class="text-gray-700 font-medium cursor-pointer !m-0">Required field</label>
+      </div>
+      <p class="text-sm text-gray-500">Short input description</p>
+    </div>
+    
+    <div>
+      <!-- Type specific fields -->
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Create</button>
+  </div>
+</form>

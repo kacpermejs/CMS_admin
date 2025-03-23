@@ -13,11 +13,19 @@ export interface ContentModel extends ContentModelData {
   updatedAt: Timestamp | FieldValue;
 }
 
+export enum ContentTypes {
+  Text = "Text",
+  RichText = "RichText",
+  Number = "Number",
+  Boolean = "Boolean"
+}
+
 export interface ContentField {
   id: string;
   name: string;
-  type: 'Text' | 'RichText' | 'Number' | 'Boolean' | 'Date' | 'Asset' | 'Reference';
+  type: ContentTypes;
   required: boolean;
+  //TODO add order
 }
 
 export interface ContentModelEntry<T = Record<string, any>> {

@@ -26,6 +26,11 @@ export const addContentField = createAction(
   props<{field: ContentField}>()
 );
 
+export const updateField = createAction(
+  '[Model] Update Field',
+  props<{ id: string; changes: Partial<ContentField> }>()
+);
+
 // Sending to the cloud
 export const saveContentModel = createAction(
   '[Model] Save Model'

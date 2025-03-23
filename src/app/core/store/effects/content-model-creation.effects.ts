@@ -1,11 +1,12 @@
 import { inject, Injectable } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { addContentField, contentModelLoadingFailure, contentModelLoadingSuccess, createContentModel, loadContentModel } from "../actions/content-model-creation.actions";
+import { addContentField, contentModelLoadingFailure, contentModelLoadingSuccess, contentModelSavingFailure, contentModelSavingSuccess, createContentModel, loadContentModel, saveContentModel, updateField } from "../actions/content-model-creation.actions";
 import { catchError, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { ContentModelCreatorService } from "app/features/content-models/services/content-model-creator/content-model-creator.service";
 import { Store } from "@ngrx/store";
 import { selectUserUid } from "../selectors/user.selectors";
+import { selectContentModelData } from "../selectors/content-model.selectors";
 
 @Injectable()
 export class ContentModelCreationEffects {
@@ -32,7 +33,27 @@ export class ContentModelCreationEffects {
     )
   );
 
-  addContentField$ = createEffect(() =>
+  contentModelLoadingSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(contentModelLoadingSuccess),
+      tap(r => {
+        console.log('Loaded: ', r);
+      })
+    ),
+    {dispatch: false}
+  );
+
+  contentModelLoadingFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(contentModelLoadingFailure),
+      tap(e => {
+        console.error('Error while loading model: ', e);
+      })
+    ),
+    {dispatch: false}
+  );
+
+  addedContentField$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addContentField),
       tap( f => {
@@ -40,6 +61,33 @@ export class ContentModelCreationEffects {
       })
     ),
     {dispatch: false}
+  );
+
+  contentFieldChanged$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(updateField),
+      tap( f => console.log('Field updated: ', f))
+    ),
+    {dispatch: false}
+  );
+
+  saveContentModel$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(saveContentModel),
+      withLatestFrom(
+        this.store.select(selectUserUid),
+        this.store.select(selectContentModelData)
+      ),
+      map(([action, uid, data]) => {
+        if (!uid) throw new Error('User not authenticated')
+        return {action, uid, data};
+      }),
+      switchMap(({action, uid, data}) => this.contentService.createContentModel(uid, data)),
+      map((id) => {
+        return contentModelSavingSuccess({id});
+      }),
+      catchError( e => of(contentModelSavingFailure({error: e.message})))
+    )
   );
 
 }

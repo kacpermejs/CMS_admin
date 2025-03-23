@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialContentModelCreationState } from "../models/ContentModelCreationState";
-import { addContentField, contentModelLoadingFailure, contentModelLoadingSuccess, contentModelSavingFailure, contentModelSavingSuccess, createContentModel, loadContentModel, saveContentModel } from "../actions/content-model-creation.actions";
+import { addContentField, contentModelLoadingFailure, contentModelLoadingSuccess, contentModelSavingFailure, contentModelSavingSuccess, createContentModel, loadContentModel, saveContentModel, updateField } from "../actions/content-model-creation.actions";
 
 export const contentModelCreationReducer = createReducer(
   initialContentModelCreationState,
@@ -37,6 +37,13 @@ export const contentModelCreationReducer = createReducer(
   on(addContentField, (state, {field}) => ({
     ...state,
     fields: [...state.fields, field],
+    isSynchronized: false
+  })),
+  on(updateField, (state, {id, changes}) => ({
+    ...state,
+    fields: state.fields.map(field =>
+      field.id === id ? { ...field, ...changes } : field
+    ),
     isSynchronized: false
   })),
   on(saveContentModel, (state) => ({

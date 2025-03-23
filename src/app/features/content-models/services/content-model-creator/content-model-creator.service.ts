@@ -3,6 +3,13 @@ import { addDoc, collection, collectionData, doc, docData, Firestore, getDocs, s
 import { Observable, from, map } from 'rxjs';
 import { ContentModel } from '../../models/ContentModel';
 
+export interface ModelDTO {
+  id: string,
+  name: string,
+  fields: any[],
+  description?: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,23 +19,20 @@ export class ContentModelCreatorService {
   constructor() {}
 
   createContentModel(
-    uid: string,
-    name: string,
-    fields: any[],
-    description?: string
-  ): Observable<void> {
-    const modelRef = doc(this.firestore, `users/${uid}/contentModels/${name}`);
+    userUid: string,
+    data: ModelDTO
+  ): Observable<string> {
+    const modelRef = doc(this.firestore, `users/${userUid}/contentModels/${data.id}`);
 
     const model: ContentModel = {
-      id: name,
-      name,
+      ...data,
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      description: description,
-      fields,
+      updatedAt: serverTimestamp()
     };
 
-    return from(setDoc(modelRef, model));
+    return from(setDoc(modelRef, model)).pipe(
+      map(() => data.id)
+    );
   }
 
   addContentEntry(modelId: string, fields: Record<string, any>, uid: string) {
@@ -47,7 +51,7 @@ export class ContentModelCreatorService {
   }
 
   getById(userUid: string, modelId: string) {
-    const docRef = doc(this.firestore, 'users', userUid, 'models', modelId);
+    const docRef = doc(this.firestore, 'users', userUid, 'contentModels', modelId);
 
     return docData(docRef).pipe(
       map((d) =>
