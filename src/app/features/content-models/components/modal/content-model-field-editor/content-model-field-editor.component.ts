@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ModalComponent } from "../../../../core/components/modal/modal.component";
+import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 import { ActivatedRoute } from '@angular/router';
 import { ModalFor } from '@core/components/modal/modal-for';
 

@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { createContentModel } from '@core/store/actions/content-model-creation.actions';
-import { ModalComponent } from "../../../../core/components/modal/modal.component";
+import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 
 @Component({
   selector: 'app-content-model-create',
