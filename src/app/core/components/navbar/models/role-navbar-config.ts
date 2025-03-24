@@ -18,7 +18,8 @@ export interface NavbarConfig {
 
 export const ROLE_NAVBAR_CONFIG: Record<UserRole, NavbarConfig[]> = {
   [UserRole.Client]: [
-    {label: 'Content Models', route: '/content-model'},
+    {label: 'Content Models', route: '/content-models'},
+    {label: 'Content Entries', route: '/content-entries'},
     {label: 'Dashboard', route: '/dashboard'},
     {label: 'About', route: '/about'},
   ],

@@ -33,7 +33,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'content-model',
+    path: 'content-models',
     canActivate: [clientAuthGuard],
     canActivateChild: [clientAuthGuard],
     loadComponent: () =>
@@ -42,7 +42,20 @@ export const routes: Routes = [
       ),
     loadChildren: () =>
       import('./features/content-models/content-models.routes').then(
-        (m) => m.CONTENT_MODEL_ROUTES
+        (m) => m.CONTENT_MODELS_ROUTES
+      ),
+  },
+  {
+    path: 'content-entries',
+    canActivate: [clientAuthGuard],
+    canActivateChild: [clientAuthGuard],
+    loadComponent: () =>
+      import('./features/content-entries/content-entries.component').then(
+        (m) => m.ContentEntriesComponent
+      ),
+    loadChildren: () =>
+      import('./features/content-entries/content-entires.routes').then(
+        (m) => m.CONTENT_ENTRIES_ROUTES
       ),
   },
   //Fallback

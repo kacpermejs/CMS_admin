@@ -5,7 +5,7 @@ import { ContentModelCreateComponent } from './components/modal/content-model-cr
 import { ContentModelFieldCreatorComponent } from './components/modal/content-model-field-creator/content-model-field-creator.component';
 import { ContentModelFieldEditorComponent } from './components/modal/content-model-field-editor/content-model-field-editor.component';
 
-export const CONTENT_MODEL_ROUTES: Routes = [
+export const CONTENT_MODELS_ROUTES: Routes = [
   { path: '', component: ContentModelListComponent },
   { path: 'create', component: ContentModelCreateComponent, outlet: "modal"},
   { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: "modal"},
