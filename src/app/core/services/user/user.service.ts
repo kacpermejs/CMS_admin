@@ -14,14 +14,18 @@ export class UserService {
 
   setUserData(userUid: string, userData: Partial<UserData>): Observable<void> {
     if (!userUid) throw new Error('User UID is required');
-
-    console.log('Using user data: ', userData);
-
-    if(!userData.role)
-      userData.role = UserRole.Client;
+    
+    let newUser = {
+      ...userData,
+    }
+    if(!newUser.role || newUser.role == UserRole.Guest)
+      newUser.role = UserRole.Client;
+    
+    console.log('Using user data: ', newUser);
+    console.log('Trying to write to: users/' + userUid);
 
     const userDocRef = doc(this.firestore, `users/${userUid}`);
-    return from(setDoc(userDocRef, userData, { merge: true }));
+    return from(setDoc(userDocRef, newUser, { merge: true }));
   }
 
   getUserData(userUid: string): Observable<UserData> {

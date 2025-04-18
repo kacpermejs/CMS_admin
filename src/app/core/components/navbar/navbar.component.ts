@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {NavbarConfig, ROLE_NAVBAR_CONFIG} from './models/role-navbar-config';
-import {map, Observable} from 'rxjs';
+import {map, Observable, tap} from 'rxjs';
 import {UserRole} from '@core/models/UserRole';
 import { Store } from '@ngrx/store';
 import { selectUserAuthState, selectUserRole } from '@core/store/selectors/user.selectors';
@@ -30,7 +30,7 @@ export class NavbarComponent {
   constructor() {
     this.userRole$ = this.store.select(selectUserRole); // Access the user role from the store
     this.userLoggedIn$ = this.store.select(selectUserAuthState).pipe(
-      map(auth => auth ? true : false)
+      map(auth => auth.auth ? true : false)
     ); // Access the user role from the store
   }
 

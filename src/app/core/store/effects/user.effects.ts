@@ -9,6 +9,7 @@ import {
   userDataLoadingFailure,
   setUserData,
   userDataIncomplete,
+  userDataCompleted,
 } from '../actions/user.actions';
 import { of } from 'rxjs';
 import { UserService } from '@core/services/user/user.service';
@@ -99,11 +100,26 @@ export class UserEffects {
 
         const uid = authState.auth.uid;
         return this.userService.setUserData(uid, userState.user).pipe(
-          map(() => userDataLoading({ uid })),
+          map(() => userDataCompleted({uid})),
           catchError((error) => of(userDataLoadingFailure({ error })))
         );
       })
     )
+  );
+
+  userDataCompleted$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userDataCompleted),
+      map((u) => userDataLoading({uid: u.uid})),
+    )
+  );
+
+  navigateOnDataCompleted$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userDataCompleted),
+      tap(() => this.router.navigate([''])),
+    ),
+    {dispatch: false}
   );
 }
 

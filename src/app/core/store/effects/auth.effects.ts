@@ -102,6 +102,16 @@ export class AuthEffects {
     )
   );
 
+  credentialsLoadingFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(credentialsLoadingFailure),
+      tap((u) => {
+        console.log(u);
+      })
+    ),
+    {dispatch: false}
+  );
+
   credentialsLoadingSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(credentialsLoadingSuccess),

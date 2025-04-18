@@ -22,6 +22,11 @@ export const userDataIncomplete = createAction(
   props<{ user: Partial<UserData>; }>()
 );
 
+export const userDataCompleted = createAction(
+  '[UserState] User Data Completed',
+  props<{ uid: string; }>()
+);
+
 export const userDataLoadingFailure = createAction(
   '[UserState] User Data Loading Failure',
   props<{ error: string; }>()
