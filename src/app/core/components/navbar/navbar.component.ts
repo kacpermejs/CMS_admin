@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterModule} from '@angular/router';
 import {NavbarConfig, ROLE_NAVBAR_CONFIG} from './models/role-navbar-config';
 import {map, Observable, tap} from 'rxjs';
 import {UserRole} from '@core/models/UserRole';
@@ -32,6 +32,12 @@ export class NavbarComponent {
     this.userLoggedIn$ = this.store.select(selectUserAuthState).pipe(
       map(auth => auth.auth ? true : false)
     ); // Access the user role from the store
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.closeMenu();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -42,8 +48,6 @@ export class NavbarComponent {
   }
 
   handleCallback(config: NavbarConfig) {
-    this.closeMenu();
-
     if (config.callback) {
       config.callback();
     }
@@ -54,7 +58,6 @@ export class NavbarComponent {
   }
 
   signIn() {
-    this.closeMenu();
     const currentUrl = this.router.url;
     this.router.navigate(['/login'], { queryParams: { currentUrl } });
   }
