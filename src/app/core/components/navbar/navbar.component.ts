@@ -42,17 +42,25 @@ export class NavbarComponent {
   }
 
   handleCallback(config: NavbarConfig) {
+    this.closeMenu();
+
     if (config.callback) {
       config.callback();
     }
   }
 
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
   signIn() {
+    this.closeMenu();
     const currentUrl = this.router.url;
     this.router.navigate(['/login'], { queryParams: { currentUrl } });
   }
 
   signOut() {
+    this.closeMenu();
     this.store.dispatch(logout());
   }
 
