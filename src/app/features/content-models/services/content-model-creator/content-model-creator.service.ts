@@ -98,16 +98,4 @@ export class ContentModelCreatorService {
     );
   }
 
-  getModelEntries(modelId: string, uid: string): Observable<any[]> {
-    const entriesRef = collection(
-      this.firestore,
-      `users/${uid}/contentModels/${modelId}/entries`
-    );
-
-    return collectionData(entriesRef, {idField: 'id'}).pipe(
-      map((snapshot) =>
-        snapshot.map((doc) => ({ ...doc }))
-      )
-    );
-  }
 }
