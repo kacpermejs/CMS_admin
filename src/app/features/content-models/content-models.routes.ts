@@ -4,12 +4,25 @@ import { ContentModelListComponent } from './components/content-model-list/conte
 import { ContentModelCreateComponent } from './components/modal/content-model-create/content-model-create.component';
 import { ContentModelFieldCreatorComponent } from './components/modal/content-model-field-creator/content-model-field-creator.component';
 import { ContentModelFieldEditorComponent } from './components/modal/content-model-field-editor/content-model-field-editor.component';
+import { provideState } from '@ngrx/store';
+import { contentModelCreationFeature } from './store/contentModelCreationFeature';
+import { provideEffects } from '@ngrx/effects';
+import { ContentModelCreationEffects } from './store/content-model-creation.effects';
 
 export const CONTENT_MODELS_ROUTES: Routes = [
-  { path: '', component: ContentModelListComponent },
-  { path: 'create', component: ContentModelCreateComponent, outlet: "modal"},
-  { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: "modal"},
-  { path: 'edit-field', component: ContentModelFieldEditorComponent, outlet: "modal"},
-  { path: 'edit/new', component: ContentModelEditorComponent },
-  { path: 'edit/:id', component: ContentModelEditorComponent },
+  {
+    path: '',
+    providers: [
+      provideState(contentModelCreationFeature),
+      provideEffects(ContentModelCreationEffects),
+    ],
+    children: [
+      { path: '', component: ContentModelListComponent },
+      { path: 'create', component: ContentModelCreateComponent, outlet: 'modal' },
+      { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: 'modal' },
+      { path: 'edit-field', component: ContentModelFieldEditorComponent, outlet: 'modal' },
+      { path: 'edit/new', component: ContentModelEditorComponent },
+      { path: 'edit/:id', component: ContentModelEditorComponent },
+    ],
+  },
 ];

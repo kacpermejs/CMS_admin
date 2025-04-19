@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContentField, ContentTypes } from '../../../models/ContentModel';
 import { Store } from '@ngrx/store';
-import { addContentField } from '@core/store/actions/content-model-creation.actions';
+import { addContentField } from '../../../store/content-model-creation.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 

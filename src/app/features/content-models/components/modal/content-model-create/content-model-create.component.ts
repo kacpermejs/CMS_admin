@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
-import { createContentModel } from '@core/store/actions/content-model-creation.actions';
+import { createContentModel } from '../../../store/content-model-creation.actions';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 
 @Component({

@@ -1,10 +1,19 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, docData, Firestore, getDocs, serverTimestamp, setDoc } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  docData,
+  Firestore,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+} from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { ContentModel } from '../../models/ContentModel';
 
 export interface ModelDTO {
-  id: string,
   name: string,
   fields: any[],
   description?: string
@@ -20,18 +29,31 @@ export class ContentModelCreatorService {
 
   createContentModel(
     userUid: string,
-    data: ModelDTO
+    data: Partial<ModelDTO>
   ): Observable<string> {
-    const modelRef = doc(this.firestore, `users/${userUid}/contentModels/${data.id}`);
+    if (!data.name)
+      throw new Error('You must provide unique name!');
 
-    const model: ContentModel = {
-      ...data,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+    //TODO more validation
+
+    const id = data.name; //document id
+
+    const model: ModelDTO = {
+      name: data.name,
+      fields: data.fields ?? [],
+      description: data.description,
     };
 
-    return from(setDoc(modelRef, model)).pipe(
-      map(() => data.id)
+    const modelFull = {
+      ...model,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }
+
+    const modelRef = doc(this.firestore, `users/${userUid}/contentModels/${id}`);
+
+    return from(setDoc(modelRef, modelFull)).pipe(
+      map(() => id)
     );
   }
 
@@ -53,11 +75,10 @@ export class ContentModelCreatorService {
   getById(userUid: string, modelId: string) {
     const docRef = doc(this.firestore, 'users', userUid, 'contentModels', modelId);
 
-    return docData(docRef).pipe(
+    return docData(docRef, {idField: 'id'}).pipe(
       map((d) =>
         d
           ? ({
-              id: d['id'],
               ...d
             } as ContentModel)
           : undefined
@@ -68,10 +89,10 @@ export class ContentModelCreatorService {
   getUserModels(uid: string): Observable<any[]> {
     const modelsRef = collection(this.firestore, `users/${uid}/contentModels`);
 
-    return collectionData(modelsRef).pipe(
+    return collectionData(modelsRef, { idField: 'id' }).pipe(
       map((snapshot) =>
         snapshot.map((doc) => {
-          return { id: doc['id'], ...doc } as ContentModel;
+          return { ...doc } as ContentModel;
         })
       )
     );
@@ -83,9 +104,9 @@ export class ContentModelCreatorService {
       `users/${uid}/contentModels/${modelId}/entries`
     );
 
-    return from(getDocs(entriesRef)).pipe(
+    return collectionData(entriesRef, {idField: 'id'}).pipe(
       map((snapshot) =>
-        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        snapshot.map((doc) => ({ ...doc }))
       )
     );
   }
