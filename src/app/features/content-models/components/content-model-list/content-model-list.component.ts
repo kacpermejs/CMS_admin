@@ -1,12 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FieldValue, Timestamp } from '@angular/fire/firestore';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Observable, switchMap } from 'rxjs';
-import { ContentModelCreatorService } from '../../services/content-model-creator/content-model-creator.service';
+import { Observable } from 'rxjs';
 import { ContentModel } from '../../models/ContentModel';
-import { selectUserUid } from '@core/store/selectors/user.selectors';
 import { CommonModule } from '@angular/common';
+import { loadUserModels, selectUserModels } from './store/ModelListState';
 
 @Component({
   selector: 'app-content-model-list',
@@ -14,15 +13,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './content-model-list.component.html',
   styleUrl: './content-model-list.component.css',
 })
-export class ContentModelListComponent {
+export class ContentModelListComponent implements OnInit {
   store = inject(Store);
   router = inject(Router);
   route = inject(ActivatedRoute);
-  private contentService = inject(ContentModelCreatorService); //TODO don't
   models$: Observable<ContentModel[]>;
 
   constructor() {
-    this.models$ = this.loadModels();
+    this.models$ = this.store.select(selectUserModels);
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(loadUserModels());
   }
 
   openEditModal(model: ContentModel) {
@@ -60,24 +62,5 @@ export class ContentModelListComponent {
     this.router.navigate([{ outlets: { modal: ['create'] } }], {
       relativeTo: this.route,
     });
-  }
-
-  loadModels() { //TODO use just ngrx
-    return this.withUid().pipe(
-      switchMap((uid) => this.contentService.getUserModels(uid))
-    );
-  }
-
-  getUser() {
-    return this.store.select(selectUserUid);
-  }
-
-  private withUid(): Observable<string> {
-    return this.getUser().pipe(
-      map((uid) => {
-        if (!uid) throw new Error('Not Authenticated!');
-        return uid;
-      })
-    );
   }
 }

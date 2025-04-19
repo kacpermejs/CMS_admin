@@ -86,7 +86,7 @@ export class ContentModelCreatorService {
     );
   }
 
-  getUserModels(uid: string): Observable<any[]> {
+  getUserModels(uid: string): Observable<ContentModel[]> {
     const modelsRef = collection(this.firestore, `users/${uid}/contentModels`);
 
     return collectionData(modelsRef, { idField: 'id' }).pipe(

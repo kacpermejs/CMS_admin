@@ -8,6 +8,8 @@ import { provideState } from '@ngrx/store';
 import { contentModelCreationFeature } from './store/contentModelCreationFeature';
 import { provideEffects } from '@ngrx/effects';
 import { ContentModelCreationEffects } from './store/content-model-creation.effects';
+import { userModelsListFeature } from './components/content-model-list/store/ModelListState';
+import { UserModelListEffects } from './components/content-model-list/store/user-model-list.effects';
 
 export const CONTENT_MODELS_ROUTES: Routes = [
   {
@@ -17,10 +19,29 @@ export const CONTENT_MODELS_ROUTES: Routes = [
       provideEffects(ContentModelCreationEffects),
     ],
     children: [
-      { path: '', component: ContentModelListComponent },
-      { path: 'create', component: ContentModelCreateComponent, outlet: 'modal' },
-      { path: 'create-field', component: ContentModelFieldCreatorComponent, outlet: 'modal' },
-      { path: 'edit-field', component: ContentModelFieldEditorComponent, outlet: 'modal' },
+      {
+        path: '',
+        component: ContentModelListComponent,
+        providers: [
+          provideState(userModelsListFeature),
+          provideEffects(UserModelListEffects),
+        ],
+      },
+      {
+        path: 'create',
+        component: ContentModelCreateComponent,
+        outlet: 'modal',
+      },
+      {
+        path: 'create-field',
+        component: ContentModelFieldCreatorComponent,
+        outlet: 'modal',
+      },
+      {
+        path: 'edit-field',
+        component: ContentModelFieldEditorComponent,
+        outlet: 'modal',
+      },
       { path: 'edit/new', component: ContentModelEditorComponent },
       { path: 'edit/:id', component: ContentModelEditorComponent },
     ],
