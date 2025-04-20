@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ContentModelEntry } from 'app/features/content-models/models/ContentModel';
 import { Observable, tap } from 'rxjs';
-import { selectUserEntries } from './store/EntriesListState';
+import { loadUserEntries, selectUserEntries } from './store/EntriesListState';
 
 @Component({
   selector: 'app-content-entries-list',
@@ -12,7 +12,7 @@ import { selectUserEntries } from './store/EntriesListState';
   templateUrl: './content-entries-list.component.html',
   styleUrl: './content-entries-list.component.css',
 })
-export class ContentEntriesListComponent {
+export class ContentEntriesListComponent implements OnInit {
   store = inject(Store);
 
   entries$: Observable<ContentModelEntry[]>
@@ -23,6 +23,10 @@ export class ContentEntriesListComponent {
         console.log(list);
       })
     );
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(loadUserEntries({id: 'Post'}));
   }
 
   add() {

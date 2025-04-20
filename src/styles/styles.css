@@ -25,11 +25,11 @@ h4 {
 }
 
 h5 {
-  @apply text-base font-semibold text-gray-600 leading-tight mb-2;
+  @apply text-base font-medium text-gray-600 leading-tight mb-2;
 }
 
 h6 {
-  @apply text-base font-medium text-gray-600 leading-snug mb-1;
+  @apply text-sm font-medium text-gray-500 leading-snug mb-1;
 }
 
 /* Paragraphs */

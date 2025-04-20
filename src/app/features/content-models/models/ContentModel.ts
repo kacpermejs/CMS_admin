@@ -13,7 +13,7 @@ export interface ContentModel extends ContentModelData {
   updatedAt: Timestamp | FieldValue;
 }
 
-export enum ContentTypes {
+export enum ContentType {
   Text = "Text",
   RichText = "RichText",
   Number = "Number",
@@ -23,9 +23,34 @@ export enum ContentTypes {
 export interface ContentField {
   id: string;
   name: string;
-  type: ContentTypes;
-  required: boolean;
-  //TODO add order
+  type: ContentType;
+  
+  metadata?: FieldMetadata;
+}
+
+export interface FieldMetadata {
+
+  validation?: {
+    required: boolean;
+  }
+
+  settings?: {
+    fieldOptions: FieldOptions
+  }
+}
+
+export interface FieldOptions {
+  enableLocalization: boolean;
+}
+
+export interface TextFieldOptions extends FieldOptions {
+  entryTitle: boolean;
+}
+
+export interface TextFieldMetadata extends FieldMetadata {
+  settings: {
+    fieldOptions: TextFieldOptions;
+  }
 }
 
 export interface ContentModelEntry<T = Record<string, any>> {
