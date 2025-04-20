@@ -1,14 +1,16 @@
 import { createAction, createFeature, createReducer, on, props } from "@ngrx/store";
-import { ContentModelEntry } from "app/features/content-models/models/ContentModel";
+import { ContentModel, ContentModelData, ContentModelEntry } from "app/features/content-models/models/ContentModel";
 
 export interface EntriesListState {
   list: ContentModelEntry[];
+  userTypes: ContentModel[];
   loading: boolean;
   error: string | null;
 }
 
 export const initialEntriesListState: EntriesListState = {
   list: [],
+  userTypes: [],
   loading: false,
   error: null,
 };
@@ -20,7 +22,7 @@ export const loadUserEntries = createAction(
 
 export const userEntriesLoadingSuccess = createAction(
   '[EntriesList] User Entries Loading Success',
-  props<{ list: ContentModelEntry[] }>()
+  props<{ list: ContentModelEntry[], userTypes: ContentModel[] }>()
 );
 
 export const userEntriesLoadingFailure = createAction(
@@ -37,9 +39,10 @@ export const userEntriesListFeature = createFeature({
       loading: true,
       error: null,
     })),
-    on(userEntriesLoadingSuccess, (state, { list }) => ({
+    on(userEntriesLoadingSuccess, (state, { list, userTypes }) => ({
       ...state,
       list: list,
+      userTypes: userTypes,
       loading: false,
       error: null,
     })),
@@ -56,5 +59,6 @@ export const {
   reducer: userModelListReducer,
   selectList: selectUserEntries,
   selectLoading: selectUserEntriesLoading,
-  selectError: selectUserEntriesLoadingError
+  selectError: selectUserEntriesLoadingError,
+  selectUserTypes
 } = userEntriesListFeature

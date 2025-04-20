@@ -21,7 +21,7 @@
     @for (item of models; track item.name) {
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.name }}</td>
-        <td class="px-4 py-2 text-sm text-gray-800">{{ convertToRelativeTime(item.updatedAt) }}</td>
+        <td class="px-4 py-2 text-sm text-gray-800">{{ item.updatedAt | relativeTime }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
         <td><button class="btn btn-primary" (click)="openEditModal(item)">Edit ></button></td>
       </tr>

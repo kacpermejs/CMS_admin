@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { ContentModelEntry } from 'app/features/content-models/models/ContentModel';
+import { ContentModel, ContentModelEntry } from 'app/features/content-models/models/ContentModel';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
@@ -22,7 +22,20 @@ export class ContentEntriesService {
       map((snapshot) =>
         snapshot.map((doc) => {
           const { id, ...rest } = doc;
-          return { sys: { id }, ...rest } as ContentModelEntry;
+          
+          return { ...rest, sys: { ...rest['sys'], id, typeId: modelId } } as ContentModelEntry;
+        })
+      )
+    );
+  }
+
+  getUserModels(uid: string): Observable<ContentModel[]> {
+    const modelsRef = collection(this.firestore, `users/${uid}/contentModels`);
+
+    return collectionData(modelsRef, { idField: 'id' }).pipe(
+      map((snapshot) =>
+        snapshot.map((doc) => {
+          return { ...doc } as ContentModel;
         })
       )
     );
