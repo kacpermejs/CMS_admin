@@ -53,12 +53,13 @@ export interface TextFieldMetadata extends FieldMetadata {
   }
 }
 
+export interface ModelEntrySystemInfo {
+  modelId: string;
+  createdAt?: Timestamp | FieldValue;
+  updatedAt: Timestamp | FieldValue;
+}
+
 export interface ContentModelEntry<T = Record<string, any>> {
-  sys: {
-    id: string;
-    typeId: string,
-    createdAt?: Timestamp | FieldValue;
-    updatedAt: Timestamp | FieldValue;
-  };
+  sys: ModelEntrySystemInfo;
   fields: T;
 }

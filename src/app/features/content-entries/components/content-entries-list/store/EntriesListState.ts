@@ -17,7 +17,6 @@ export const initialEntriesListState: EntriesListState = {
 
 export const loadUserEntries = createAction(
   '[EntriesList] Load User Entries',
-  props<{ id: string }>()
 );
 
 export const userEntriesLoadingSuccess = createAction(

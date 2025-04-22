@@ -1,29 +1,38 @@
 import { inject, Injectable } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { ContentModel, ContentModelEntry } from 'app/features/content-models/models/ContentModel';
+import {
+  ContentModel,
+  ContentModelEntry,
+} from 'app/features/content-models/models/ContentModel';
 import { Observable, map } from 'rxjs';
 
+export interface ContentModelEntryDTO extends ContentModelEntry {
+  id: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContentEntriesService {
   private firestore = inject(Firestore);
 
-  constructor() { }
+  constructor() {}
 
-  getModelEntries(modelId: string, uid: string): Observable<any[]> {
+  getModelEntries(uid: string): Observable<ContentModelEntryDTO[]> {
     const entriesRef = collection(
       this.firestore,
-      `users/${uid}/contentModels/${modelId}/entries`
+      `users/${uid}/entries/`
     );
-
 
     return collectionData(entriesRef, { idField: 'id' }).pipe(
       map((snapshot) =>
         snapshot.map((doc) => {
           const { id, ...rest } = doc;
-          
-          return { ...rest, sys: { ...rest['sys'], id, typeId: modelId } } as ContentModelEntry;
+          const result: ContentModelEntryDTO = {
+            ...(rest as ContentModelEntry),
+            id,
+          };
+          return result;
         })
       )
     );
