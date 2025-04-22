@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap, withLatestFrom } from "rxjs";
-import { ContentModelCreatorService, ModelDTO } from "app/features/content-models/services/content-model-creator/content-model-creator.service";
+import { ContentModelCreatorService } from "app/features/content-models/services/content-model-creator/content-model-creator.service";
 import { Store } from "@ngrx/store";
 import { selectUserUid } from "@core/store/selectors/user.selectors";
 import { selectContentModelData } from "./content-model.selectors";

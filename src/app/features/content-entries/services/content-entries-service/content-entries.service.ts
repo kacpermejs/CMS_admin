@@ -3,12 +3,9 @@ import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import {
   ContentModel,
   ContentModelEntry,
+  ContentModelEntryDTO,
 } from 'app/features/content-models/models/ContentModel';
 import { Observable, map } from 'rxjs';
-
-export interface ContentModelEntryDTO extends ContentModelEntry {
-  id: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -18,22 +15,14 @@ export class ContentEntriesService {
 
   constructor() {}
 
-  getModelEntries(uid: string): Observable<ContentModelEntryDTO[]> {
-    const entriesRef = collection(
-      this.firestore,
-      `users/${uid}/entries/`
-    );
+  getModelEntries(uid: string): Observable<ContentModelEntry[]> {
+    const entriesRef = collection(this.firestore, `users/${uid}/entries/`);
 
     return collectionData(entriesRef, { idField: 'id' }).pipe(
       map((snapshot) =>
-        snapshot.map((doc) => {
-          const { id, ...rest } = doc;
-          const result: ContentModelEntryDTO = {
-            ...(rest as ContentModelEntry),
-            id,
-          };
-          return result;
-        })
+        snapshot.map((doc) => ({
+          ...(doc as ContentModelEntry),
+        }))
       )
     );
   }

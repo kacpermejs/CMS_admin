@@ -2,15 +2,20 @@ import { Timestamp, FieldValue } from '@angular/fire/firestore';
 
 
 export interface ContentModelData {
-  id: string;
   name: string;
   description?: string;
   fields: ContentField[];
 }
 
-export interface ContentModel extends ContentModelData {
+//stored in firebase
+export interface ContentModelDTO extends ContentModelData {
+  schema: number | null;
   createdAt?: Timestamp | FieldValue;
   updatedAt: Timestamp | FieldValue;
+}
+
+export interface ContentModel extends ContentModelDTO {
+  id: string; //firebase document id
 }
 
 export enum ContentType {
@@ -55,11 +60,22 @@ export interface TextFieldMetadata extends FieldMetadata {
 
 export interface ModelEntrySystemInfo {
   modelId: string;
+  titleField?: string;
   createdAt?: Timestamp | FieldValue;
   updatedAt: Timestamp | FieldValue;
 }
 
-export interface ContentModelEntry<T = Record<string, any>> {
+
+export interface ContentModelEntryData<T = Record<string, any>> {
   sys: ModelEntrySystemInfo;
   fields: T;
+}
+
+//stored in firebase
+export interface ContentModelEntryDTO extends ContentModelEntryData {
+  schema: number | null;
+}
+
+export interface ContentModelEntry extends ContentModelEntryDTO {
+  id: string; //firebase document id
 }

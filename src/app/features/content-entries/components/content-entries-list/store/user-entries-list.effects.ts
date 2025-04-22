@@ -26,6 +26,7 @@ export class UserEntriesListEffects {
           this.contentService.getModelEntries(uid),
           this.contentService.getUserModels(uid),
         ]).pipe(
+          tap(([e, t]) => console.log('Entries:', e)),
           map(([modelEntries, userTypes]) =>
             userEntriesLoadingSuccess({ list: modelEntries, userTypes })
           ),

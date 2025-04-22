@@ -11,13 +11,7 @@ import {
   setDoc,
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
-import { ContentModel } from '../../models/ContentModel';
-
-export interface ModelDTO {
-  name: string,
-  fields: any[],
-  description?: string
-}
+import { ContentModel, ContentModelData, ContentModelDTO } from '../../models/ContentModel';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +23,7 @@ export class ContentModelCreatorService {
 
   createContentModel(
     userUid: string,
-    data: Partial<ModelDTO>
+    data: Partial<ContentModelData>
   ): Observable<string> {
     if (!data.name)
       throw new Error('You must provide unique name!');
@@ -38,14 +32,15 @@ export class ContentModelCreatorService {
 
     const id = data.name; //document id
 
-    const model: ModelDTO = {
+    const model: ContentModelData = {
       name: data.name,
       fields: data.fields ?? [],
       description: data.description,
     };
 
-    const modelFull = {
+    const modelFull: ContentModelDTO = {
       ...model,
+      schema: 1,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }

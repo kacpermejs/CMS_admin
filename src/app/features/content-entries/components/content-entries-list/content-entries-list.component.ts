@@ -2,13 +2,25 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ContentModel, ContentModelEntry, TextFieldOptions } from 'app/features/content-models/models/ContentModel';
+import {
+  ContentModel,
+  ContentModelData,
+  ContentModelEntry,
+  TextFieldOptions,
+} from 'app/features/content-models/models/ContentModel';
 import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
-import { loadUserEntries, selectUserEntries, selectUserTypes } from './store/EntriesListState';
-import { RelativeTimePipe } from "../../../../shared/utils/RelativeTimePipe";
-import { ContentModelEntryDTO } from '../../services/content-entries-service/content-entries.service';
+import {
+  loadUserEntries,
+  selectUserEntries,
+  selectUserTypes,
+} from './store/EntriesListState';
+import { RelativeTimePipe } from '../../../../shared/utils/RelativeTimePipe';
 
-interface TitledEntry extends ContentModelEntry {
+interface EntryWithModel extends ContentModelEntry {
+  model: ContentModelData;
+}
+
+interface TitledEntry extends EntryWithModel {
   title: string;
 }
 
@@ -19,7 +31,6 @@ interface TitledEntry extends ContentModelEntry {
   styleUrl: './content-entries-list.component.css',
 })
 export class ContentEntriesListComponent implements OnInit {
-
   store = inject(Store);
 
   entries$: Observable<ContentModelEntry[]>;
@@ -31,15 +42,21 @@ export class ContentEntriesListComponent implements OnInit {
     this.models$ = this.store.select(selectUserTypes);
 
     this.titledEntries$ = this.models$.pipe(
-      switchMap( models => this.entries$.pipe(
-        map(entries => {
-          return entries.map(e => ({
-            ...e,
-            title: this.getEntryTitle(e, models)
-          } as TitledEntry))
-        })
-      ))
-    )
+      switchMap((models) =>
+        this.entries$.pipe(
+          map((entries) => {
+            return entries.map(
+              (e) =>
+                ({
+                  ...e,
+                  title: this.getEntryTitle(e, models),
+                  model: models.find(m => m.id === e.sys.modelId),
+                } as TitledEntry)
+            );
+          })
+        )
+      )
+    );
   }
 
   ngOnInit(): void {
@@ -47,15 +64,24 @@ export class ContentEntriesListComponent implements OnInit {
   }
 
   getEntryTitle(entry: ContentModelEntry, models: ContentModel[]): string {
-    const model = models.find((m) => m.id === entry.sys.modelId);
+    const { schema, sys, fields } = entry;
+
+    // Prefer version 1: use the titleField if specified directly on the entry
+    // if (schema == 1)
+    if (sys.titleField && fields[sys.titleField]) {
+      return fields[sys.titleField];
+    }
+
+    // Fallback to version 0: find the model and use its designated title field
+    const model = models.find((m) => m.id === sys.modelId);
     if (!model) return '(unknown model)';
 
     const titleField = model.fields.find(
-      (f) => (f.metadata?.settings?.fieldOptions as TextFieldOptions).entryTitle
-    ); // Assuming each model has one title field marked
-    if (!titleField) return '(untitled)';
+      (f) =>
+        (f.metadata?.settings?.fieldOptions as TextFieldOptions)?.entryTitle
+    );
 
-    return entry.fields[titleField.id] || '(untitled)';
+    return titleField ? fields[titleField.id] || '(untitled)' : '(untitled)';
   }
 
   openEditModal(_t12: any) {
