@@ -31,20 +31,53 @@ export const getUserEntries = functions.https.onRequest((req, res) => {
         return;
       }
 
-      // Get modelId from request parameters
       const modelId = req.query.modelId as string | undefined;
+      // default: createdAt
+      const sortBy = (req.query.sortBy as string | undefined) || 'createdAt';
+      // default: descending
+      const order = (req.query.order as string | undefined) || 'desc';
+
       if (!modelId) {
         res.status(400).send('Model ID is required');
         return;
       }
 
-      // Fetch entries from /users/:userId/entries of set modelId
-      const entriesSnapshot = await db
+      // Validate sortBy field
+      const validSortFields = ['modelId', 'createdAt'];
+      if (!validSortFields.includes(sortBy)) {
+        res.status(400).send('Invalid sort field');
+        return;
+      }
+
+      // Validate order
+      const validOrders = ['asc', 'desc'];
+      if (!validOrders.includes(order)) {
+        res.status(400).send('Invalid sort order');
+        return;
+      }
+
+      // Fetch entries dynamically
+      let query = db
         .collection('users')
         .doc(userId)
         .collection('entries')
-        .where('sys.modelId', '==', modelId)
-        .get();
+        .where('sys.modelId', '==', modelId);
+
+      // Add dynamic ordering
+      if (sortBy === 'modelId') {
+        query = query.orderBy(
+          'sys.modelId',
+          order as FirebaseFirestore.OrderByDirection
+        );
+      } else if (sortBy === 'createdAt') {
+        query = query
+          .orderBy(
+            'sys.createdAt',
+            order as FirebaseFirestore.OrderByDirection
+          );
+      }
+
+      const entriesSnapshot = await query.get();
 
       if (entriesSnapshot.empty) {
         res.status(404).send('No entries found for this user');
@@ -57,7 +90,7 @@ export const getUserEntries = functions.https.onRequest((req, res) => {
       }));
 
       // Return entries
-      res.status(200).json({entries});
+      res.status(200).json({entries, sortBy, order, version: 'v2'});
     } catch (error) {
       console.error('Error fetching entries:', error);
       res.status(500).send('Internal server error');
