@@ -4,7 +4,7 @@ import { Store } from "@ngrx/store";
 import { loadUserModels, userModelsLoadingFailure, userModelsLoadingSuccess } from "./ModelListState";
 import { ContentModelCreatorService } from "app/features/content-models/services/content-model-creator/content-model-creator.service";
 import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
-import { selectUserUid } from "@core/store/selectors/user.selectors";
+import { selectUserUid } from '@core/store/selectors/auth.selectors';
 
 @Injectable()
 export class UserModelListEffects {

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialUserData, initialUserState } from "../models/UserState";
-import { setUserData, userDataLoading, userDataLoadingSuccess, userDataLoadingFailure, userDataIncomplete } from "../actions/user.actions";
+import { setUserData, userDataLoading, userDataLoadingSuccess, userDataLoadingFailure, userDataIncomplete, userLoggedOut } from "../actions/user.actions";
 import { UserRole } from "@core/models/UserRole";
 
 export const userDataReducer = createReducer(
@@ -37,5 +37,6 @@ export const userDataReducer = createReducer(
     user: { ...state.user, ...user },
     loading: false,
     error: null,
-  }))
+  })),
+  on(userLoggedOut, () => initialUserState),
 )

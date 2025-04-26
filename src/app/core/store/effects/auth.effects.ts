@@ -3,8 +3,20 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "@core/services/auth/auth.service";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { switchMap, map, catchError, of, tap } from "rxjs";
-import { signUpWithPassword, loginSuccess, loginFailure, loginWithPassword, signInWithGoogle, credentialsLoading, credentialsLoadingSuccess, credentialsLoadingFailure, logout, logoutSuccess, logoutFailure } from "../actions/auth.actions";
-import { userDataLoading } from "../actions/user.actions";
+import {
+  signUpWithPassword,
+  loginSuccess,
+  loginFailure,
+  loginWithPassword,
+  signInWithGoogle,
+  credentialsLoading,
+  credentialsLoadingSuccess,
+  credentialsLoadingFailure,
+  logout,
+  logoutSuccess,
+  logoutFailure,
+} from '../actions/auth.actions';
+import { userDataLoading, userLoggedOut } from "../actions/user.actions";
 import { extractToAuthInfo } from "./extractToAuthInfo";
 
 @Injectable()
@@ -143,9 +155,12 @@ export class AuthEffects {
       ofType(logout),
       switchMap((c) =>
         this.auth.signOut().pipe(
-          map(() => {
+          switchMap(() => {
             console.log('User signed out');
-            return logoutSuccess();
+            return of(
+              logoutSuccess(),
+              userLoggedOut()
+            );
           }),
           catchError((e) => {
             console.error('Error signing out:', e);
@@ -162,6 +177,7 @@ export class AuthEffects {
         ofType(logoutSuccess),
         tap(() => {
           console.log('User logged out!');
+          window.location.href = '/'; //Reload site for easy full state wipe
         })
       ),
     { dispatch: false }

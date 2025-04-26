@@ -31,3 +31,7 @@ export const userDataLoadingFailure = createAction(
   '[UserState] User Data Loading Failure',
   props<{ error: string; }>()
 );
+
+export const userLoggedOut = createAction(
+  '[UserState] User Logged Out',
+);

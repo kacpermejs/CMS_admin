@@ -14,9 +14,8 @@ import {
 import { of } from 'rxjs';
 import { UserService } from '@core/services/user/user.service';
 import { select, Store } from '@ngrx/store';
-import { selectUserAuthState, selectUserDataState } from '../selectors/user.selectors';
-
-
+import { selectUserData } from '../selectors/user.selectors';
+import { selectUserUid } from '../selectors/auth.selectors';
 
 @Injectable()
 export class UserEffects {
@@ -91,15 +90,14 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(setUserData),
       withLatestFrom(
-        this.store.pipe(select(selectUserAuthState)),
-        this.store.pipe(select(selectUserDataState))), // action doesn't have all information, state has it merged
-      switchMap(([action, authState, userState]) => {
-        if (!authState.auth) {
+        this.store.pipe(select(selectUserUid)),
+        this.store.pipe(select(selectUserData))), // action doesn't have all information, state has it merged
+      switchMap(([action, uid, userState]) => {
+        if (!uid) {
           return of(userDataLoadingFailure({ error: 'User is not authenticated' }));
         }
 
-        const uid = authState.auth.uid;
-        return this.userService.setUserData(uid, userState.user).pipe(
+        return this.userService.setUserData(uid, userState).pipe(
           map(() => userDataCompleted({uid})),
           catchError((error) => of(userDataLoadingFailure({ error })))
         );

@@ -1,15 +1,8 @@
 // src/@core/store/user/user.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserDataState } from '../models/UserState';
-import { UserAuthState } from '../models/AuthState';
 
-export const selectUserDataState = createFeatureSelector<UserDataState>('user');
-export const selectUserAuthState = createFeatureSelector<UserAuthState>('auth');
-
-export const selectUserUid = createSelector(
-  selectUserAuthState,
-  (state: UserAuthState) => state.auth?.uid
-);
+const selectUserDataState = createFeatureSelector<UserDataState>('user');
 
 export const selectUserRole = createSelector(
   selectUserDataState,

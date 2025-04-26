@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { ContentModelCreatorService } from "app/features/content-models/services/content-model-creator/content-model-creator.service";
 import { Store } from "@ngrx/store";
-import { selectUserUid } from "@core/store/selectors/user.selectors";
+import { selectUserUid } from '@core/store/selectors/auth.selectors';
 import { selectContentModelData } from "./content-model.selectors";
 import { loadContentModel, contentModelLoadingSuccess, contentModelLoadingFailure, addContentField, updateField, saveContentModel, contentModelSavingSuccess, contentModelSavingFailure } from "./content-model-creation.actions";
 
