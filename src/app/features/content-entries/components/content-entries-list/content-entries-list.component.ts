@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   ContentModel,
@@ -32,10 +32,14 @@ interface TitledEntry extends EntryWithModel {
 })
 export class ContentEntriesListComponent implements OnInit {
   store = inject(Store);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   entries$: Observable<ContentModelEntry[]>;
   models$: Observable<ContentModel[]>;
   titledEntries$: Observable<TitledEntry[]>;
+
+  addEntryDropdownVisible = false;
 
   constructor() {
     this.entries$ = this.store.select(selectUserEntries);
@@ -84,7 +88,35 @@ export class ContentEntriesListComponent implements OnInit {
     return titleField ? fields[titleField.id] || '(untitled)' : '(untitled)';
   }
 
-  openEditModal(_t12: any) {
-    throw new Error('Method not implemented.');
+  onNew(model: ContentModel) {
+    this.closeAddEntryDropdown();
+    this.router.navigate(
+      ['edit', 'new'], 
+      { 
+        relativeTo: this.route,
+        queryParams: { modelId: model.id }
+      }
+    );
+  }
+
+  onEdit(entry: ContentModelEntry) {
+    this.closeAddEntryDropdown();
+    this.router.navigate(['edit', entry.id], { relativeTo: this.route });
+  }
+
+  toggleAddEntryDropdown() {
+    this.addEntryDropdownVisible = !this.addEntryDropdownVisible;
+  }
+
+  closeAddEntryDropdown() {
+    this.addEntryDropdownVisible = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdownOnClickOutside(event: MouseEvent) {
+    const button = event.target as HTMLElement;
+    if (!button.closest('.relative')) {
+      this.addEntryDropdownVisible = false;
+    }
   }
 }

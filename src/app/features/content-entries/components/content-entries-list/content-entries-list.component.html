@@ -1,3 +1,27 @@
+<header class="flex justify-between items-top">
+  <h2>Content entries</h2>
+  <div>
+    <div class="relative inline-block">
+      <button class="btn btn-primary px-3! flex! items-center gap-2" (click)="toggleAddEntryDropdown()">
+        <span>Add entry</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true" role="img">
+          <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+        </svg>
+      </button>
+      
+      <div *ngIf="addEntryDropdownVisible" class="absolute left-0 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+        <ul class="py-2 text-sm">
+          <li *ngFor="let model of models$ | async">
+            <a class="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                (click)="onNew(model)">
+              {{model.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
 <table *ngIf="titledEntries$ | async as data" class="min-w-full">
   <thead>
     <tr class="text-left border-b border-gray-300 h-12">
@@ -11,7 +35,7 @@
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.title }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.sys.updatedAt | relativeTime }}</td>
-        <td><button class="btn btn-primary">Edit ></button></td>
+        <td><button class="btn btn-primary" (click)="onEdit(item)">Edit ></button></td>
       </tr>
     }
   </tbody>
