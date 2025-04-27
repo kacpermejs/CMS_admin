@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
 import {
   ContentModel,
   ContentModelEntry,
   ContentModelEntryDTO,
 } from 'app/features/content-models/models/ContentModel';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,33 @@ export class ContentEntriesService {
         snapshot.map((doc) => {
           return { ...doc } as ContentModel;
         })
+      )
+    );
+  }
+
+  getModelById(userUid: string, modelId: string) {
+    const docRef = doc(this.firestore, 'users', userUid, 'contentModels', modelId);
+
+    return docData(docRef, {idField: 'id'}).pipe(
+      map((d) =>
+        d
+          ? ({
+              ...d
+            } as ContentModel)
+          : undefined
+      )
+    );
+  }
+
+  getEntryById(userUid: string, modelId: string) {
+    const docRef = doc(this.firestore, 'users', userUid, 'entries', modelId);
+    return docData(docRef, {idField: 'id'}).pipe(
+      map((d) =>
+        d
+          ? ({
+              ...d
+            } as ContentModelEntry)
+          : undefined
       )
     );
   }

@@ -1,6 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { ContentModelData } from "app/features/content-models/models/ContentModel";
-import { EditableField } from "./entry-creation.feature";
+import { ContentModelData, EntryFields } from "app/features/content-models/models/ContentModel";
 
 export const loadContentModel = createAction(
   '[Entry Creation] Load Content Model',
@@ -24,7 +23,7 @@ export const loadEntry = createAction(
 
 export const loadEntrySuccess = createAction(
   '[Entry Creation] Load Entry Success',
-  props<{ editableFields: EditableField[] }>()
+  props<{ values: EntryFields }>()
 );
 
 export const loadEntryFailure = createAction(
@@ -39,7 +38,7 @@ export const updateEditableField = createAction(
 
 export const saveEntry = createAction(
   '[Entry Creation] Save Entry',
-  props<{ modelId: string; fields: EditableField[]; entryId?: string }>()
+  props<{ modelId: string; fields: EntryFields; entryId?: string }>()
 );
 
 export const saveEntrySuccess = createAction(

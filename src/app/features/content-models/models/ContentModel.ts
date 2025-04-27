@@ -65,8 +65,9 @@ export interface ModelEntrySystemInfo {
   updatedAt: Timestamp | FieldValue;
 }
 
+export type EntryFields = Record<string, any>;
 
-export interface ContentModelEntryData<T = Record<string, any>> {
+export interface ContentModelEntryData<T = EntryFields> {
   sys: ModelEntrySystemInfo;
   fields: T;
 }

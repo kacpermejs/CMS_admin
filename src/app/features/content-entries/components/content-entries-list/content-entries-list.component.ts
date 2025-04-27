@@ -54,7 +54,7 @@ export class ContentEntriesListComponent implements OnInit {
                 ({
                   ...e,
                   title: this.getEntryTitle(e, models),
-                  model: models.find(m => m.id === e.sys.modelId),
+                  model: models.find((m) => m.id === e.sys.modelId),
                 } as TitledEntry)
             );
           })
@@ -90,18 +90,18 @@ export class ContentEntriesListComponent implements OnInit {
 
   onNew(model: ContentModel) {
     this.closeAddEntryDropdown();
-    this.router.navigate(
-      ['edit', 'new'], 
-      { 
-        relativeTo: this.route,
-        queryParams: { modelId: model.id }
-      }
-    );
+    this.router.navigate(['edit', 'new'], {
+      relativeTo: this.route,
+      queryParams: { modelId: model.id },
+    });
   }
 
   onEdit(entry: ContentModelEntry) {
     this.closeAddEntryDropdown();
-    this.router.navigate(['edit', entry.id], { relativeTo: this.route });
+    this.router.navigate(['edit', entry.id], {
+      relativeTo: this.route,
+      queryParams: { modelId: entry.sys.modelId },
+    });
   }
 
   toggleAddEntryDropdown() {
