@@ -28,11 +28,11 @@ export class ContentModelListComponent implements OnInit {
     this.store.dispatch(loadUserModels());
   }
 
-  openEditModal(model: ContentModel) {
-    this.router.navigate(['edit', model.id], { relativeTo: this.route }); // Open modal
+  onEdit(model: ContentModel) {
+    this.router.navigate(['edit', model.id], { relativeTo: this.route });
   }
 
-  onAdd() {
+  onNewModel() {
     this.router.navigate([{ outlets: { modal: ['create'] } }], {
       relativeTo: this.route,
     });
