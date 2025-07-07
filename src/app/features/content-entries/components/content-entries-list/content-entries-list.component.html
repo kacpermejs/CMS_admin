@@ -31,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (item of data; track item) {
+    @for (item of data; track item.id) {
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.title }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.sys.updatedAt | relativeTime }}</td>
