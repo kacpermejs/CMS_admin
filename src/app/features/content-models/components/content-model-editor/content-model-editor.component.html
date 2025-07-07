@@ -60,12 +60,15 @@
             }
           </td>
           <td class="flex justify-end items-center gap-1 h-12 px-2">
-            <a class="hover:underline text-blue-600 cursor-pointer" (click)="editField()">
-              Edit
-            </a>
-            <button class="p-2 w-6 h-6 rounded-sm hover:bg-gray-200 relative">
-              <span class="absolute top-[-1.5px] left-[6.5px]">...</span>
-            </button>
+            <p-menu #menu [model]="menuMap.get(field.id)" popup></p-menu>
+
+            <button
+              pButton
+              icon="pi pi-ellipsis-v"
+              (click)="menu.toggle($event)"
+              class="p-button-text p-button-sm"
+              aria-label="Options"
+            ></button>
           </td>
         </tr>
       }

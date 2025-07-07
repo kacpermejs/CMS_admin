@@ -1,4 +1,11 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import {
+  Action,
+  ActionReducer,
+  createFeature,
+  createReducer,
+  createSelector,
+  on,
+} from '@ngrx/store';
 import {
   createContentModel,
   loadContentModel,
@@ -12,8 +19,24 @@ import {
   deleteContentModel,
   deleteContentModelFailure,
   deleteContentModelSuccess,
+  deleteModelField,
 } from './content-model-creation.actions';
-import { initialContentModelCreationState } from './ContentModelCreationState';
+import {
+  ContentModelCreationState,
+  ContentModelSnapshot,
+  initialContentModelCreationState,
+} from './ContentModelCreationState';
+
+function detectUnsavedChanges(
+  current: ContentModelSnapshot,
+  previous: ContentModelSnapshot
+): boolean {
+  return (
+    current.name !== previous.name ||
+    current.description !== previous.description ||
+    JSON.stringify(current.fields) !== JSON.stringify(previous.fields)
+  );
+}
 
 export const contentModelCreationFeature = createFeature({
   name: 'contentModelCreation',
@@ -25,59 +48,76 @@ export const contentModelCreationFeature = createFeature({
       description: description ?? null,
       fields: [], //this creates completely new one
       id: null,
-      isSynchronized: false,
     })),
     on(loadContentModel, (state, { id }) => ({
       //initializes loading
       ...state,
-      id: id,
+      id,
       loading: true,
-      isSynchronized: false,
     })),
     on(
       contentModelLoadingSuccess,
-      (state, { id, name, fields, description }) => ({
-        ...state,
-        id,
-        name,
-        fields,
-        description: description ?? null,
-        error: null,
-        loading: false,
-        isSynchronized: true,
-      })
+      (state, { id, name, fields, description }) => {
+        const lastSynced = {
+            id,
+            name,
+            fields,
+            description: description ?? null,
+        };
+        
+        const newState : ContentModelCreationState = {
+          ...state,
+          ...lastSynced,
+          lastSynced: lastSynced,
+          error: null,
+          loading: false,
+        }
+        return newState;
+      }
     ),
     on(contentModelLoadingFailure, (state, { error }) => ({
       ...state,
       error,
       loading: false,
-      isSynchronized: false,
     })),
     on(addContentField, (state, { field }) => ({
       ...state,
       fields: [...state.fields, field],
-      isSynchronized: false,
     })),
     on(updateField, (state, { id, changes }) => ({
       ...state,
       fields: state.fields.map((field) =>
         field.id === id ? { ...field, ...changes } : field
       ),
-      isSynchronized: false,
     })),
     on(saveContentModel, (state) => ({
       ...state,
       loading: true,
-      isSynchronized: false,
     })),
-    on(contentModelSavingSuccess, (state, { id }) => ({
+    on(contentModelSavingSuccess, (state, { id }) => {
+        const lastSynced = {
+            id: state.id,
+            name: state.name,
+            fields: [...state.fields],
+            description: state.description,
+        };
+        
+        const newState : ContentModelCreationState = {
+          ...state,
+          lastSynced: lastSynced,
+          error: null,
+          loading: false,
+        }
+        return newState;
+      }
+    ),
+    on(deleteModelField, (state, { id }) => ({
       ...state,
-      id,
-      loading: false,
-      isSynchronized: true,
+      fields: state.fields.filter((f) => f.id !== id),
+      loading: true,
       error: null,
     })),
-    on(deleteContentModel, (state, { id }) => ({
+    on(deleteContentModel, (state) => ({
       ...state,
       loading: true,
       error: null,
@@ -85,7 +125,6 @@ export const contentModelCreationFeature = createFeature({
     on(contentModelSavingFailure, (state, { error }) => ({
       ...state,
       error,
-      isSynchronized: false,
       loading: false,
     })),
     on(deleteContentModelSuccess, (state, { id }) =>
@@ -96,8 +135,25 @@ export const contentModelCreationFeature = createFeature({
   ),
 });
 
+const selectContentModelCreationState = (state: any) => state[contentModelCreationFeatureKey];
+
+export const selectIsSynchronized = createSelector(
+  selectContentModelCreationState,
+  (state) => {
+    if (!state.lastSynced) return false;
+
+    const currentSnapshot: ContentModelSnapshot = {
+      id: state.id,
+      name: state.name,
+      description: state.description,
+      fields: state.fields,
+    };
+
+    return !detectUnsavedChanges(currentSnapshot, state.lastSynced);
+  }
+);
+
 export const {
   name: contentModelCreationFeatureKey,
   reducer: contentModelCreationReducer,
-  selectIsSynchronized,
 } = contentModelCreationFeature;

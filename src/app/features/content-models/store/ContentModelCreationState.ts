@@ -1,14 +1,22 @@
 import { ContentField } from "app/features/content-models/models/ContentModel";
 
+export interface ContentModelSnapshot {
+  name: string | null;
+  id: string | null;
+  description: string | null;
+  fields: ContentField[];
+}
+
 export interface ContentModelCreationState {
   name: string | null;
   id: string | null;
   description: string | null;
   fields: ContentField[];
 
-  isSynchronized: boolean; 
   loading: boolean;
   error: string | null;
+
+  lastSynced: ContentModelSnapshot | null;
 }
 
 export const initialContentModelCreationState: ContentModelCreationState = {
@@ -17,7 +25,7 @@ export const initialContentModelCreationState: ContentModelCreationState = {
   description: null,
   fields: [],
 
-  isSynchronized: false,
   loading: false,
-  error: null
+  error: null,
+  lastSynced: null,
 }
