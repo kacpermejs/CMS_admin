@@ -9,16 +9,21 @@ import { RelativeTimePipe } from 'app/shared/utils/RelativeTimePipe';
 import { deleteContentModel } from '../../store/content-model-creation.actions';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-content-model-list',
+  providers: [
+    ConfirmationService
+  ],
   imports: [
     CommonModule,
     RouterModule,
     RelativeTimePipe,
     ButtonModule,
     MenuModule,
+    ConfirmDialogModule
   ],
   templateUrl: './content-model-list.component.html',
   styleUrl: './content-model-list.component.css',
@@ -30,6 +35,7 @@ export class ContentModelListComponent implements OnInit {
   models$: Observable<ContentModel[]>;
 
   menuMap = new Map<string, MenuItem[]>();
+  confirmService = inject(ConfirmationService);
 
   constructor() {
     this.models$ = this.store.select(selectUserModels);
@@ -56,7 +62,16 @@ export class ContentModelListComponent implements OnInit {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => this.onDelete(item),
+        command: () => {
+          this.confirmService.confirm({
+            header: 'Confirm deletion',
+            message:`
+              Are you sure you want to delete that model and all its entries?
+            `,
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => this.onDelete(item),
+          })
+        }
       },
     ];
   }
