@@ -15,6 +15,9 @@ import { initApp } from "@core/store/actions/init.actions";
 import { routes } from "./app.routes";
 import { AppConfig, APP_CONFIG } from "@core/config/AppConfig";
 import { Secrets, SECRETS_CONFIG } from "@core/config/SecretsConfig";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }): ApplicationConfig {
   const appConfig: ApplicationConfig = {
@@ -35,6 +38,12 @@ export function getAppConfig(config: { appConfig: AppConfig; secrets: Secrets; }
         const store = inject(Store);
         store.dispatch(initApp());
       }),
+      provideAnimationsAsync(),
+      providePrimeNG({
+          theme: {
+              preset: Aura
+          }
+      })
     ]
   }
   //Suppressing firebase injection context warnings
