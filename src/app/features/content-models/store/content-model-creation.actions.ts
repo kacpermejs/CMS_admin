@@ -45,3 +45,19 @@ export const contentModelSavingFailure = createAction(
   '[Model] Content Model Saving Failure',
   props<{error: string}>()
 );
+
+export const deleteContentModel = createAction(
+  '[Model] Content Model Delete',
+  props<{id: string}>()
+);
+
+export const deleteContentModelSuccess = createAction(
+  '[Model] Content Model Delete Success',
+  props<{id: string}>()
+);
+
+export const deleteContentModelFailure = createAction(
+  '[Model] Content Model Delete Failure',
+  props<{error: string}>()
+);
+

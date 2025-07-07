@@ -6,6 +6,7 @@ import {
   props,
 } from '@ngrx/store';
 import { ContentModel } from 'app/features/content-models/models/ContentModel';
+import { deleteContentModel, deleteContentModelFailure, deleteContentModelSuccess } from 'app/features/content-models/store/content-model-creation.actions';
 
 export interface ModelListState {
   list: ContentModel[];
@@ -52,7 +53,23 @@ export const userModelsListFeature = createFeature({
       ...state,
       loading: false,
       error: error,
-    }))
+    })),
+    on(deleteContentModel, (state) => ({
+      ...state,
+      loading: true,
+      error: null,
+    })),
+    on(deleteContentModelSuccess, (state, {id}) => ({
+      ...state,
+      list: state.list.filter((model) => model.id !== id),
+      loading: false,
+      error: null,
+    })),
+    on(deleteContentModelFailure, (state, { error }) => ({
+      ...state,
+      loading: false,
+      error,
+    })),
   ),
 });
 

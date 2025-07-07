@@ -1,8 +1,19 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
-import { createContentModel, loadContentModel, contentModelLoadingSuccess, contentModelLoadingFailure, addContentField, updateField, saveContentModel, contentModelSavingSuccess, contentModelSavingFailure } from "./content-model-creation.actions";
-import { initialContentModelCreationState } from "./ContentModelCreationState";
-
-
+import { createFeature, createReducer, on } from '@ngrx/store';
+import {
+  createContentModel,
+  loadContentModel,
+  contentModelLoadingSuccess,
+  contentModelLoadingFailure,
+  addContentField,
+  updateField,
+  saveContentModel,
+  contentModelSavingSuccess,
+  contentModelSavingFailure,
+  deleteContentModel,
+  deleteContentModelFailure,
+  deleteContentModelSuccess,
+} from './content-model-creation.actions';
+import { initialContentModelCreationState } from './ContentModelCreationState';
 
 export const contentModelCreationFeature = createFeature({
   name: 'contentModelCreation',
@@ -66,17 +77,27 @@ export const contentModelCreationFeature = createFeature({
       isSynchronized: true,
       error: null,
     })),
+    on(deleteContentModel, (state, { id }) => ({
+      ...state,
+      loading: true,
+      error: null,
+    })),
     on(contentModelSavingFailure, (state, { error }) => ({
       ...state,
       error,
       isSynchronized: false,
       loading: false,
-    }))
+    })),
+    on(deleteContentModelSuccess, (state, { id }) =>
+      state.id === id
+        ? initialContentModelCreationState
+        : { ...state, loading: false }
+    )
   ),
 });
 
 export const {
   name: contentModelCreationFeatureKey,
   reducer: contentModelCreationReducer,
-  selectIsSynchronized
+  selectIsSynchronized,
 } = contentModelCreationFeature;

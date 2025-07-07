@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContentModelData } from '../../models/ContentModel';
+import { ContentField, ContentModelData } from '../../models/ContentModel';
 import { selectContentModelData } from 'app/features/content-models/store/content-model.selectors';
 import { addContentField, loadContentModel, saveContentModel, updateField } from '../../store/content-model-creation.actions';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { selectIsSynchronized } from '../../store/contentModelCreationFeature';
   styleUrl: './content-model-editor.component.css',
 })
 export class ContentModelEditorComponent {
+  openMenuId: string | null = null;
 
   model$: Observable<ContentModelData>;
   synced$: Observable<boolean>;

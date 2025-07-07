@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   docData,
   Firestore,
@@ -91,6 +92,11 @@ export class ContentModelCreatorService {
         })
       )
     );
+  }
+
+  deleteById(uid: string, modelId: string): Observable<void> {
+    const docRef = doc(this.firestore, `users/${uid}/contentModels/${modelId}`);
+    return from(deleteDoc(docRef));
   }
 
 }

@@ -28,7 +28,8 @@
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.name }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.updatedAt | relativeTime }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
-        <td><button class="btn btn-primary" (click)="onEdit(item)">Edit ></button></td>
+        <td><button class="btn btn-primary" (click)="onEdit(item)">Edit</button></td>
+        <td><button class="btn btn-danger" (click)="onDelete(item)">Delete</button></td>
       </tr>
     }
   </tbody>
