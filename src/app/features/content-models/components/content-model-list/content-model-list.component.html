@@ -1,8 +1,9 @@
 <header class="flex justify-between items-top">
   <h2>Content models</h2>
   <div>
-    <button 
-      class="btn btn-primary px-3! flex! items-center gap-1"
+    <button
+      pButton
+      class="px-3! flex! items-center gap-1"
       (click)="onNewModel()">
   
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true" role="img">
@@ -31,12 +32,11 @@
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
         <td>
           <p-menu #menu [model]="menuMap.get(item.id)" popup></p-menu>
-
           <button
             pButton
             icon="pi pi-ellipsis-v"
             (click)="menu.toggle($event)"
-            class="p-button-text p-button-sm"
+            class="p-button-text p-button-secondary p-button-sm"
             aria-label="Options"
           ></button>
         </td>

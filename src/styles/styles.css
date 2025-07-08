@@ -3,6 +3,29 @@
 @import "primeicons/primeicons.css";
 
 @theme {
+  --color-danger-50:  var(--p-danger-50);
+  --color-danger-100: var(--p-danger-100);
+  --color-danger-200: var(--p-danger-200);
+  --color-danger-300: var(--p-danger-300);
+  --color-danger-400: var(--p-danger-400);
+  --color-danger-500: var(--p-danger-500);
+  --color-danger-600: var(--p-danger-600);
+  --color-danger-700: var(--p-danger-700);
+  --color-danger-800: var(--p-danger-800);
+  --color-danger-900: var(--p-danger-900);
+  --color-danger-950: var(--p-danger-950);
+
+  --color-secondary-50:  var(--p-surface-50);
+  --color-secondary-100: var(--p-surface-100);
+  --color-secondary-200: var(--p-surface-200);
+  --color-secondary-300: var(--p-surface-300);
+  --color-secondary-400: var(--p-surface-400);
+  --color-secondary-500: var(--p-surface-500);
+  --color-secondary-600: var(--p-surface-600);
+  --color-secondary-700: var(--p-surface-700);
+  --color-secondary-800: var(--p-surface-800);
+  --color-secondary-900: var(--p-surface-900);
+  --color-secondary-950: var(--p-surface-950);
 }
 
 body {
@@ -45,43 +68,6 @@ p.large {
 
 p.small {
   @apply text-xs text-gray-500 leading-snug mb-3;
-}
-
-/* Buttons */
-.btn {
-  @apply inline-block px-4 py-1 rounded-md border-1 border-transparent font-medium text-center transition duration-300;
-}
-
-.btn-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring focus:ring-blue-300;
-}
-
-.btn-primary:disabled {
-  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
-}
-
-.btn-secondary {
-  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring focus:ring-gray-400;
-}
-
-.btn-secondary:disabled {
-  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
-}
-
-.btn-danger {
-  @apply bg-red-600 text-white hover:bg-red-700 focus:ring focus:ring-red-300;
-}
-
-.btn-danger:disabled {
-  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
-}
-
-.btn-outline {
-  @apply border border-gray-300 text-gray-700 hover:bg-gray-100 focus:ring focus:ring-gray-300;
-}
-
-.btn-outline:disabled {
-  @apply bg-gray-400 text-gray-200 cursor-not-allowed opacity-70;
 }
 
 /* Forms */

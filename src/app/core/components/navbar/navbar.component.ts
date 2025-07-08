@@ -8,12 +8,14 @@ import { Store } from '@ngrx/store';
 import { selectUserRole } from '@core/store/selectors/user.selectors';
 import { selectUserUid } from '@core/store/selectors/auth.selectors';
 import { logout } from '@core/store/actions/auth.actions';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ButtonModule
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']

@@ -5,10 +5,11 @@ import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { createContentModel } from '../../../store/content-model-creation.actions';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-content-model-create',
-  imports: [CommonModule, ReactiveFormsModule, ModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent, ButtonModule],
   templateUrl: './content-model-create.component.html',
   styleUrl: './content-model-create.component.css',
 })

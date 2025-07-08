@@ -2,7 +2,8 @@
   <h2>Content entries</h2>
   <div>
     <div class="relative inline-block">
-      <button class="btn btn-primary px-3! flex! items-center gap-2" (click)="toggleAddEntryDropdown()">
+      <button pButton class="px-3! flex! items-center gap-2" (click)="toggleAddEntryDropdown()">
+        <!-- TODO use primeng dropdown -->
         <span>Add entry</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true" role="img">
           <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
@@ -35,7 +36,7 @@
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.title }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.sys.updatedAt | relativeTime }}</td>
-        <td><button class="btn btn-primary" (click)="onEdit(item)">Edit ></button></td>
+        <td><button pButton (click)="onEdit(item)">Edit ></button></td>
       </tr>
     }
   </tbody>

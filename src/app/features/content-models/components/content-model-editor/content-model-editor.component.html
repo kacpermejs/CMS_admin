@@ -7,7 +7,7 @@
     <div>
       <span *ngIf="!(synced$ | async)" class="font-medium">⚠️</span>
       <button 
-        class="btn btn-primary"
+        pButton
         (click)="save()" 
         [disabled]="(synced$ | async)"
         >
@@ -67,7 +67,7 @@
               pButton
               icon="pi pi-ellipsis-v"
               (click)="menu.toggle($event)"
-              class="p-button-text p-button-sm"
+              class="p-button-text p-button-secondary p-button-sm"
               aria-label="Options"
             ></button>
           </td>

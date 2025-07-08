@@ -15,6 +15,7 @@ import {
   selectUserTypes,
 } from './store/EntriesListState';
 import { RelativeTimePipe } from '../../../../shared/utils/RelativeTimePipe';
+import { ButtonModule } from 'primeng/button';
 
 interface EntryWithModel extends ContentModelEntry {
   model: ContentModelData;
@@ -26,7 +27,7 @@ interface TitledEntry extends EntryWithModel {
 
 @Component({
   selector: 'app-content-entries-list',
-  imports: [CommonModule, RouterModule, RelativeTimePipe],
+  imports: [CommonModule, RouterModule, RelativeTimePipe, ButtonModule],
   templateUrl: './content-entries-list.component.html',
   styleUrl: './content-entries-list.component.css',
 })

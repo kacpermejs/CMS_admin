@@ -7,6 +7,7 @@ import { addContentField } from '../../../store/content-model-creation.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 import { CheckboxFormInputComponent } from 'app/shared/components/checkbox-form-input/checkbox-form-input.component';
+import { ButtonModule } from 'primeng/button';
 
 function buildTextFieldMetadataForm(): FormGroup {
   return new FormGroup({
@@ -48,6 +49,7 @@ const fieldMetadataFormBuilders: Record<ContentType, () => FormGroup> = {
     ReactiveFormsModule,
     ModalComponent,
     CheckboxFormInputComponent,
+    ButtonModule
   ],
   templateUrl: './content-model-field-creator.component.html',
   styleUrl: './content-model-field-creator.component.css',
