@@ -78,7 +78,7 @@ export class UserEffects {
   navigateOnMissingUserData$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(userDataLoadingFailure, userDataIncomplete),
+        ofType(userDataIncomplete),
         tap((e) => {
           this.router.navigateByUrl('/fill-user-data');
         })
