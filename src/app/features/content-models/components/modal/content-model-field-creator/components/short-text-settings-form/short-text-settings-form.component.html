@@ -1,0 +1,8 @@
+<fieldset [formGroup]="settingsGroup">
+    <h4>Settings</h4>
+    <fieldset *ngIf="fieldOptionsGroup" [formGroup]="fieldOptionsGroup">
+        <h5>FieldOptions</h5>
+        <app-checkbox-form-input controlKey="enableLocalization" label="Enable localization"></app-checkbox-form-input>
+        <app-checkbox-form-input controlKey="entryTitle" label="Is entry title"></app-checkbox-form-input>
+    </fieldset>
+</fieldset>

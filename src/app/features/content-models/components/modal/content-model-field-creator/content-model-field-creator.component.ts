@@ -8,39 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
 import { CheckboxFormInputComponent } from 'app/shared/components/checkbox-form-input/checkbox-form-input.component';
 import { ButtonModule } from 'primeng/button';
-
-function buildTextFieldMetadataForm(): FormGroup {
-  return new FormGroup({
-    validation: new FormGroup({
-      required: new FormControl(false),
-    }),
-    settings: new FormGroup({
-      fieldOptions: new FormGroup({
-        enableLocalization: new FormControl(false),
-        entryTitle: new FormControl(false),
-      })
-    })
-  });
-}
-
-function buildRichTextFieldMetadataForm(): FormGroup {
-  return new FormGroup({})
-}
-
-function buildNumberFieldMetadataForm(): FormGroup {
-  return new FormGroup({})
-}
-
-function buildBooleanFieldMetadataForm(): FormGroup {
-  return new FormGroup({})
-}
-
-const fieldMetadataFormBuilders: Record<ContentType, () => FormGroup> = {
-  [ContentType.Text]: buildTextFieldMetadataForm,
-  [ContentType.RichText]: buildRichTextFieldMetadataForm,
-  [ContentType.Number]: buildNumberFieldMetadataForm,
-  [ContentType.Boolean]: buildBooleanFieldMetadataForm,
-};
+import { BooleanValidationFormComponent } from "./components/boolean-validation-form/boolean-validation-form.component";
+import { NumberValidationFormComponent } from "./components/number-validation-form/number-validation-form.component";
+import { ShortTextValidationFormComponent } from "./components/short-text-validation-form/short-text-validation-form.component";
+import { ShortTextSettingsFormComponent } from "./components/short-text-settings-form/short-text-settings-form.component";
+import { NumberSettingsFormComponent } from "./components/number-settings-form/number-settings-form.component";
+import { BooleanSettingsFormComponent } from "./components/boolean-settings-form/boolean-settings-form.component";
+import { PhotoSettingsFormComponent } from "./components/photo-settings-form/photo-settings-form.component";
+import { PhotoValidationFormComponent } from "./components/photo-validation-form/photo-validation-form.component";
 
 @Component({
   selector: 'app-content-model-field-creator',
@@ -48,9 +23,16 @@ const fieldMetadataFormBuilders: Record<ContentType, () => FormGroup> = {
     CommonModule,
     ReactiveFormsModule,
     ModalComponent,
-    CheckboxFormInputComponent,
-    ButtonModule
-  ],
+    ButtonModule,
+    BooleanValidationFormComponent,
+    NumberValidationFormComponent,
+    ShortTextValidationFormComponent,
+    ShortTextSettingsFormComponent,
+    NumberSettingsFormComponent,
+    BooleanSettingsFormComponent,
+    PhotoSettingsFormComponent,
+    PhotoValidationFormComponent
+],
   templateUrl: './content-model-field-creator.component.html',
   styleUrl: './content-model-field-creator.component.css',
 })
@@ -64,16 +46,11 @@ export class ContentModelFieldCreatorComponent {
 
   constructor(private fb: FormBuilder) {
     // Initialize the form with default values
-
     this.form = this.fb.group({
       type: ['', Validators.required],
       name: ['', Validators.required],
       id: ['', Validators.required],
-    });
-
-    this.form.get('type')?.valueChanges.subscribe((selectedType) => {
-      this.addTypeSpecificForm(selectedType);
-
+      metadata: this.fb.group({})
     });
   }
 
@@ -93,37 +70,6 @@ export class ContentModelFieldCreatorComponent {
 
   get metadataGroup(): FormGroup | null {
     return this.form.get('metadata') as FormGroup | null;
-  }
-  
-  get validationGroup(): FormGroup | null {
-    return this.metadataGroup?.get('validation') as FormGroup | null;
-  }
-  
-  get settingsGroup(): FormGroup | null {
-    return this.metadataGroup?.get('settings') as FormGroup | null;
-  }
-
-  get fieldOptionsGroup(): FormGroup | null {
-    return this.settingsGroup?.get('fieldOptions') as FormGroup | null;
-  }
-
-  addTypeSpecificForm(type: ContentType) {
-    if (this.form.contains('metadata')) {
-      this.form.removeControl('metadata');
-    }
-  
-    const metadataGroup = this.buildTypeSpecificForm(type);
-    this.form.addControl('metadata', metadataGroup);
-  }
-
-  buildTypeSpecificForm(type: ContentType): FormGroup {
-    const metadataBuilder = fieldMetadataFormBuilders[type];
-  
-    if (!metadataBuilder) {
-      throw new Error(`Unsupported content type: ${type}`);
-    }
-  
-    return metadataBuilder(); // don't wrap again
   }
 
   modalParent() {

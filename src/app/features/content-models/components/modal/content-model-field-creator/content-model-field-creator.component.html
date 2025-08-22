@@ -43,57 +43,39 @@
         </div>
       </div>
 
-      <fieldset *ngIf="metadataGroup" [formGroup]="metadataGroup">
-        <fieldset *ngIf="validationGroup" [formGroup]="validationGroup">
-          <h4>Validation</h4>
-          <app-checkbox-form-input controlKey="required" label="Required"></app-checkbox-form-input>
-
-          <!-- Typed -->
+      <fieldset>
+        <fieldset>
           @switch (selectedType) {
             @case ('Text') {
-              
-            }
-            @case ('RichText') {
-              
+              <app-short-text-validation-form></app-short-text-validation-form>
             }
             @case ('Number') {
-              
+              <app-number-validation-form></app-number-validation-form>
             }
             @case ('Boolean') {
-              
+              <app-boolean-validation-form></app-boolean-validation-form>
+            }
+            @case ('Photo') {
+              <app-photo-validation-form></app-photo-validation-form>
             }
           }
         </fieldset>
       
-        <fieldset *ngIf="settingsGroup" [formGroup]="settingsGroup">
-          <h4>Settings</h4>
-
-          
-          <fieldset *ngIf="fieldOptionsGroup" [formGroup]="fieldOptionsGroup">
-            <h5>FieldOptions</h5>
-          
-            <!-- Typed -->
-            @switch (selectedType) {
-              @case ('Text') {
-                <app-checkbox-form-input controlKey="entryTitle" label="Entry Title"></app-checkbox-form-input>
-                
-              }
-              @case ('RichText') {
-                
-              }
-              @case ('Number') {
-                
-              }
-              @case ('Boolean') {
-                
-              }
+        <fieldset>
+          @switch (selectedType) {
+            @case ('Text') {
+              <app-short-text-settings-form></app-short-text-settings-form>
             }
-
-            <!-- Base -->
-            <app-checkbox-form-input controlKey="enableLocalization" label="Enable localization"></app-checkbox-form-input>
-            
-          </fieldset>
-          
+            @case ('Number') {
+              <app-number-settings-form></app-number-settings-form>
+            }
+            @case ('Boolean') {
+              <app-boolean-settings-form></app-boolean-settings-form>
+            }
+            @case ('Boolean') {
+              <app-photo-settings-form></app-photo-settings-form>
+            }
+          }
         </fieldset>
       </fieldset>
 

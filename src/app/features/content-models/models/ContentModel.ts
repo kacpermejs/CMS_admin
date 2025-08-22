@@ -20,9 +20,10 @@ export interface ContentModel extends ContentModelDTO {
 
 export enum ContentType {
   Text = "Text",
-  RichText = "RichText",
+  //RichText = "RichText",
   Number = "Number",
-  Boolean = "Boolean"
+  Boolean = "Boolean",
+  Photo = "Photo",
 }
 
 export interface ContentField {
