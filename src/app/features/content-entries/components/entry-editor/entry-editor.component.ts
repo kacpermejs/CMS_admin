@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  clearEntry,
   loadContentModel,
   loadEntry,
   saveEntry,
@@ -98,7 +99,7 @@ export class EntryEditorComponent implements OnInit, OnDestroy {
       if (entryId && entryId !== 'new') {
         this.store.dispatch(loadEntry({ entryId: entryId }));
       } else {
-        //TODO handle error 404
+        this.store.dispatch(clearEntry());
       }
     });
 

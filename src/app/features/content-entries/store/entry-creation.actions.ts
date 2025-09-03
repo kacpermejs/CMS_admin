@@ -36,6 +36,10 @@ export const updateEditableField = createAction(
   props<{ fieldId: string; value: any }>()
 );
 
+export const clearEntry = createAction(
+  '[Entry Creation] Clear Entry',
+);
+
 export const saveEntry = createAction(
   '[Entry Creation] Save Entry',
   props<{ modelId: string; fields: EntryFields; entryId?: string }>()

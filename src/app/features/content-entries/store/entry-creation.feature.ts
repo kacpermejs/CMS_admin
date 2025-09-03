@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
 import { ContentModelData, ContentType, EntryFields } from "app/features/content-models/models/ContentModel";
-import { loadContentModel, loadContentModelSuccess, loadContentModelFailure, loadEntry, loadEntrySuccess, loadEntryFailure, updateEditableField, saveEntry, saveEntrySuccess, saveEntryFailure } from "./entry-creation.actions";
+import { loadContentModel, loadContentModelSuccess, loadContentModelFailure, loadEntry, loadEntrySuccess, loadEntryFailure, updateEditableField, saveEntry, saveEntrySuccess, saveEntryFailure, clearEntry } from "./entry-creation.actions";
 
 export interface EntryCreationState {
   modelId: string | null;
@@ -84,6 +84,12 @@ export const entryCreationFeature = createFeature({
       }
     })),
   
+    // Clears the values
+    on(clearEntry, (state) => ({
+      ...state,
+      values: []
+    })),
+
     // Handle saving an entry
     on(saveEntry, (state) => ({
       ...state,
