@@ -129,13 +129,17 @@ export class EntryEditorComponent implements OnInit, OnDestroy {
   }
 
   OnSave() {
-    if (this.modelId == null || this.entryId == null)
-      return;
+    if (this.modelId == null || this.entryId == null) return;
 
     const fields: EntryFields = this.form.value;
-    console.log(fields);
-    
-    this.store.dispatch(saveEntry({modelId: this.modelId, entryId: this.entryId, fields }))
+
+    this.store.dispatch(
+      saveEntry({
+        modelId: this.modelId,
+        entryId: this.entryId !== 'new' ? this.entryId : undefined,
+        fields,
+      })
+    );
   }
 
   getEntryTitleId(model: ContentModelData): string | undefined {

@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { ContentModelData, EntryFields } from "app/features/content-models/models/ContentModel";
+import { ContentModel, ContentModelData, EntryFields } from "app/features/content-models/models/ContentModel";
 
 export const loadContentModel = createAction(
   '[Entry Creation] Load Content Model',
@@ -8,7 +8,7 @@ export const loadContentModel = createAction(
 
 export const loadContentModelSuccess = createAction(
   '[Entry Creation] Load Content Model Success',
-  props<{ contentModel: ContentModelData }>()
+  props<{ contentModel: ContentModel }>()
 );
 
 export const loadContentModelFailure = createAction(
@@ -47,7 +47,7 @@ export const saveEntry = createAction(
 
 export const saveEntrySuccess = createAction(
   '[Entry Creation] Save Entry Success',
-  props<{ values: EntryFields }>()
+  props<{ id: string, values: EntryFields }>()
 );
 
 export const saveEntryFailure = createAction(

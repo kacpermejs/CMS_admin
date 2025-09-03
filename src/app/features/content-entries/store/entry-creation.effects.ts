@@ -16,6 +16,7 @@ import {
 import { selectUserUid } from '@core/store/selectors/auth.selectors';
 import { withLatestFrom, map, switchMap, catchError, of, tap } from 'rxjs';
 import { ContentEntryCreatorService } from '../services/content-entry-creator-service/content-entry-creator.service';
+import { selectContentModel } from './entry-creation.feature';
 
 @Injectable()
 export class EntryCreationEffects {
@@ -114,22 +115,24 @@ export class EntryCreationEffects {
   saveEntry$ = createEffect(
     () => this.actions$.pipe(
       ofType(saveEntry),
-      withLatestFrom(this.store.select(selectUserUid)),
-      map(([action, uid]) => {
+      withLatestFrom(this.store.select(selectUserUid), this.store.select(selectContentModel)),
+      map(([action, uid, model]) => {
         if (!uid) throw new Error('User not authenticated');
-        return { action, uid };
+        return { action, uid, model};
       }),
-      switchMap(({ action, uid }) =>
-        this.creatorService.saveEntry(uid, action.modelId, action.entryId, action.fields).pipe(
-          map((entryFields) => {
-            if (!action.entryId)
+      switchMap(({ action, uid, model}) => {
+        if (!model)
               throw new Error(
-                `Entry with id=\"${action.entryId}\" doesn't exist`
+                `No model provided`
               );
-            return saveEntrySuccess({values: entryFields});
+
+        return this.creatorService.saveEntry(uid, model, action.entryId, action.fields).pipe(
+          map((res) => {
+            return saveEntrySuccess({id: res.id, values: res.fields});
           }),
           catchError((e) => of(saveEntryFailure({ error: e })))
-        )
+        );
+      }
       )
     )
   );

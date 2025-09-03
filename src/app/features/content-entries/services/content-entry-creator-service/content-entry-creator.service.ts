@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { EntryFields } from 'app/features/content-models/models/ContentModel';
+import { ContentModel, ContentModelEntryDTO, EntryFields, ModelEntrySystemInfo } from 'app/features/content-models/models/ContentModel';
 import { from, map, Observable } from 'rxjs';
-import { Firestore, addDoc, collection, doc, serverTimestamp, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, serverTimestamp, setDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -9,31 +9,60 @@ import { Firestore, addDoc, collection, doc, serverTimestamp, updateDoc } from '
 export class ContentEntryCreatorService {
 
   private firestore = inject(Firestore);
+  schemaVersion = 1;
 
   constructor() { }
 
-  saveEntry(uid: string, modelId: string, entryId: string | undefined, fields: EntryFields): Observable<EntryFields> {
+  saveEntry(
+    uid: string,
+    model: ContentModel,
+    entryId: string | undefined,
+    fields: EntryFields
+  ): Observable<{id: string, fields: EntryFields}> {
     
-    if (entryId == undefined) {
-      const entriesRef = collection(this.firestore, `users/${uid}/entries/`);
-      //new entry
-      return from(
-        addDoc(entriesRef, {
+    if (entryId == undefined || entryId === 'new') { //shouldn't be 'new' but I'll leave it like this
+      const entriesRef = collection(this.firestore, `users/${uid}/entries`);
+
+      const entry: ContentModelEntryDTO = {
+        fields,
+        sys: {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
-          fields,
-        })
+          titleField: '',
+          modelId: model.id
+        },
+        schema: this.schemaVersion
+      }
+
+      //new entry
+      return from(
+        addDoc(entriesRef, entry)
+      ).pipe(
+        map(docRef => ({
+          id: docRef.id,
+          fields
+        }))
       );
     } else {
       //update
-      const docRef = doc(this.firestore, `users/${uid}/entries/${entryId}`)
+      const docRef = doc(this.firestore, `users/${uid}/entries/${entryId}`);
+
+      const sys: Partial<ModelEntrySystemInfo> = {
+        updatedAt: serverTimestamp()
+      }
+      const entry = { //TODO schema check
+        fields,
+        sys: sys,
+        schema: this.schemaVersion
+      }
+
       return from(
-        updateDoc(docRef, {
-          updatedAt: serverTimestamp(),
-          fields,
-        })
+        setDoc(docRef, entry, {merge: true})
       ).pipe(
-        map( () => fields)
+        map(() => ({
+          id: entryId,
+          fields
+        }))
       );
     }
   }
