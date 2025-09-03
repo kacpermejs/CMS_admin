@@ -1,1 +1,45 @@
-<p>entry-editor works!</p>
+<div class="mx-4 my-1.5">
+    @if (model$ | async; as model) {
+        <header class="flex justify-between">
+            @if (values$ | async; as entry) {
+                
+                @if (entryId && entryId !== 'new') {
+                    @if (getEntryTitleId(model); as entryTitleId) {
+                        <h2>Editing: {{entry[entryTitleId]}}</h2>
+                    }
+                    @else {
+                        <h2>Editing: {{entryId}}</h2>
+                    }
+                }
+                @else {
+                    <h2>Creating new {{model.name}}</h2>
+                }
+            }
+            <div>
+                <button pButton (click)="OnSave()">
+                    Save
+                </button>
+            </div>
+        </header>
+        <form [formGroup]="form" class="">
+            <div class="flex flex-col gap-8">
+                @for (field of model.fields; track $index) {
+                    @switch (field.type) {
+                        @case (types.Boolean) {
+                            <app-checkbox-form-input [controlKey]="field.id" [label]="field.name"/>
+                        }
+                        @case (types.Number) {
+                            <app-number-form-input [controlKey]="field.id" [label]="field.name"/>
+                        }
+                        @case (types.Text) {
+                            <app-short-text-form-input [controlKey]="field.id" [label]="field.name"/>
+                        }
+                        @case (types.Photo) {
+                            <app-photo-form-input [controlKey]="field.id" [label]="field.name"/>
+                        }
+                    }
+                }
+            </div>
+        </form>
+    }
+</div>

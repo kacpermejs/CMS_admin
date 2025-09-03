@@ -92,10 +92,10 @@ export const entryCreationFeature = createFeature({
     })),
   
     // Handle successful entry save
-    on(saveEntrySuccess, (state, { entryId }) => ({
+    on(saveEntrySuccess, (state, { values }) => ({
       ...state,
       loading: false,
-      entryId: entryId,
+      values: values,
       error: null,
     })),
   

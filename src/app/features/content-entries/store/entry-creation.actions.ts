@@ -43,7 +43,7 @@ export const saveEntry = createAction(
 
 export const saveEntrySuccess = createAction(
   '[Entry Creation] Save Entry Success',
-  props<{ entryId: string }>()
+  props<{ values: EntryFields }>()
 );
 
 export const saveEntryFailure = createAction(

@@ -13,5 +13,5 @@ import { ReactiveFormsModule } from '@angular/forms';
   ]
 })
 export class ShortTextFormInputComponent extends SimpleFormInputBase {
-  @Input({required: true}) placeholder!: string;
+  @Input({required: false}) placeholder: string = '';
 }

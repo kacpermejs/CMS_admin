@@ -1,10 +1,9 @@
-<div class="flex flex-col w-full">
-  <label [htmlFor]="controlKey" class="">{{label}}</label>
+<div class="">
+  <label [htmlFor]="controlKey">{{label}}</label>
   <input 
-    type="text" 
+    type="number" 
     [id]="controlKey"
     [formControlName]="controlKey"
-    [placeholder]="placeholder"
     class="border-gray-300 rounded focus:ring-blue-500 cursor-auto"
   />
 </div>

@@ -53,21 +53,6 @@ export class ContentModelCreatorService {
     );
   }
 
-  addContentEntry(modelId: string, fields: Record<string, any>, uid: string) {
-    const entriesRef = collection(
-      this.firestore,
-      `users/${uid}/contentModels/${modelId}/entries`
-    );
-
-    return from(
-      addDoc(entriesRef, {
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        fields,
-      })
-    );
-  }
-
   getById(userUid: string, modelId: string) {
     const docRef = doc(this.firestore, 'users', userUid, 'contentModels', modelId);
 
