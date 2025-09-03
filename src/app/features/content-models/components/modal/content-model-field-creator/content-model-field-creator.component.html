@@ -6,14 +6,34 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="min-h-[20vh] w-[70vw]">
     
     <!-- Stage 1.1 -->
-    <div *ngIf="!typeSelected()" class="flex flex-col gap-2">
-      <select id="contentType" formControlName="type">
-        <option *ngFor="let type of types | keyvalue" [value]="type.value">
-          {{ type.key }}
-        </option>
-      </select>
-    </div>
-  
+    @if (!typeSelected()) {
+      <div class="grid grid-cols-2 gap-2">
+
+        @for (type of types | keyvalue; track type.key) {
+          <button type="button" pButton (click)="form.get('type')?.setValue(type.value)" [ngClass]="{
+            'p-button': form.controls['type'].value === type.value,
+            'p-button-outlined': form.controls['type'].value !== type.value
+                }">
+      
+            @switch (type.key) {
+              @case (types.Boolean) {
+                <i class="pi pi-check-square"></i>
+              }
+              @case (types.Number) {
+                <i class="pi pi-hashtag"></i>
+              }
+              @case (types.Text) {
+                <i class="pi pi-align-left"></i>
+              }
+              @case (types.Photo) {
+                <i class="pi pi-image"></i>
+              }
+            }
+            {{type.key == "Text" ? "Short text" : type.key}}
+          </button>
+        }
+      </div>
+    }
     <!-- Stage 1.2 -->
     <div *ngIf="typeSelected()" class="flex flex-col gap-2">
       <div class="flex flex-row gap-2">

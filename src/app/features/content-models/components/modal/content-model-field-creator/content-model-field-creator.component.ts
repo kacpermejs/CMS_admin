@@ -31,14 +31,21 @@ import { PhotoValidationFormComponent } from "./components/photo-validation-form
     NumberSettingsFormComponent,
     BooleanSettingsFormComponent,
     PhotoSettingsFormComponent,
-    PhotoValidationFormComponent
-],
+    PhotoValidationFormComponent,
+  ],
   templateUrl: './content-model-field-creator.component.html',
   styleUrl: './content-model-field-creator.component.css',
 })
 export class ContentModelFieldCreatorComponent {
+
   form: FormGroup;
   types = ContentType;
+  typeIconMapping = {
+    [ContentType.Boolean]: 'pi pi-check-square',
+    [ContentType.Number]: 'pi pi-hashtag',
+    [ContentType.Text]: 'pi pi-align-left',
+    [ContentType.Photo]: 'pi pi-image',
+  };
 
   store = inject(Store);
   router = inject(Router);
@@ -50,7 +57,7 @@ export class ContentModelFieldCreatorComponent {
       type: ['', Validators.required],
       name: ['', Validators.required],
       id: ['', Validators.required],
-      metadata: this.fb.group({})
+      metadata: this.fb.group({}),
     });
   }
 
@@ -66,6 +73,10 @@ export class ContentModelFieldCreatorComponent {
         idField.markAsUntouched();
       }
     });
+  }
+
+  getContentIcon(key: string): string {
+    return this.typeIconMapping[key as ContentType]
   }
 
   get metadataGroup(): FormGroup | null {
