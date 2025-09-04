@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { ContentModel, ContentModelEntryDTO, EntryFields, ModelEntrySystemInfo } from 'app/features/content-models/models/ContentModel';
+import { ContentModel, ContentModelEntryDTO, EntryFields, ModelEntrySystemInfo, TextFieldOptions } from 'app/features/content-models/models/ContentModel';
 import { from, map, Observable } from 'rxjs';
-import { Firestore, addDoc, collection, doc, serverTimestamp, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, serverTimestamp, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class ContentEntryCreatorService {
     fields: EntryFields
   ): Observable<{id: string, fields: EntryFields}> {
     
-    if (entryId == undefined || entryId === 'new') { //shouldn't be 'new' but I'll leave it like this
+    if ( !entryId || entryId === 'new') { //shouldn't be 'new' but I'll leave it like this
       const entriesRef = collection(this.firestore, `users/${uid}/entries`);
 
       const entry: ContentModelEntryDTO = {
@@ -28,7 +28,7 @@ export class ContentEntryCreatorService {
         sys: {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
-          titleField: '',
+          titleField: this.findTitleField(model),
           modelId: model.id
         },
         schema: this.schemaVersion
@@ -65,5 +65,11 @@ export class ContentEntryCreatorService {
         }))
       );
     }
+  }
+
+  findTitleField(model: ContentModel): string | undefined {
+    return model.fields.find(
+      (f) => (f.metadata?.settings?.fieldOptions as TextFieldOptions).entryTitle
+    )?.id;
   }
 }
