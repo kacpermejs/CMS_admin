@@ -30,7 +30,7 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  @apply bg-gray-100 h-[100vh] text-sm;
+  @apply bg-gray-100 text-sm;
 }
 
 button {
