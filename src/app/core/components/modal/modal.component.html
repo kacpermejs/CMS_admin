@@ -1,13 +1,13 @@
 <div *ngIf="isModalActive()" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-start pt-28">
   <div class="bg-white rounded-lg shadow-lg relative max-w-[80vw] max-h-[80vh] flex flex-col overflow-hidden">
-    <div class="flex justify-between p-2 pb-0">
+    <div class="flex justify-between p-2 pb-0 min-h-[40px]">
       <ng-content select=".modal-header"></ng-content>
-      <div>
+      <div class="ml-auto">
         <button 
-        class="rounded-sm text-gray-600 hover:text-gray-800 hover:bg-gray-200 w-6 aspect-square"
-        (click)="closeModal()">
-        ✖
-      </button>
+          class="rounded-sm text-gray-600 hover:text-gray-800 hover:bg-gray-200 w-6 aspect-square"
+          (click)="closeModal()">
+          ✖
+        </button>
       </div>
     </div>
     <hr>

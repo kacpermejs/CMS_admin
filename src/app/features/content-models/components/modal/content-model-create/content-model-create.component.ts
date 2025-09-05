@@ -12,14 +12,14 @@ import { ModalService } from '@core/components/modal/modal.service';
   selector: 'app-content-model-create',
   imports: [CommonModule, ReactiveFormsModule, ModalComponent, ButtonModule],
   templateUrl: './content-model-create.component.html',
-  styleUrl: './content-model-create.component.css'
+  styleUrl: './content-model-create.component.css',
 })
 export class ContentModelCreateComponent {
   protected router = inject(Router);
   private route = inject(ActivatedRoute);
   private store = inject(Store);
   private fb = inject(FormBuilder);
-  public modalService = inject(ModalService)
+  public modalService = inject(ModalService, { skipSelf: true });
 
   form: FormGroup;
 
@@ -39,16 +39,17 @@ export class ContentModelCreateComponent {
     const { name, description } = this.form.value;
 
     this.store.dispatch(createContentModel({ name, description }));
-    this.modalService.close();
-    this.router.navigate(
-      [
-        {
-          outlets: {
-            primary: ['edit', 'new'],
-          }
-        }
-      ],
-      { relativeTo: this.route.parent }
+    this.modalService.close().then(() =>
+      this.router.navigate(
+        [
+          {
+            outlets: {
+              primary: ['edit', 'new'],
+            },
+          },
+        ],
+        { relativeTo: this.route.parent }
+      )
     );
   }
 }

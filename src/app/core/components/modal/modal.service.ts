@@ -6,7 +6,7 @@ export class ModalService {
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   close() {
-    this.router.navigate(
+    return this.router.navigate(
       [{ outlets: { modal: null } }],
       { relativeTo: this.route }
     );
