@@ -25,10 +25,10 @@ import {
   EntryFields,
   TextFieldOptions,
 } from 'app/features/content-models/models/ContentModel';
-import { CheckboxFormInputComponent } from 'app/shared/components/checkbox-form-input/checkbox-form-input.component';
-import { ShortTextFormInputComponent } from 'app/shared/components/short-text-form-input/short-text-form-input.component';
-import { NumberFormInputComponent } from 'app/shared/components/number-form-input/number-form-input.component';
-import { PhotoFormInputComponent } from 'app/shared/components/photo-form-input/photo-form-input.component';
+import { CheckboxFormInputComponent } from 'app/shared/components/forms/checkbox-form-input/checkbox-form-input.component';
+import { ShortTextFormInputComponent } from 'app/shared/components/forms/short-text-form-input/short-text-form-input.component';
+import { NumberFormInputComponent } from 'app/shared/components/forms/number-form-input/number-form-input.component';
+import { PhotoFormInputComponent } from 'app/shared/components/forms/photo-form-input/photo-form-input.component';
 import { ButtonDirective } from 'primeng/button';
 
 export interface ExistingFile {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxFormInputComponent } from "app/shared/components/checkbox-form-input/checkbox-form-input.component";
+import { CheckboxFormInputComponent } from "app/shared/components/forms/checkbox-form-input/checkbox-form-input.component";
 import { CommonModule } from '@angular/common';
 import { SettingsFormBase } from '../settingsFormComponentBase';
 

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { addContentField } from '../../../store/content-model-creation.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from "../../../../../core/components/modal/modal.component";
-import { CheckboxFormInputComponent } from 'app/shared/components/checkbox-form-input/checkbox-form-input.component';
+import { CheckboxFormInputComponent } from 'app/shared/components/forms/checkbox-form-input/checkbox-form-input.component';
 import { ButtonModule } from 'primeng/button';
 import { BooleanValidationFormComponent } from "./components/boolean-validation-form/boolean-validation-form.component";
 import { NumberValidationFormComponent } from "./components/number-validation-form/number-validation-form.component";

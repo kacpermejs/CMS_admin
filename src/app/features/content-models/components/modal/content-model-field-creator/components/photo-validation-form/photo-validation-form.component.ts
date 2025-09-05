@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ValidationComponentBase as ValidationFormComponentBase } from '../validation-component-base';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxFormInputComponent } from 'app/shared/components/checkbox-form-input/checkbox-form-input.component';
+import { CheckboxFormInputComponent } from 'app/shared/components/forms/checkbox-form-input/checkbox-form-input.component';
 
 @Component({
   selector: 'app-photo-validation-form',
