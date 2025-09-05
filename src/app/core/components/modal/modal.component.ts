@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Host, inject, Input, OnInit, Optional, SkipSelf } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ModalFor } from './modal-for';
+import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-modal',
@@ -9,24 +9,9 @@ import { ModalFor } from './modal-for';
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css'
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent {
   router = inject(Router);
   currentActivatedRoute = inject(ActivatedRoute);
-
-  @Input()
-  parentRoute: ActivatedRoute | null = null;
-
-  constructor(@Host() @Optional() private modalFor: ModalFor) {
-    
-  }
-
-  ngOnInit(): void {
-    // console.log("this.modalFor");
-    // console.log(this.modalFor);
-    // if (!this.parentRoute && this.modalFor) {
-    //   this.parentRoute = this.modalFor.modalParent();
-    // }
-  }
 
   isModalActive(): boolean {
     return this.router.url.includes('modal:');
@@ -41,7 +26,7 @@ export class ModalComponent implements OnInit {
           }
         }
       ],
-      { relativeTo: this.parentRoute ? this.parentRoute : this.currentActivatedRoute }
+      { relativeTo: this.currentActivatedRoute.parent }
     );
   }
 }

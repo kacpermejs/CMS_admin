@@ -16,6 +16,7 @@ import { NumberSettingsFormComponent } from "./components/number-settings-form/n
 import { BooleanSettingsFormComponent } from "./components/boolean-settings-form/boolean-settings-form.component";
 import { PhotoSettingsFormComponent } from "./components/photo-settings-form/photo-settings-form.component";
 import { PhotoValidationFormComponent } from "./components/photo-validation-form/photo-validation-form.component";
+import { ModalService } from '@core/components/modal/modal.service';
 
 @Component({
   selector: 'app-content-model-field-creator',
@@ -50,6 +51,7 @@ export class ContentModelFieldCreatorComponent {
   store = inject(Store);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  modalService = inject(ModalService);
 
   constructor(private fb: FormBuilder) {
     // Initialize the form with default values
@@ -115,8 +117,6 @@ export class ContentModelFieldCreatorComponent {
     };
 
     this.store.dispatch(addContentField({ field: newField }));
-    this.router.navigate([{ outlets: { modal: null } }], {
-      relativeTo: this.route.parent,
-    });
+    this.modalService.close();
   }
 }
