@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ModalService } from './modal.service';
 
@@ -7,14 +7,24 @@ import { ModalService } from './modal.service';
   selector: 'app-modal',
   imports: [CommonModule, RouterModule],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.css'
+  styleUrl: './modal.component.css',
 })
-export class ModalComponent {
+export class ModalComponent implements OnDestroy {
   router = inject(Router);
   currentActivatedRoute = inject(ActivatedRoute);
 
+  @Input({ required: false })
+  onClosed?: () => void;
+
   isModalActive(): boolean {
     return this.router.url.includes('modal:');
+  }
+
+  ngOnDestroy(): void {
+    console.log('Modal closed');
+    if (this.onClosed) {
+      this.onClosed();
+    }
   }
 
   closeModal() {
@@ -22,9 +32,9 @@ export class ModalComponent {
       [
         {
           outlets: {
-            modal: null
-          }
-        }
+            modal: null,
+          },
+        },
       ],
       { relativeTo: this.currentActivatedRoute.parent }
     );
