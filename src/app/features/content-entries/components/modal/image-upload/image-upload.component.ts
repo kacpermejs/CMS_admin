@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ModalComponent } from "@core/components/modal/modal.component";
 
 @Component({
   selector: 'app-image-upload',
-  imports: [],
+  imports: [ModalComponent],
   templateUrl: './image-upload.component.html',
   styleUrl: './image-upload.component.css'
 })

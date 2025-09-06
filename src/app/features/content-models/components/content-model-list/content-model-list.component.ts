@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ModalService } from '@core/components/modal/modal.service';
 
 @Component({
   selector: 'app-content-model-list',
@@ -36,6 +37,7 @@ export class ContentModelListComponent implements OnInit {
 
   menuMap = new Map<string, MenuItem[]>();
   confirmService = inject(ConfirmationService);
+  modalService = inject(ModalService);
 
   constructor() {
     this.models$ = this.store.select(selectUserModels);
@@ -85,8 +87,6 @@ export class ContentModelListComponent implements OnInit {
   }
 
   onNewModel() {
-    this.router.navigate([{ outlets: { modal: ['create'] } }], {
-      relativeTo: this.route,
-    });
+    this.modalService.open('create');
   }
 }

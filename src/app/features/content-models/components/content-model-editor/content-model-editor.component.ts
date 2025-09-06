@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ModalService } from '@core/components/modal/modal.service';
 
 export enum ActionType {
   Added,
@@ -53,6 +54,7 @@ export class ContentModelEditorComponent {
   store = inject(Store);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private modalService = inject(ModalService);
 
   private changes: ModelFieldChange[] = [];
   private unsavedChanges: ModelFieldChange[] = [];
@@ -135,17 +137,14 @@ export class ContentModelEditorComponent {
   }
 
   editField(item: ContentField) {
-    this.router.navigate([{ outlets: { modal: ['edit-field'] } }], {
-      relativeTo: this.route.parent,
+    this.modalService.open('edit-field', {
       state: { field: item },
     });
   }
-
+  
   addField() {
     //TODO add history tracking
-    this.router.navigate([{ outlets: { modal: ['create-field'] } }], {
-      relativeTo: this.route.parent,
-    });
+    this.modalService.open('create-field');
   }
 
   onFieldChange(fieldId: string, fieldKey: string, event: Event) {

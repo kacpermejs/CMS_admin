@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   clearEntry,
@@ -30,6 +30,7 @@ import { ShortTextFormInputComponent } from 'app/shared/components/forms/short-t
 import { NumberFormInputComponent } from 'app/shared/components/forms/number-form-input/number-form-input.component';
 import { PhotoFormInputComponent } from 'app/shared/components/forms/photo-form-input/photo-form-input.component';
 import { ButtonDirective } from 'primeng/button';
+import { ModalService } from '@core/components/modal/modal.service';
 
 export interface ExistingFile {
   id: string;
