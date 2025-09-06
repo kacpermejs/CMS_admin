@@ -12,6 +12,7 @@ import { ModalService } from './modal.service';
 export class ModalComponent implements OnDestroy {
   router = inject(Router);
   currentActivatedRoute = inject(ActivatedRoute);
+  modalService = inject(ModalService, { skipSelf: true });
 
   @Input({ required: false })
   onClosed?: () => void;
@@ -28,15 +29,6 @@ export class ModalComponent implements OnDestroy {
   }
 
   closeModal() {
-    this.router.navigate(
-      [
-        {
-          outlets: {
-            modal: null,
-          },
-        },
-      ],
-      { relativeTo: this.currentActivatedRoute.parent }
-    );
+    this.modalService.close();
   }
 }
