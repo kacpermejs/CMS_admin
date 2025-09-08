@@ -19,7 +19,7 @@ export const CONTENT_ENTRIES_ROUTES: Routes = [
     ],
   },
   {
-    path: 'edit/:id', //can be edit/new
+    path: 'edit/:entryId', //can be edit/new
     component: EntryEditorComponent,
     providers: [
       provideState(entryCreationFeature),

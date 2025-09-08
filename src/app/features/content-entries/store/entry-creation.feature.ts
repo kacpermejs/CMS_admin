@@ -119,5 +119,6 @@ export const {
   name: entryCreationFeatureKey,
   reducer: entryCreationReducer,
   selectContentModel,
-  selectValues
+  selectValues,
+  selectEntryId
 } = entryCreationFeature;

@@ -35,21 +35,22 @@ export class ContentModelCreateComponent {
   }
 
   createModel() {
-    console.log('create');
     const { name, description } = this.form.value;
 
     this.store.dispatch(createContentModel({ name, description }));
-    this.modalService.close().then(() =>
-      this.router.navigate(
-        [
-          {
-            outlets: {
-              primary: ['edit', 'new'],
+    this.modalService.result(true).close().then((result) => {
+      if(result) {
+        this.router.navigate(
+          [
+            {
+              outlets: {
+                primary: ['edit', 'new'],
+              },
             },
-          },
-        ],
-        { relativeTo: this.route.parent }
-      )
-    );
+          ],
+          { relativeTo: this.route.parent }
+        );
+      }
+    });
   }
 }

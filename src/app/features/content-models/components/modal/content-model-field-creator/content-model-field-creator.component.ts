@@ -117,6 +117,6 @@ export class ContentModelFieldCreatorComponent {
     };
 
     this.store.dispatch(addContentField({ field: newField }));
-    this.modalService.close();
+    this.modalService.result(true).close();
   }
 }

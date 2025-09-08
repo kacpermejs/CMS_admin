@@ -31,6 +31,7 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import Lara from '@primeuix/themes/lara';
 import Nora from '@primeuix/themes/nora';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export function getAppConfig(config: {
   appConfig: AppConfig;
@@ -91,6 +92,7 @@ export function getAppConfig(config: {
       provideFirebaseApp(() => initializeApp(config.secrets.firebase)),
       provideAuth(() => getAuth()),
       provideFirestore(() => getFirestore()),
+      provideStorage(() => getStorage()),
       provideEffects(effects),
       provideAppInitializer(() => {
         const store = inject(Store);

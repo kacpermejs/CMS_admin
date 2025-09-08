@@ -30,7 +30,6 @@ import { ShortTextFormInputComponent } from 'app/shared/components/forms/short-t
 import { NumberFormInputComponent } from 'app/shared/components/forms/number-form-input/number-form-input.component';
 import { PhotoFormInputComponent } from 'app/shared/components/forms/photo-form-input/photo-form-input.component';
 import { ButtonDirective } from 'primeng/button';
-import { ModalService } from '@core/components/modal/modal.service';
 
 export interface ExistingFile {
   id: string;
@@ -84,25 +83,29 @@ export class EntryEditorComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe((queryParams) => {
-      const modelId = queryParams.get('modelId');
-      this.modelId = modelId;
-      if (modelId) {
-        this.store.dispatch(loadContentModel({ modelId }));
-      } else {
-        //TODO handle error 404
-      }
-    });
+    this.route.queryParamMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((queryParams) => {
+        const modelId = queryParams.get('modelId');
+        this.modelId = modelId;
+        if (modelId) {
+          this.store.dispatch(loadContentModel({ modelId }));
+        } else {
+          //TODO load again
+        }
+      });
 
-    this.route.paramMap.subscribe((params) => {
-      const entryId = params.get('id');
-      this.entryId = entryId;
-      if (entryId && entryId !== 'new') {
-        this.store.dispatch(loadEntry({ entryId: entryId }));
-      } else {
-        this.store.dispatch(clearEntry());
-      }
-    });
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {
+        const entryId = params.get('entryId');
+        this.entryId = entryId;
+        if (entryId && entryId !== 'new') {
+          this.store.dispatch(loadEntry({ entryId: entryId }));
+        } else {
+          this.store.dispatch(clearEntry());
+        }
+      });
 
     combineLatest([this.model$, this.values$])
       .pipe(takeUntil(this.destroy$))
