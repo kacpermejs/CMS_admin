@@ -55,14 +55,23 @@ export class PhotoFormInputComponent
       const uploadedFiles: { fileId: string, forControlKey: string }[] = result.uploadedFiles;
       
       const fileId = uploadedFiles.find(f => f.forControlKey === this.controlKey)?.fileId;
-      console.log("all: ", uploadedFiles);
-      console.log("fileId: ", fileId);
 
       this.store.dispatch(updateEditableField({fieldId: this.controlKey, value: fileId}));
     });
   }
 
   openSelectionModal() {
-    throw new Error('Method not implemented.');
+    this.modalService.open('select-existing-image', {
+      queryParams: {
+        mediaForEntryField: this.controlKey
+      },
+      queryParamsHandling: 'merge'
+    }).then( (result) => {      
+      const selectedFiles: { fileId: string, forControlKey: string }[] = result.selectedFiles;
+      
+      const fileId = selectedFiles.find(f => f.forControlKey === this.controlKey)?.fileId;
+
+      this.store.dispatch(updateEditableField({fieldId: this.controlKey, value: fileId}));
+    });
   }
 }

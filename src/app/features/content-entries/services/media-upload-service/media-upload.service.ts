@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { Storage, ref, uploadBytes, getDownloadURL, getMetadata, updateMetadata } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, getMetadata, updateMetadata, list } from '@angular/fire/storage';
 
 export interface MediaMetadata {
   title: string;
@@ -15,7 +15,37 @@ export class MediaUploadService {
   private storage = inject(Storage);
   private auth = inject(Auth);
 
+  public readonly PARENT_FOLDER = 'user_uploads';
+
   constructor() { }
+
+  async getUserFiles(page: number, size = 20) {
+    if (!this.auth.currentUser) {
+      return Promise.reject(new Error('User not logged in!'));
+    }
+
+    const userId = this.auth.currentUser.uid;
+    const userFolderRef = ref(this.storage, `user_uploads/${userId}`);
+
+    // List files
+    const result = await list(userFolderRef, { maxResults: size });
+
+    // Pagination (Firebase list API supports `pageToken`)
+    // if you want true pagination, you need to handle result.nextPageToken
+
+    const files = await Promise.all(
+      result.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        return {
+          name: itemRef.name,
+          path: itemRef.fullPath,
+          url,
+        };
+      })
+    );
+
+    return files;
+  }
 
   async uploadMedia(
     file: File,
@@ -28,7 +58,7 @@ export class MediaUploadService {
     const ext = file.name.split('.').pop();
     const safeTitle = metadata.title.replace(/\s+/g, '-').toLowerCase();
 
-    const filePath = `user_uploads/${userId}/${safeTitle}.${ext}`;
+    const filePath = `${this.PARENT_FOLDER}/${userId}/${safeTitle}.${ext}`;
     const storageRef = ref(this.storage, filePath);
 
     await uploadBytes(storageRef, file, {

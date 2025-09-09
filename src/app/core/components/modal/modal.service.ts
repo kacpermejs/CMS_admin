@@ -40,12 +40,13 @@ export class ModalService {
             : 'preserve',
       })
       .then((ok) => {
+        const result = this.storedResult;
         if (ok && this.resultResolver) {
           this.resultResolver(this.storedResult);
           this.resultResolver = undefined;
           this.storedResult = undefined; // reset after use
         }
-        return this.storedResult;
+        return result; //return a copy if watched only by close promise
       });
   }
 }

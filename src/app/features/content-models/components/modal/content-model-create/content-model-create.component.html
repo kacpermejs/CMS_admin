@@ -2,7 +2,7 @@
   <h3 class="modal-header">Create new model</h3>
   
   <div class="pb-2">
-    <form [formGroup]="form" (ngSubmit)="createModel()" class="flex flex-col gap-8 mx-8">
+    <form [formGroup]="form" (ngSubmit)="createModel()" class="flex flex-col gap-8" id="createForm">
       <div>
         <label for="name">Name</label>
         <input id="name" type="text" formControlName="name">
@@ -11,11 +11,12 @@
         <label for="description">Description</label>
         <textarea id="description" formControlName="description" rows="3"></textarea>
       </div>
-      <div class="self-end">
-        <button type="submit" name="create" id="create" pButton>
-          Create
-        </button>
-      </div>
+      
     </form>
+  </div>
+  <div class="modal-footer flex justify-end">
+    <button type="submit" form="createForm" id="create" pButton>
+      Create
+    </button>
   </div>
 </app-modal>

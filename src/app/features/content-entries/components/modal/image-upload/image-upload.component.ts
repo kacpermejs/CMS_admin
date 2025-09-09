@@ -36,12 +36,11 @@ export class ImageUploadComponent implements OnDestroy {
   entryId$: Observable<string | null>;
   mediaForEntryField$: Observable<string | null>;
 
-  fb = inject(FormBuilder);
-  uploadService = inject(MediaUploadService);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  modalService = inject(ModalService);
-  store = inject(Store);
+  private fb = inject(FormBuilder);
+  private uploadService = inject(MediaUploadService);
+  private route = inject(ActivatedRoute);
+  private modalService = inject(ModalService);
+  private store = inject(Store);
 
   uploadedFiles: { fileId: string, forControlKey: string }[] = [];
 

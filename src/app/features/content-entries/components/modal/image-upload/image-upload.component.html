@@ -1,5 +1,5 @@
 <app-modal>
-    <h2 class="modal-header">Upload new media file</h2>
+    <h3 class="modal-header">Upload new media file</h3>
     <form [formGroup]="form" class="flex flex-col gap-1 mb-2">
         <app-short-text-form-input controlKey="title" label="Title"></app-short-text-form-input>
         <app-short-text-form-input controlKey="description" label="Description"></app-short-text-form-input>
@@ -7,8 +7,10 @@
             <label for="file">File</label>
             <input id="file" type="file" (change)="onFileChange($event)">
         </div>
+    </form>
+    <div class="modal-footer">
         <button pButton (click)="onSave()">
             Submit
         </button>
-    </form>
+    </div>
 </app-modal>

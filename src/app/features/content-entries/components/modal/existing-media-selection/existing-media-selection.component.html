@@ -1,0 +1,39 @@
+<app-modal>
+    <!-- Modal header -->
+    <h3 class="modal-header">Select a file</h3>
+
+    <!-- Modal content -->
+    <div class="flex flex-col">
+
+        <!-- Scrollable images grid -->
+        <div class="p-4 overflow-auto flex-1">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div *ngFor="let file of userFiles"
+                    class="cursor-pointer border-2 rounded-lg p-2 hover:border-blue-500 transition-all"
+                    [ngClass]="{'border-blue-500 bg-blue-50': selectedFileId === file.path}"
+                    (click)="onSelect(file.path)">
+                    <img [src]="file.url" [alt]="file.name" class="w-full h-24 object-cover rounded-md mb-2" />
+                    <p class="text-sm truncate">{{ file.name }}</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+
+        <!-- Paginator -->
+        <div class="flex justify-center flex-1 sm:flex-none">
+            <p-paginator [rows]="size" [totalRecords]="totalFiles" [first]="(page - 1) * size"
+                (onPageChange)="onPageChange($event)"></p-paginator>
+        </div>
+
+        <!-- OK Button -->
+        <div class="flex justify-end flex-1">
+            <button pButton (click)="onOk()">
+                OK
+            </button>
+        </div>
+
+    </div>
+</app-modal>

@@ -8,6 +8,7 @@ import { EntryEditorComponent } from './components/entry-editor/entry-editor.com
 import { entryCreationFeature } from './store/entry-creation.feature';
 import { EntryCreationEffects } from './store/entry-creation.effects';
 import { ImageUploadComponent } from './components/modal/image-upload/image-upload.component';
+import { ExistingMediaSelectionComponent } from './components/modal/existing-media-selection/existing-media-selection.component';
 
 export const CONTENT_ENTRIES_ROUTES: Routes = [
   {
@@ -29,6 +30,11 @@ export const CONTENT_ENTRIES_ROUTES: Routes = [
   {
     path: 'upload-image',
     component: ImageUploadComponent,
+    outlet: 'modal'
+  },
+  {
+    path: 'select-existing-image',
+    component: ExistingMediaSelectionComponent,
     outlet: 'modal'
   }
 ];
