@@ -5,10 +5,11 @@ import cors from 'cors';
 admin.initializeApp();
 
 const db = admin.firestore();
-const corsHandler = cors({origin: true});
+const storage = admin.storage();
+const corsHandler = cors({ origin: true });
 
 export const getUserEntries = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, async () => {
+  return corsHandler(req, res, async () => {
     try {
       // Get API Key from headers
       const apiKey = req.headers['x-api-key'] as string | undefined;
@@ -56,6 +57,20 @@ export const getUserEntries = functions.https.onRequest((req, res) => {
         return;
       }
 
+      const modelDoc = await db
+        .collection(`users/${userId}/contentModels`)
+        .doc(modelId)
+        .get();
+      if (!modelDoc.exists) {
+        res.status(404).send('Model not found');
+        return;
+      }
+
+      const modelData = modelDoc.data();
+      const photoFields = (modelData?.fields || [])
+        .filter((f: any) => f.type === 'Photo')
+        .map((f: any) => f.id);
+
       // Fetch entries dynamically
       let query = db
         .collection('users')
@@ -70,11 +85,10 @@ export const getUserEntries = functions.https.onRequest((req, res) => {
           order as FirebaseFirestore.OrderByDirection
         );
       } else if (sortBy === 'createdAt') {
-        query = query
-          .orderBy(
-            'sys.createdAt',
-            order as FirebaseFirestore.OrderByDirection
-          );
+        query = query.orderBy(
+          'sys.createdAt',
+          order as FirebaseFirestore.OrderByDirection
+        );
       }
 
       const entriesSnapshot = await query.get();
@@ -84,13 +98,35 @@ export const getUserEntries = functions.https.onRequest((req, res) => {
         return;
       }
 
-      const entries = entriesSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const entries = await Promise.all(
+        entriesSnapshot.docs.map(async (doc) => {
+          const data = doc.data();
+          const fields = data.fields || {};
+
+          for (const fieldId of photoFields) {
+            const field = fields[fieldId];
+            if (field) {
+              try {
+                const file = storage.bucket().file(field);
+                const [url] = await file.getSignedUrl({
+                  action: 'read',
+                  expires: Date.now() + 60 * 60 * 1000, // 1 hour
+                });
+                // Update the field with the URL
+                fields[fieldId] = url;
+              } catch (err) {
+                console.error(`Error generating URL for ${fieldId}:`, err);
+                fields[fieldId] = null;
+              }
+            }
+          }
+
+          return { id: doc.id, ...data, fields };
+        })
+      );
 
       // Return entries
-      res.status(200).json({entries, sortBy, order, version: 'v2'});
+      res.status(200).json({ entries, sortBy, order, version: 'v2' });
     } catch (error) {
       console.error('Error fetching entries:', error);
       res.status(500).send('Internal server error');
