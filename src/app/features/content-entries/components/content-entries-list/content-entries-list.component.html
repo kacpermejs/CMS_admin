@@ -42,7 +42,7 @@
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.title }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.sys.updatedAt | relativeTime }}</td>
-        <td>
+        <td class="px-4 py-2 text-sm flex justify-end content-center">
           <p-menu #menu [model]="menuMap.get(item.id)" popup></p-menu>
           <button pButton icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"
             class="p-button-text p-button-secondary p-button-sm" aria-label="Options"></button>
