@@ -1,7 +1,7 @@
 # CMSAdmin
 Simple CMS system made with FIrebase inspired by Contentful. Made with Angular with NgRx.
 
-## Early screens:
+## Screens
+<img width="1914" height="861" alt="image" src="https://github.com/user-attachments/assets/d0d69aef-4f2f-4a13-960a-e6a0f5f963cc" />
 
-![image](https://github.com/user-attachments/assets/fdf2e192-7432-4617-af07-943e19e36d0d)
-
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/abd8f28e-b202-4cc9-9af4-3c06c57e53f1" />
