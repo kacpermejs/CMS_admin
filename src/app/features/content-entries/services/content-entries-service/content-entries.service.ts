@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, deleteDoc, doc, docData } from '@angular/fire/firestore';
 import {
   ContentModel,
   ContentModelEntry,
   ContentModelEntryDTO,
 } from 'app/features/content-models/models/ContentModel';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, from, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -53,8 +53,8 @@ export class ContentEntriesService {
     );
   }
 
-  getEntryById(userUid: string, modelId: string) {
-    const docRef = doc(this.firestore, 'users', userUid, 'entries', modelId);
+  getEntryById(userUid: string, entryId: string) {
+    const docRef = doc(this.firestore, 'users', userUid, 'entries', entryId);
     return docData(docRef, {idField: 'id'}).pipe(
       map((d) =>
         d
@@ -64,5 +64,10 @@ export class ContentEntriesService {
           : undefined
       )
     );
+  }
+
+  deleteEntryById(userUid: string, entryId: string): Observable<void> {
+    const docRef = doc(this.firestore, 'users', userUid, 'entries', entryId);
+    return from(deleteDoc(docRef));
   }
 }

@@ -10,12 +10,16 @@ import {
 } from 'app/features/content-models/models/ContentModel';
 import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import {
+  deleteEntry,
   loadUserEntries,
   selectUserEntries,
   selectUserTypes,
 } from './store/EntriesListState';
 import { RelativeTimePipe } from '../../../../shared/utils/RelativeTimePipe';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { ConfirmDialog } from "primeng/confirmdialog";
 
 interface EntryWithModel extends ContentModelEntry {
   model: ContentModelData;
@@ -27,7 +31,17 @@ interface TitledEntry extends EntryWithModel {
 
 @Component({
   selector: 'app-content-entries-list',
-  imports: [CommonModule, RouterModule, RelativeTimePipe, ButtonModule],
+  providers: [
+    ConfirmationService
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    RelativeTimePipe,
+    ButtonModule,
+    MenuModule,
+    ConfirmDialog
+],
   templateUrl: './content-entries-list.component.html',
   styleUrl: './content-entries-list.component.css',
 })
@@ -39,6 +53,9 @@ export class ContentEntriesListComponent implements OnInit {
   entries$: Observable<ContentModelEntry[]>;
   models$: Observable<ContentModel[]>;
   titledEntries$: Observable<TitledEntry[]>;
+
+  menuMap = new Map<string, MenuItem[]>();
+  confirmService = inject(ConfirmationService);
 
   addEntryDropdownVisible = false;
 
@@ -62,6 +79,37 @@ export class ContentEntriesListComponent implements OnInit {
         )
       )
     );
+
+    this.entries$.subscribe((models) => {
+      this.menuMap.clear();
+      models.forEach((item) => {
+        this.menuMap.set(item.id, this.createMenuItems(item));
+      });
+    });
+  }
+
+  private createMenuItems(item: ContentModelEntry): MenuItem[] {
+    return [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.onEdit(item),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.confirmService.confirm({
+            header: 'Confirm deletion',
+            message:`
+              Are you sure you want to delete that model and all its entries?
+            `,
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => this.onDelete(item),
+          })
+        }
+      },
+    ];
   }
 
   ngOnInit(): void {
@@ -103,6 +151,10 @@ export class ContentEntriesListComponent implements OnInit {
       relativeTo: this.route,
       queryParams: { modelId: entry.sys.modelId },
     });
+  }
+
+  onDelete(entry: ContentModelEntry) {
+    this.store.dispatch(deleteEntry({entryId: entry.id}));
   }
 
   toggleAddEntryDropdown() {

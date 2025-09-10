@@ -3,7 +3,7 @@ import { selectUserUid } from '@core/store/selectors/auth.selectors';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, switchMap, catchError, of, combineLatest, tap } from 'rxjs';
-import { loadUserEntries, userEntriesLoadingSuccess, userEntriesLoadingFailure } from './EntriesListState';
+import { loadUserEntries, userEntriesLoadingSuccess, userEntriesLoadingFailure, deleteEntry, deleteEntrySuccess, deleteEntryFailure } from './EntriesListState';
 import { ContentEntriesService } from 'app/features/content-entries/services/content-entries-service/content-entries.service';
 
 @Injectable()
@@ -33,5 +33,23 @@ export class UserEntriesListEffects {
         )
       )
     )
+  );
+
+  deleteEntry$ = createEffect( () =>
+    this.actions$.pipe(
+      ofType(deleteEntry),
+      withLatestFrom(this.store.select(selectUserUid)),
+      map(([action, uid]) => {
+        if (!uid) throw new Error('User not authenticated');
+        return { action, uid };
+      }),
+      switchMap(({ action, uid }) =>
+        this.contentService.deleteEntryById(uid, action.entryId).pipe(
+          map(() => deleteEntrySuccess({ entryId: action.entryId })),
+                    catchError((e) => of(deleteEntryFailure({ error: e.message })))
+        )
+      )
+    )
+
   );
 }

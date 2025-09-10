@@ -28,6 +28,20 @@ export const userEntriesLoadingFailure = createAction(
   '[EntriesList] User Entries Loading Failure',
   props<{ error: string }>()
 );
+export const deleteEntry = createAction(
+  '[EntriesList] Delete Entry',
+  props<{ entryId: string}>()
+);
+
+export const deleteEntrySuccess = createAction(
+  '[EntriesList] Delete Entry Success',
+  props<{ entryId: string}>()
+);
+
+export const deleteEntryFailure = createAction(
+  '[EntriesList] Delete Entry Failure',
+  props<{ error: string }>()
+);
 
 export const userEntriesListFeature = createFeature({
   name: 'userContentEntries',
@@ -49,6 +63,22 @@ export const userEntriesListFeature = createFeature({
       ...state,
       loading: false,
       error: error,
+    })),
+    on(deleteEntry, (state, {entryId}) => ({
+      ...state,
+      loading: true,
+      error: null
+    })),
+    on(deleteEntrySuccess, (state, {entryId}) => ({
+      ...state,
+      list: state.list.filter(entry => entry.id !== entryId),
+      loading: false,
+      error: null
+    })),
+    on(deleteEntryFailure, (state, {error}) => ({
+      ...state,
+      loading: false,
+      error: error
     }))
   ),
 });
