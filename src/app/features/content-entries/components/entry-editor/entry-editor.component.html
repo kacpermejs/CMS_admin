@@ -1,27 +1,30 @@
-<div class="mx-4 my-1.5">
+<div>
     @if (model$ | async; as model) {
-        <header class="flex justify-between">
-            @if (values$ | async; as entry) {
+        <div class="flex">
+            <div class="shrink mr-2">
+                <button pButton icon="pi pi-angle-left" class="p-button-text p-button-secondary p-button-sm" routerLink="../.."></button>
+            </div>
+            <header class="grow flex justify-between">
+                <div>
                 
-                @if (entryId && entryId !== 'new') {
-                    @if (getEntryTitleId(model); as entryTitleId) {
-                        <h2>Editing: {{entry[entryTitleId]}}</h2>
+                @if (values$ | async; as entry) {
+                    
+                    @if (entryId && entryId !== 'new') {
+                        @if (getEntryTitleId(model); as entryTitleId) {
+                            <h2>Editing: {{entry[entryTitleId]}}</h2>
+                        }
+                        @else {
+                            <h2>Editing: {{entryId}}</h2>
+                        }
                     }
                     @else {
-                        <h2>Editing: {{entryId}}</h2>
+                        <h2>Creating new {{model.name}}</h2>
                     }
                 }
-                @else {
-                    <h2>Creating new {{model.name}}</h2>
-                }
-            }
-            <div>
-                <button pButton (click)="OnSave()">
-                    Save
-                </button>
-            </div>
-        </header>
-        <form [formGroup]="form" class="">
+                </div>
+            </header>
+        </div>
+        <form [formGroup]="form" class="mx-10">
             <div class="flex flex-col gap-8">
                 @for (field of model.fields; track $index) {
                     @switch (field.type) {
@@ -40,6 +43,11 @@
                     }
                 }
             </div>
+            <div class="flex justify-end">
+                    <button pButton (click)="OnSave()">
+                        Save
+                    </button>
+                </div>
         </form>
     }
 </div>

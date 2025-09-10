@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
+import { Router, ActivatedRoute, RouterOutlet, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   clearEntry,
@@ -53,7 +53,8 @@ export interface NewFile {
     NumberFormInputComponent,
     PhotoFormInputComponent,
     ButtonDirective,
-  ],
+    RouterModule
+],
   templateUrl: './entry-editor.component.html',
   styleUrl: './entry-editor.component.css',
 })
