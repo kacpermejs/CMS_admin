@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h3>Add new field</h3>
   </div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="min-h-[20vh] w-[70vw]">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="min-h-[20vh] w-[70vw]" id="modelCreateForm">
     
     <!-- Stage 1.1 -->
     @if (!typeSelected()) {
@@ -97,10 +97,12 @@
           }
         </fieldset>
       </fieldset>
-
-      <button type="submit" pButton [disabled]="form.invalid">Create</button>
+      
     </div>
   </form>
+  <div class="modal-footer flex justify-end">
+    <button type="submit" form="modelCreateForm" id="create" pButton [disabled]="form.invalid">Create</button>
+  </div>
 </app-modal>
 
 
