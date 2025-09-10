@@ -73,12 +73,8 @@ export class EntryEditorComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({});
   }
 
-  values$ = this.store
-    .select(selectValues)
-    .pipe(tap((v) => console.log('Values: ', v)));
-  model$ = this.store
-    .select(selectContentModel)
-    .pipe(tap((m) => console.log('Model: ', m)));
+  values$ = this.store.select(selectValues);
+  model$ = this.store.select(selectContentModel);
 
   private destroy$ = new Subject<void>();
 
@@ -111,6 +107,7 @@ export class EntryEditorComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(([model, values]) => {
         if (!model) return;
+        if (this.form.touched) return;//reload bugfix but it should be stopped in another way
 
         // always rebuild form based on model
         const form = this.fb.group({});
