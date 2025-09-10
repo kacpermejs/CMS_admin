@@ -7,3 +7,6 @@ Simple CMS system made with FIrebase inspired by Contentful. Made with Angular w
 <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/abd8f28e-b202-4cc9-9af4-3c06c57e53f1" />
 
 <img width="1913" height="859" alt="image" src="https://github.com/user-attachments/assets/815ce879-c36e-4d15-afde-f803702bfc41" />
+
+<img width="1332" height="860" alt="image" src="https://github.com/user-attachments/assets/3cedbcab-ab54-4ce7-a033-6f1e1485485d" />
+
