@@ -1,22 +1,21 @@
-
-
-<div *ngIf="model$ | async as data">
-  <header class="flex justify-between">
-    <h2>{{data.name}}</h2>
-    <!-- Save Button -->
-    <div>
-      <span *ngIf="!(synced$ | async)" class="font-medium">⚠️</span>
-      <button 
-        pButton
-        (click)="save()" 
-        [disabled]="(synced$ | async)"
-        >
-        Save
-      </button>
-      <p-confirm-dialog></p-confirm-dialog>
+@if (model$ | async; as data) {
+<header class="flex justify-between items-center">
+  <div class="flex items-center">
+    <div class="mr-2">
+      <button pButton icon="pi pi-angle-left" class="p-button-text p-button-secondary p-button-sm"
+        routerLink="../.."></button>
     </div>
-  </header>
-
+    <h2>{{data.name}}</h2>
+  </div>
+  <div class="">
+    <span *ngIf="!(synced$ | async)" class="font-medium">⚠️</span>
+    <button pButton class="p-button-sm" (click)="save()" [disabled]="(synced$ | async)">
+      Save
+    </button>
+    <p-confirm-dialog></p-confirm-dialog>
+  </div>
+</header>
+<main class="mx-10">
   <h3>Fields:</h3>
   <!-- Fields Section -->
   <table *ngIf="model$ | async as model" class="w-full table-fixed">
@@ -31,49 +30,48 @@
     </thead>
     <tbody>
       @for (field of model.fields; track field.id) {
-        <tr class="border-b border-gray-300 h-12 hover:bg-gray-50">
-          <td class="w-2 text-center"> <!-- Small column with centered icon -->
-            <svg class="h-4 mx-auto" viewBox="0 0 24 24" aria-hidden="true" role="img">
-              <path fill="none" d="M0 0h24v24H0V0z"></path>
-              <path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+      <tr class="border-b border-gray-300 h-12 hover:bg-gray-50">
+        <td class="w-2 text-center"> <!-- Small column with centered icon -->
+          <svg class="h-4 mx-auto" viewBox="0 0 24 24" aria-hidden="true" role="img">
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path
+              d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+            </path>
+          </svg>
+        </td>
+        <td class="px-2">
+          {{field.name}}
+        </td>
+        <td class="px-2">
+          {{field.type}}
+        </td>
+        <td class="px-2">
+          @if(field.metadata?.validation?.required) {
+          <span>
+            <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-          </td>
-          <td class="px-2">
-            {{field.name}}
-          </td>
-          <td class="px-2">
-            {{field.type}}
-          </td>
-          <td class="px-2">
-            @if(field.metadata?.validation?.required) {
-              <span>
-                <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </span>
-            }
-            @else {
-              <span>
-                <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </span>
-            }
-          </td>
-          <td class="flex justify-end items-center gap-1 h-12 px-2">
-            <p-menu #menu [model]="menuMap.get(field.id)" popup></p-menu>
+          </span>
+          }
+          @else {
+          <span>
+            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+          }
+        </td>
+        <td class="flex justify-end items-center gap-1 h-12 px-2">
+          <p-menu #menu [model]="menuMap.get(field.id)" popup></p-menu>
 
-            <button
-              pButton
-              icon="pi pi-ellipsis-v"
-              (click)="menu.toggle($event)"
-              class="p-button-text p-button-secondary p-button-sm"
-              aria-label="Options"
-            ></button>
-          </td>
-        </tr>
+          <button pButton icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"
+            class="p-button-text p-button-secondary p-button-sm" aria-label="Options"></button>
+        </td>
+      </tr>
       }
-      
+
     </tbody>
     <tfoot>
       <tr>
@@ -85,4 +83,5 @@
       </tr>
     </tfoot>
   </table>
-
+</main>
+}

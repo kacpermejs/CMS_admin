@@ -1,46 +1,44 @@
-<header class="flex justify-between items-top">
+<header class="flex justify-between items-center">
   <h2>Content models</h2>
   <div>
-    <button
-      pButton
-      class="px-3! flex! items-center gap-1"
-      (click)="onNewModel()">
-  
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true" role="img">
-        <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+    <button pButton class="px-3! flex! items-center gap-1 p-button-sm" (click)="onNewModel()">
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"
+        aria-hidden="true" role="img">
+        <path
+          d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" />
       </svg>
-    
+
       <span>Create new model</span>
     </button>
   </div>
 </header>
-<table *ngIf="models$ | async as models" class="min-w-full">
-  <thead>
-    <tr class="text-left border-b border-gray-300 h-12">
-      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Name</th>
-      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Updated</th>
-      <th class="px-4 py-2 text-sm font-semibold text-gray-700">Fields Length</th>
-      <th class="px-4 py-2 text-sm font-semibold text-gray-700"></th>
-    </tr>
-  </thead>
-  <p-confirm-dialog></p-confirm-dialog>
-  <tbody>
-    @for (item of models; track item.id) {
+<main>
+  @if (models$ | async; as models) {
+  <table class="min-w-full">
+    <thead>
+      <tr class="text-left border-b border-gray-300 h-12">
+        <th class="px-4 py-2 text-sm font-semibold text-gray-700">Name</th>
+        <th class="px-4 py-2 text-sm font-semibold text-gray-700">Updated</th>
+        <th class="px-4 py-2 text-sm font-semibold text-gray-700">Fields Length</th>
+        <th class="px-4 py-2 text-sm font-semibold text-gray-700"></th>
+      </tr>
+    </thead>
+    <p-confirm-dialog></p-confirm-dialog>
+    <tbody>
+      @for (item of models; track item.id) {
       <tr class="border-b border-gray-300 h-12 hover:bg-gray-100">
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.name }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.updatedAt | relativeTime }}</td>
         <td class="px-4 py-2 text-sm text-gray-800">{{ item.fields.length }}</td>
         <td>
           <p-menu #menu [model]="menuMap.get(item.id)" popup></p-menu>
-          <button
-            pButton
-            icon="pi pi-ellipsis-v"
-            (click)="menu.toggle($event)"
-            class="p-button-text p-button-secondary p-button-sm"
-            aria-label="Options"
-          ></button>
+          <button pButton icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"
+            class="p-button-text p-button-secondary p-button-sm" aria-label="Options"></button>
         </td>
       </tr>
-    }
-  </tbody>
-</table>
+      }
+    </tbody>
+  </table>
+  }
+</main>

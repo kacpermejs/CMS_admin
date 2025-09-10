@@ -42,23 +42,23 @@ h1 {
 }
 
 h2 {
-  @apply text-2xl font-semibold text-gray-800 leading-snug mb-3;
+  @apply text-2xl font-semibold text-gray-800 leading-snug;
 }
 
 h3 {
-  @apply text-xl font-medium text-gray-700 leading-snug mb-2;
+  @apply text-xl font-medium text-gray-700 leading-snug;
 }
 
 h4 {
-  @apply text-lg font-medium text-gray-700 leading-snug mb-2;
+  @apply text-lg font-medium text-gray-700 leading-snug;
 }
 
 h5 {
-  @apply text-base font-medium text-gray-600 leading-tight mb-2;
+  @apply text-base font-medium text-gray-600 leading-tight;
 }
 
 h6 {
-  @apply text-sm font-medium text-gray-500 leading-snug mb-1;
+  @apply text-sm font-medium text-gray-500 leading-snug;
 }
 
 /* Paragraphs */
@@ -94,6 +94,10 @@ textarea {
 /* Other */
 hr {
   @apply mb-2 border-gray-200 border-1;
+}
+
+header {
+  @apply px-4 pt-1 h-[56px] border-b-gray-200 border-b-2;
 }
 
 /* Card */

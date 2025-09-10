@@ -1,53 +1,57 @@
-<div>
-    @if (model$ | async; as model) {
-        <div class="flex">
-            <div class="shrink mr-2">
-                <button pButton icon="pi pi-angle-left" class="p-button-text p-button-secondary p-button-sm" routerLink="../.."></button>
-            </div>
-            <header class="grow flex justify-between">
-                <div>
-                
-                @if (values$ | async; as entry) {
-                    
-                    @if (entryId && entryId !== 'new') {
-                        @if (getEntryTitleId(model); as entryTitleId) {
-                            <h2>Editing: {{entry[entryTitleId]}}</h2>
-                        }
-                        @else {
-                            <h2>Editing: {{entryId}}</h2>
-                        }
-                    }
-                    @else {
-                        <h2>Creating new {{model.name}}</h2>
-                    }
-                }
-                </div>
-            </header>
+@if (model$ | async; as model) {
+<header class="grow flex justify-between items-center">
+    <div class="flex">
+        <div>
+            <button pButton icon="pi pi-angle-left" class="p-button-text p-button-secondary p-button-sm" routerLink="../.."></button>
         </div>
-        <form [formGroup]="form" class="mx-10">
-            <div class="flex flex-col gap-8">
-                @for (field of model.fields; track $index) {
-                    @switch (field.type) {
-                        @case (types.Boolean) {
-                            <app-checkbox-form-input [controlKey]="field.id" [label]="field.name"/>
-                        }
-                        @case (types.Number) {
-                            <app-number-form-input [controlKey]="field.id" [label]="field.name"/>
-                        }
-                        @case (types.Text) {
-                            <app-short-text-form-input [controlKey]="field.id" [label]="field.name"/>
-                        }
-                        @case (types.Photo) {
-                            <app-photo-form-input [controlKey]="field.id" [label]="field.name"/>
-                        }
-                    }
+        <div class="flex items-baseline">
+            <button pButton class="p-button-text p-button-secondary p-button-sm"
+                [routerLink]="['/content-models/edit/', model.id]">{{model.name}}</button>
+            <span class="text-gray-400 font-light pl-0.5">/</span>
+
+            <div class="px-3 text-[16px] font-medium">
+
+                @if (values$ | async; as entry) {
+
+                @if (entryId && entryId !== 'new') {
+                @if (getEntryTitleId(model); as entryTitleId) {
+                <span class="">{{entry[entryTitleId]}}</span>
+                }
+                @else {
+                <span class="">{{entryId}}</span>
+                }
+                }
+                @else {
+                <span class="">New</span>
+                }
                 }
             </div>
-            <div class="flex justify-end">
-                    <button pButton (click)="OnSave()">
-                        Save
-                    </button>
-                </div>
-        </form>
-    }
-</div>
+        </div>
+    </div>
+    <div class="flex justify-end">
+        <button pButton class="p-button-sm" (click)="OnSave()">
+            Save
+        </button>
+    </div>
+</header>
+<form [formGroup]="form" class="mx-15">
+    <div class="flex flex-col gap-8">
+        @for (field of model.fields; track $index) {
+        @switch (field.type) {
+        @case (types.Boolean) {
+        <app-checkbox-form-input [controlKey]="field.id" [label]="field.name" />
+        }
+        @case (types.Number) {
+        <app-number-form-input [controlKey]="field.id" [label]="field.name" />
+        }
+        @case (types.Text) {
+        <app-short-text-form-input [controlKey]="field.id" [label]="field.name" />
+        }
+        @case (types.Photo) {
+        <app-photo-form-input [controlKey]="field.id" [label]="field.name" />
+        }
+        }
+        }
+    </div>
+</form>
+}

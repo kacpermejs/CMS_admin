@@ -11,7 +11,7 @@ import {
   saveContentModel,
   updateField,
 } from '../../store/content-model-creation.actions';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { selectIsSynchronized } from '../../store/contentModelCreationFeature';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -40,6 +40,7 @@ export interface ModelFieldChange {
     ButtonModule,
     MenuModule,
     ConfirmDialogModule,
+    RouterModule
   ],
   templateUrl: './content-model-editor.component.html',
   styleUrl: './content-model-editor.component.css',
