@@ -34,7 +34,7 @@
         </button>
     </div>
 </header>
-<form [formGroup]="form" class="mx-15">
+<form [formGroup]="form" class="mx-15 my-4">
     <div class="flex flex-col gap-8">
         @for (field of model.fields; track $index) {
         @switch (field.type) {
